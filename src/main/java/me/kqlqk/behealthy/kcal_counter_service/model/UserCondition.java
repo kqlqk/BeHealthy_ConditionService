@@ -17,21 +17,22 @@ public class UserCondition {
     @Column(name = "weight", nullable = false)
     private short weight;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "intensity", nullable = false, length = 30)
     private Intensity intensity;
 
     @Column(name = "user_id", unique = true, nullable = false)
-    private long user_id;
+    private long userId;
 
     public UserCondition() {
 
     }
 
-    public UserCondition(KcalsInfo kcalsInfo, short weight, Intensity intensity, long user_id) {
+    public UserCondition(KcalsInfo kcalsInfo, short weight, Intensity intensity, long userId) {
         this.kcalsInfo = kcalsInfo;
         this.weight = weight;
         this.intensity = intensity;
-        this.user_id = user_id;
+        this.userId = userId;
     }
 
     public long getId() {
@@ -66,11 +67,11 @@ public class UserCondition {
         this.intensity = intensity;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setUserId(long user_id) {
+        this.userId = user_id;
     }
 }
