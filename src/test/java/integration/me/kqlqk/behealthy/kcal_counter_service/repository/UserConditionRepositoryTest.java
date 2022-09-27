@@ -34,4 +34,10 @@ public class UserConditionRepositoryTest {
         UserCondition nullUserCondition = userConditionRepository.findByUserId(99);
         assertThat(nullUserCondition).isNull();
     }
+
+    @Test
+    public void existsByUserId_shouldCheckIfExistsByUserId() {
+        assertThat(userConditionRepository.existsByUserId(1)).isTrue();
+        assertThat(userConditionRepository.existsByUserId(99)).isFalse();
+    }
 }

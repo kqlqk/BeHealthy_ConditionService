@@ -9,4 +9,6 @@ public interface UserConditionRepository extends JpaRepository<UserCondition, Lo
     UserCondition findById(long id);
 
     UserCondition findByUserId(long id);
+
+    boolean existsByUserId(long id);
 }
