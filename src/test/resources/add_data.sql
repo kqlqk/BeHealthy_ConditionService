@@ -10,8 +10,8 @@ insert into kcals_info (proteins, fats, carbs)
 values (90, 80, 60);
 
 
-insert into user_condition (kcals_info_id, weight, intensity, user_id)
-values (1, 70, 'MAX', 1);
+insert into user_condition (user_id, kcals_info_id, gender, age, height, weight, intensity, goal)
+values (1, 1, 'MALE', 19, 190, 70, 'MAX', 'LOSE');
 
-insert into user_condition (kcals_info_id, weight, intensity, user_id)
-values (2, 80, 'AVG', 2);
+insert into user_condition (user_id, kcals_info_id, gender, age, height, weight, intensity, goal)
+values (2, 2, 'FEMALE', 25, 160, 60, 'AVG', 'MAINTAIN');

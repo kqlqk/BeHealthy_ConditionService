@@ -21,11 +21,14 @@ public class UserConditionRestController {
 
     @PostMapping("/create_condition")
     public ResponseEntity<?> createUserCondition(@RequestBody UserConditionDTO userConditionDTO) {
-        userConditionService.createCondition(
-                userConditionDTO.getKcalsInfoDTO().convertToKcalsInfo(),
+        userConditionService.generateAndSaveCondition(
+                userConditionDTO.getUserId(),
+                userConditionDTO.getGender(),
+                userConditionDTO.getAge(),
+                userConditionDTO.getHeight(),
                 userConditionDTO.getWeight(),
                 userConditionDTO.getIntensity(),
-                userConditionDTO.getUserId());
+                userConditionDTO.getGoal());
 
         return ResponseEntity.ok().build();
     }

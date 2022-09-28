@@ -50,4 +50,14 @@ public class KcalsInfo {
     public void setCarb(short carb) {
         this.carb = carb;
     }
+
+    @Override
+    public String toString() {
+        return "KcalsInfo{" +
+                "id=" + id +
+                ", protein=" + protein +
+                ", fat=" + fat +
+                ", carb=" + carb +
+                '}';
+    }
 }

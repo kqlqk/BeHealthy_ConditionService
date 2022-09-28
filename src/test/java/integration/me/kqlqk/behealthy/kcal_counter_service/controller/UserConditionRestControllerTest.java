@@ -3,9 +3,11 @@ package integration.me.kqlqk.behealthy.kcal_counter_service.controller;
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.kqlqk.behealthy.kcal_counter_service.dto.UserConditionDTO;
-import me.kqlqk.behealthy.kcal_counter_service.dto.KcalsInfoDTO;
-import me.kqlqk.behealthy.kcal_counter_service.model.Intensity;
+import me.kqlqk.behealthy.kcal_counter_service.model.enums.Gender;
+import me.kqlqk.behealthy.kcal_counter_service.model.enums.Goal;
+import me.kqlqk.behealthy.kcal_counter_service.model.enums.Intensity;
 import me.kqlqk.behealthy.kcal_counter_service.repository.KcalsInfoRepository;
+import me.kqlqk.behealthy.kcal_counter_service.repository.UserConditionRepository;
 import me.kqlqk.behealthy.kcal_counter_service.service.UserConditionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,21 +29,28 @@ public class UserConditionRestControllerTest {
     @Autowired
     private UserConditionService userConditionService;
 
+    @Autowired
+    private UserConditionRepository userConditionRepository;
+
+    @Autowired
+    private KcalsInfoRepository kcalsInfoRepository;
+
     @Test
     public void createUserCondition_ShouldCreateUserCondition() throws Exception {
-        KcalsInfoDTO kcalsInfoDTO = new KcalsInfoDTO();
-        kcalsInfoDTO.setProtein((short) 100);
-        kcalsInfoDTO.setFat((short) 60);
-        kcalsInfoDTO.setCarb((short) 150);
-
         UserConditionDTO userConditionDTO = new UserConditionDTO();
-        userConditionDTO.setKcalsInfoDTO(kcalsInfoDTO);
-        userConditionDTO.setWeight((short) 80);
-        userConditionDTO.setIntensity(Intensity.AVG);
         userConditionDTO.setUserId(4);
+        userConditionDTO.setGender(Gender.FEMALE);
+        userConditionDTO.setAge((byte) 20);
+        userConditionDTO.setHeight((short) 160);
+        userConditionDTO.setWeight((short) 80);
+        userConditionDTO.setGoal(Goal.LOSE);
+        userConditionDTO.setIntensity(Intensity.MAX);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonConditionDTO = objectMapper.writeValueAsString(userConditionDTO);
+
+        byte userConditionCount = (byte) userConditionRepository.findAll().size();
+        byte kcalsInfoCount = (byte) kcalsInfoRepository.findAll().size();
 
         mockMvc.perform(post("/api/v1/create_condition")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -49,22 +58,20 @@ public class UserConditionRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        assertThat(userConditionService.findById(3)).isNotNull();
-        assertThat(userConditionService.findByUserId(4)).isNotNull();
+        assertThat(userConditionRepository.findAll().size()).isEqualTo(userConditionCount + 1);
+        assertThat(kcalsInfoRepository.findAll().size()).isEqualTo(kcalsInfoCount + 1);
     }
 
     @Test
     public void createUserCondition_ShouldReturnJsonWithException() throws Exception {
-        KcalsInfoDTO kcalsInfoDTO = new KcalsInfoDTO();
-        kcalsInfoDTO.setProtein((short) 100);
-        kcalsInfoDTO.setFat((short) 60);
-        kcalsInfoDTO.setCarb((short) 150);
-
         UserConditionDTO userConditionDTO = new UserConditionDTO();
-        userConditionDTO.setKcalsInfoDTO(kcalsInfoDTO);
-        userConditionDTO.setWeight((short) 80);
-        userConditionDTO.setIntensity(Intensity.AVG);
         userConditionDTO.setUserId(1);
+        userConditionDTO.setAge((byte) 20);
+        userConditionDTO.setGender(Gender.MALE);
+        userConditionDTO.setHeight((short) 190);
+        userConditionDTO.setWeight((short) 80);
+        userConditionDTO.setGoal(Goal.GAIN);
+        userConditionDTO.setIntensity(Intensity.AVG);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonConditionDTO = objectMapper.writeValueAsString(userConditionDTO);

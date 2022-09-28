@@ -1,5 +1,9 @@
 package me.kqlqk.behealthy.kcal_counter_service.model;
 
+import me.kqlqk.behealthy.kcal_counter_service.model.enums.Gender;
+import me.kqlqk.behealthy.kcal_counter_service.model.enums.Goal;
+import me.kqlqk.behealthy.kcal_counter_service.model.enums.Intensity;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,9 +14,22 @@ public class UserCondition {
     @Column(name = "id", unique = true, nullable = false, insertable = false, updatable = false)
     private long id;
 
+    @Column(name = "user_id", unique = true, nullable = false)
+    private long userId;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "kcals_info_id", referencedColumnName = "id")
     private KcalsInfo kcalsInfo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender", nullable = false)
+    private Gender gender;
+
+    @Column(name = "age", nullable = false)
+    private byte age;
+
+    @Column(name = "height", nullable = false)
+    private short height;
 
     @Column(name = "weight", nullable = false)
     private short weight;
@@ -21,18 +38,30 @@ public class UserCondition {
     @Column(name = "intensity", nullable = false, length = 30)
     private Intensity intensity;
 
-    @Column(name = "user_id", unique = true, nullable = false)
-    private long userId;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "goal", nullable = false)
+    private Goal goal;
+
 
     public UserCondition() {
 
     }
 
-    public UserCondition(KcalsInfo kcalsInfo, short weight, Intensity intensity, long userId) {
+    public UserCondition(long userId,
+                         KcalsInfo kcalsInfo,
+                         Gender gender,
+                         byte age,
+                         short height,
+                         short weight,
+                         Intensity intensity, Goal goal) {
+        this.userId = userId;
         this.kcalsInfo = kcalsInfo;
+        this.gender = gender;
+        this.age = age;
+        this.height = height;
         this.weight = weight;
         this.intensity = intensity;
-        this.userId = userId;
+        this.goal = goal;
     }
 
     public long getId() {
@@ -43,12 +72,44 @@ public class UserCondition {
         this.id = id;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     public KcalsInfo getKcalsInfo() {
         return kcalsInfo;
     }
 
     public void setKcalsInfo(KcalsInfo kcalsInfo) {
         this.kcalsInfo = kcalsInfo;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public byte getAge() {
+        return age;
+    }
+
+    public void setAge(byte age) {
+        this.age = age;
+    }
+
+    public short getHeight() {
+        return height;
+    }
+
+    public void setHeight(short height) {
+        this.height = height;
     }
 
     public short getWeight() {
@@ -67,11 +128,26 @@ public class UserCondition {
         this.intensity = intensity;
     }
 
-    public long getUserId() {
-        return userId;
+    public Goal getGoal() {
+        return goal;
     }
 
-    public void setUserId(long user_id) {
-        this.userId = user_id;
+    public void setGoal(Goal goal) {
+        this.goal = goal;
+    }
+
+    @Override
+    public String toString() {
+        return "UserCondition{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", kcalsInfo=" + kcalsInfo +
+                ", gender=" + gender +
+                ", age=" + age +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", intensity=" + intensity +
+                ", goal=" + goal +
+                '}';
     }
 }
