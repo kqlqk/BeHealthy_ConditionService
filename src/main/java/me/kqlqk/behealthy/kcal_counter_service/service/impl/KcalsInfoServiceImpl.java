@@ -25,22 +25,22 @@ public class KcalsInfoServiceImpl implements KcalsInfoService {
 
     @Override
     public KcalsInfo generateDailyKcals(Gender gender, byte age, short height, short weight, Intensity intensity, Goal goal) {
-        if(gender == null) {
+        if (gender == null) {
             throw new IllegalArgumentException("Gender cannot be null");
         }
-        if(age <= 10) {
+        if (age <= 10) {
             throw new IllegalArgumentException("Age cannot be <= 10");
         }
-        if(height <= 130) {
+        if (height <= 130) {
             throw new IllegalArgumentException("Height cannot be <= 130");
         }
-        if(weight <= 30) {
+        if (weight <= 30) {
             throw new IllegalArgumentException("Weight cannot be <= 30");
         }
-        if(intensity == null) {
+        if (intensity == null) {
             throw new IllegalArgumentException("Intensity cannot be null");
         }
-        if(goal == null) {
+        if (goal == null) {
             throw new IllegalArgumentException("Goal cannot be null");
         }
 

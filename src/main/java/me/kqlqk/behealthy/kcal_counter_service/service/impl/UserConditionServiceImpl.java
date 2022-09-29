@@ -1,6 +1,7 @@
 package me.kqlqk.behealthy.kcal_counter_service.service.impl;
 
 import me.kqlqk.behealthy.kcal_counter_service.exception.exceptions.UserConditionAlreadyExistsException;
+import me.kqlqk.behealthy.kcal_counter_service.exception.exceptions.UserConditionNotFound;
 import me.kqlqk.behealthy.kcal_counter_service.model.KcalsInfo;
 import me.kqlqk.behealthy.kcal_counter_service.model.UserCondition;
 import me.kqlqk.behealthy.kcal_counter_service.model.enums.Gender;
@@ -24,13 +25,24 @@ public class UserConditionServiceImpl implements UserConditionService {
     }
 
     @Override
-    public UserCondition findById(long id) {
+    public UserCondition getById(long id) {
         return userConditionRepository.findById(id);
     }
 
     @Override
-    public UserCondition findByUserId(long id) {
+    public UserCondition getByUserId(long id) {
         return userConditionRepository.findByUserId(id);
+    }
+
+    @Override
+    public KcalsInfo getKcalsInfoByUserId(long id) {
+        if (!existsByUserId(id)) {
+            throw new UserConditionNotFound("User condition with userId = " + id + " not found");
+        }
+
+        UserCondition userCondition = getByUserId(id);
+
+        return userCondition.getKcalsInfo();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.kqlqk.behealthy.kcal_counter_service.dto;
 
+import me.kqlqk.behealthy.kcal_counter_service.model.UserCondition;
 import me.kqlqk.behealthy.kcal_counter_service.model.enums.Gender;
 import me.kqlqk.behealthy.kcal_counter_service.model.enums.Goal;
 import me.kqlqk.behealthy.kcal_counter_service.model.enums.Intensity;
@@ -18,13 +19,15 @@ public class UserConditionDTO {
 
     }
 
-    public UserConditionDTO(long userId,
+    public UserConditionDTO(long id,
+                            long userId,
                             Gender gender,
                             byte age,
                             short height,
                             short weight,
                             Intensity intensity,
                             Goal goal) {
+        this.id = id;
         this.userId = userId;
         this.gender = gender;
         this.age = age;
@@ -32,6 +35,18 @@ public class UserConditionDTO {
         this.weight = weight;
         this.intensity = intensity;
         this.goal = goal;
+    }
+
+    public static UserConditionDTO convertUserConditionToUserConditionDTO(UserCondition userCondition) {
+        return new UserConditionDTO(
+                userCondition.getId(),
+                userCondition.getUserId(),
+                userCondition.getGender(),
+                userCondition.getAge(),
+                userCondition.getHeight(),
+                userCondition.getWeight(),
+                userCondition.getIntensity(),
+                userCondition.getGoal());
     }
 
     public long getId() {

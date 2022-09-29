@@ -2,6 +2,7 @@ package me.kqlqk.behealthy.kcal_counter_service.exception;
 
 import me.kqlqk.behealthy.kcal_counter_service.dto.ExceptionDTO;
 import me.kqlqk.behealthy.kcal_counter_service.exception.exceptions.UserConditionAlreadyExistsException;
+import me.kqlqk.behealthy.kcal_counter_service.exception.exceptions.UserConditionNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({UserConditionAlreadyExistsException.class})
+    @ExceptionHandler({UserConditionAlreadyExistsException.class, UserConditionNotFound.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionDTO handle(Exception e) {
         ExceptionDTO exceptionDTO = new ExceptionDTO();

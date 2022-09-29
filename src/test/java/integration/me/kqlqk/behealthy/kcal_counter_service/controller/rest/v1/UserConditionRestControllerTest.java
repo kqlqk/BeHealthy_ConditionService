@@ -1,4 +1,4 @@
-package integration.me.kqlqk.behealthy.kcal_counter_service.controller;
+package integration.me.kqlqk.behealthy.kcal_counter_service.controller.rest.v1;
 
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,7 +8,6 @@ import me.kqlqk.behealthy.kcal_counter_service.model.enums.Goal;
 import me.kqlqk.behealthy.kcal_counter_service.model.enums.Intensity;
 import me.kqlqk.behealthy.kcal_counter_service.repository.KcalsInfoRepository;
 import me.kqlqk.behealthy.kcal_counter_service.repository.UserConditionRepository;
-import me.kqlqk.behealthy.kcal_counter_service.service.UserConditionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,9 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserConditionRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserConditionService userConditionService;
 
     @Autowired
     private UserConditionRepository userConditionRepository;
@@ -93,5 +90,57 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("User condition with userId = 1 already exists")));
 
+    }
+
+    @Test
+    public void getUserConditionByUserId_shouldReturnUserConditionById() throws Exception {
+        mockMvc.perform(get("/api/v1/condition")
+                        .param("userId", "1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.userId").exists())
+                .andExpect(jsonPath("$.gender").exists())
+                .andExpect(jsonPath("$.age").exists())
+                .andExpect(jsonPath("$.height").exists())
+                .andExpect(jsonPath("$.weight").exists())
+                .andExpect(jsonPath("$.intensity").exists())
+                .andExpect(jsonPath("$.goal").exists());
+    }
+
+    @Test
+    public void getUserConditionByUserId_shouldReturnJsonWithException() throws Exception {
+        mockMvc.perform(get("/api/v1/condition")
+                        .param("userId", "99"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("User condition with userId = 99 not found")));
+    }
+
+    @Test
+    public void getKcalsInfoByUserId_shouldReturnKcalsInfoByUserId() throws Exception {
+        mockMvc.perform(get("/api/v1/kcals")
+                        .param("userId", "1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.protein").exists())
+                .andExpect(jsonPath("$.fat").exists())
+                .andExpect(jsonPath("$.carb").exists());
+    }
+
+    @Test
+    public void getKCalsInfoByUserId_shouldRetrunKcalsInfoByUserId() throws Exception {
+        mockMvc.perform(get("/api/v1/kcals")
+                        .param("userId", "99"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("User condition with userId = 99 not found")));
     }
 }
