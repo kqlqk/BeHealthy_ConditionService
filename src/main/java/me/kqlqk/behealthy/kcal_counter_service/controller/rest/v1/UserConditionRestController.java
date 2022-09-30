@@ -41,6 +41,24 @@ public class UserConditionRestController {
         return UserConditionDTO.convertUserConditionToUserConditionDTO(userConditionService.getByUserId(userId));
     }
 
+    @PutMapping("/condition")
+    public ResponseEntity<?> updateCondition(@RequestParam long userId, @RequestBody UserConditionDTO userConditionDTO) {
+        if (!userConditionService.existsByUserId(userId)) {
+            throw new UserConditionNotFound("User condition with userId = " + userId + " not found");
+        }
+
+        userConditionService.updateCondition(
+                userId,
+                userConditionDTO.getGender(),
+                userConditionDTO.getAge(),
+                userConditionDTO.getHeight(),
+                userConditionDTO.getWeight(),
+                userConditionDTO.getIntensity(),
+                userConditionDTO.getGoal());
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/kcals")
     public KcalsInfo getKcalsInfoByUserId(@RequestParam long userId) {
         return userConditionService.getKcalsInfoByUserId(userId);

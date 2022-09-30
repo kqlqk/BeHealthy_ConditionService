@@ -90,4 +90,55 @@ public class UserConditionServiceImpl implements UserConditionService {
 
         userConditionRepository.save(userCondition);
     }
+
+    @Override
+    public void updateCondition(long userId,
+                                Gender gender,
+                                byte age,
+                                short height,
+                                short weight,
+                                Intensity intensity,
+                                Goal goal) {
+        if (userId <= 0) {
+            throw new IllegalArgumentException("userId cannot be <= 0");
+        }
+        if (gender == null) {
+            throw new IllegalArgumentException("Gender cannot be null");
+        }
+        if (age <= 10) {
+            throw new IllegalArgumentException("Age cannot be <= 10");
+        }
+        if (height <= 130) {
+            throw new IllegalArgumentException("Height cannot be <= 130");
+        }
+        if (weight <= 30) {
+            throw new IllegalArgumentException("Weight cannot be <= 30");
+        }
+        if (intensity == null) {
+            throw new IllegalArgumentException("Intensity cannot be null");
+        }
+        if (goal == null) {
+            throw new IllegalArgumentException("Goal cannot be null");
+        }
+        if (!existsByUserId(userId)) {
+            throw new UserConditionNotFound("User condition with userId = " + userId + " not found");
+        }
+
+        UserCondition userCondition = getByUserId(userId);
+        KcalsInfo kcalsInfo = userCondition.getKcalsInfo();
+        KcalsInfo updatedKcalsInfo = kcalsInfoService.generateDailyKcals(gender, age, height, weight, intensity, goal);
+
+        kcalsInfo.setProtein(updatedKcalsInfo.getProtein());
+        kcalsInfo.setFat(updatedKcalsInfo.getFat());
+        kcalsInfo.setCarb(updatedKcalsInfo.getCarb());
+
+        userCondition.setGender(gender);
+        userCondition.setAge(age);
+        userCondition.setHeight(height);
+        userCondition.setWeight(weight);
+        userCondition.setIntensity(intensity);
+        userCondition.setGoal(goal);
+
+        userConditionRepository.save(userCondition);
+    }
 }

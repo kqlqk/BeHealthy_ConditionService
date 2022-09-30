@@ -24,4 +24,12 @@ public interface UserConditionService {
                                   short weight,
                                   Intensity intensity,
                                   Goal goal);
+
+    void updateCondition(long userId,
+                         Gender gender,
+                         byte age,
+                         short height,
+                         short weight,
+                         Intensity intensity,
+                         Goal goal);
 }
