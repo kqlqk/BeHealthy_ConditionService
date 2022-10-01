@@ -22,7 +22,7 @@ public class UserCondition {
     private KcalsInfo kcalsInfo;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender", nullable = false, length = 10)
     private Gender gender;
 
     @Column(name = "age", nullable = false)
@@ -35,11 +35,11 @@ public class UserCondition {
     private short weight;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "intensity", nullable = false, length = 30)
+    @Column(name = "intensity", nullable = false, length = 10)
     private Intensity intensity;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "goal", nullable = false)
+    @Column(name = "goal", nullable = false, length = 10)
     private Goal goal;
 
 
