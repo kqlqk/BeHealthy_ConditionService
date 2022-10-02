@@ -18,10 +18,10 @@ values (2, 2, 'FEMALE', 25, 160, 60, 'AVG', 'MAINTAIN');
 
 
 insert into daily_food (user_id, product_name, product_weight, product_kcals, product_proteins, product_fats, product_carbs)
-values (1, 'rice', 100, 350, 10, 3, 70);
+values (1, 'rice', 100, 344.1, 10.8, 3, 70.1);
 
 insert into daily_food (user_id, product_name, product_weight, product_kcals, product_proteins, product_fats, product_carbs)
-values (1, 'chicken', 100, 150, 30, 3, 0);
+values (1, 'chicken', 100.1, 150, 30, 3, 0.2);
 
 insert into daily_food (user_id, product_name, product_weight, product_kcals, product_proteins, product_fats, product_carbs)
 values (2, 'rice', 100, 350, 10, 3, 70);

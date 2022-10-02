@@ -59,7 +59,7 @@ public class UserConditionServiceImpl implements UserConditionService {
                                          Intensity intensity,
                                          Goal goal) {
         if (userId <= 0) {
-            throw new IllegalArgumentException("userId cannot be <= 0");
+            throw new IllegalArgumentException("UserId cannot be <= 0");
         }
         if (gender == null) {
             throw new IllegalArgumentException("Gender cannot be null");

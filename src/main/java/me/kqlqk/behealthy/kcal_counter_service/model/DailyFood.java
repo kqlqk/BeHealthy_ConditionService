@@ -16,20 +16,20 @@ public class DailyFood {
     @Column(name = "product_name", nullable = false)
     private String name;
 
-    @Column(name = "product_weight", nullable = false)
-    private short weight;
+    @Column(name = "product_weight", nullable = false, precision = 1, scale = 4)
+    private double weight;
 
-    @Column(name = "product_kcals", nullable = false)
-    private short kcals;
+    @Column(name = "product_kcals", nullable = false, precision = 1, scale = 4)
+    private double kcals;
 
-    @Column(name = "product_proteins", nullable = false)
-    private short proteins;
+    @Column(name = "product_proteins", nullable = false, precision = 1, scale = 4)
+    private double proteins;
 
-    @Column(name = "product_fats", nullable = false)
-    private short fats;
+    @Column(name = "product_fats", nullable = false, precision = 1, scale = 4)
+    private double fats;
 
-    @Column(name = "product_carbs", nullable = false)
-    private short carbs;
+    @Column(name = "product_carbs", nullable = false, precision = 1, scale = 4)
+    private double carbs;
 
     public long getId() {
         return id;
@@ -55,43 +55,43 @@ public class DailyFood {
         this.name = name;
     }
 
-    public short getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(short weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
-    public short getKcals() {
+    public double getKcals() {
         return kcals;
     }
 
-    public void setKcals(short kcals) {
+    public void setKcals(double kcals) {
         this.kcals = kcals;
     }
 
-    public short getProteins() {
+    public double getProteins() {
         return proteins;
     }
 
-    public void setProteins(short proteins) {
+    public void setProteins(double proteins) {
         this.proteins = proteins;
     }
 
-    public short getFats() {
+    public double getFats() {
         return fats;
     }
 
-    public void setFats(short fats) {
+    public void setFats(double fats) {
         this.fats = fats;
     }
 
-    public short getCarbs() {
+    public double getCarbs() {
         return carbs;
     }
 
-    public void setCarbs(short carbs) {
+    public void setCarbs(double carbs) {
         this.carbs = carbs;
     }
 }

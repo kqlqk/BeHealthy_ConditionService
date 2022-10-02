@@ -4,14 +4,14 @@ drop table if exists daily_food;
 
 create table daily_food
 (
-    id               bigint       not null unique auto_increment,
-    user_id          bigint       not null,
-    product_name     varchar(100) not null,
-    product_weight   smallint     not null,
-    product_kcals    smallint     not null,
-    product_proteins smallint     not null,
-    product_fats     smallint     not null,
-    product_carbs    smallint     not null,
+    id               bigint        not null unique auto_increment,
+    user_id          bigint        not null,
+    product_name     varchar(100)  not null,
+    product_weight   decimal(4, 1) not null,
+    product_kcals    decimal(4, 1) not null,
+    product_proteins decimal(4, 1) not null,
+    product_fats     decimal(4, 1) not null,
+    product_carbs    decimal(4, 1) not null,
 
     primary key (id)
 );
