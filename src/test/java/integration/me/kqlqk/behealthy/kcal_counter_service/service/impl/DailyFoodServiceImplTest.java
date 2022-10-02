@@ -2,12 +2,10 @@ package integration.me.kqlqk.behealthy.kcal_counter_service.service.impl;
 
 import annotations.ServiceTest;
 import me.kqlqk.behealthy.kcal_counter_service.service.impl.DailyFoodServiceImpl;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ServiceTest
 public class DailyFoodServiceImplTest {

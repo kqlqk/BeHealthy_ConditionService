@@ -1,6 +1,9 @@
-delete from user_condition;
-delete from kcals_info;
-delete from daily_food;
+delete
+from user_condition;
+delete
+from kcals_info;
+delete
+from daily_food;
 
 
 insert into kcals_info (proteins, fats, carbs)
@@ -17,11 +20,14 @@ insert into user_condition (user_id, kcals_info_id, gender, age, height, weight,
 values (2, 2, 'FEMALE', 25, 160, 60, 'AVG', 'MAINTAIN');
 
 
-insert into daily_food (user_id, product_name, product_weight, product_kcals, product_proteins, product_fats, product_carbs)
+insert into daily_food (user_id, product_name, product_weight, product_kcals, product_proteins, product_fats,
+                        product_carbs)
 values (1, 'rice', 100, 344.1, 10.8, 3, 70.1);
 
-insert into daily_food (user_id, product_name, product_weight, product_kcals, product_proteins, product_fats, product_carbs)
+insert into daily_food (user_id, product_name, product_weight, product_kcals, product_proteins, product_fats,
+                        product_carbs)
 values (1, 'chicken', 100.1, 150, 30, 3, 0.2);
 
-insert into daily_food (user_id, product_name, product_weight, product_kcals, product_proteins, product_fats, product_carbs)
+insert into daily_food (user_id, product_name, product_weight, product_kcals, product_proteins, product_fats,
+                        product_carbs)
 values (2, 'rice', 100, 350, 10, 3, 70);

@@ -32,7 +32,7 @@ public class DailyFoodServiceImpl implements DailyFoodService {
         if (userId <= 0) {
             throw new IllegalArgumentException("UserId cannot be <= 0");
         }
-        if(name == null || name.equals("")) {
+        if (name == null || name.equals("")) {
             throw new IllegalArgumentException("Name cannot be null");
         }
         if (weight <= 0) {
