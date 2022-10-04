@@ -57,24 +57,50 @@ public class KcalsInfoServiceImpl implements KcalsInfoService {
 
         short fullMetabolism = (short) Math.round(basicMetabolism * intensity.getActivity());
 
-        double proteinsPerKgWeight = 1.7;
-        double fatsPerKgWeight = 1.2;
+        double proteins = 0;
+        double fats = 0;
+        double carbs = 0;
+
         switch (goal) {
+            case MAINTAIN:
+                proteins = fullMetabolism * 0.3 / 4;
+                fats = fullMetabolism * 0.25 / 9;
+                carbs = (fullMetabolism - (proteins * 4) - (fats * 9)) / 4;
+
+                if (carbs > 300) {
+                    carbs = 300;
+                    fats = (fullMetabolism - (proteins * 4) - (carbs * 4)) / 9;
+                }
+                break;
             case LOSE:
-                proteinsPerKgWeight = 2.2;
-                fatsPerKgWeight = 1.5;
                 fullMetabolism = (short) (fullMetabolism - 400);
+                proteins = fullMetabolism * 0.35 / 4;
+
+                fats = fullMetabolism * 0.3 / 9;
+
+                if (fats > 180) {
+                    fats = 180;
+                }
+
+                carbs = (fullMetabolism - (proteins * 4) - (fats * 9)) / 4;
                 break;
             case GAIN:
-                proteinsPerKgWeight = 1.9;
                 fullMetabolism = (short) (fullMetabolism + 400);
+                proteins = fullMetabolism * 0.3 / 4;
+
+                fats = fullMetabolism * 0.2 / 9;
+                carbs = (fullMetabolism - (proteins * 4) - (fats * 9)) / 4;
                 break;
         }
 
+        if (proteins > 200) {
+            proteins = 200;
+        }
+
         KcalsInfo kcalsInfo = new KcalsInfo();
-        kcalsInfo.setProtein((short) Math.round(weight * proteinsPerKgWeight));
-        kcalsInfo.setFat((short) Math.round(weight * fatsPerKgWeight));
-        kcalsInfo.setCarb((short) Math.round((fullMetabolism - (weight * proteinsPerKgWeight * 4) - (weight * fatsPerKgWeight * 9)) / 4));
+        kcalsInfo.setProtein((short) Math.round(proteins));
+        kcalsInfo.setFat((short) Math.round(fats));
+        kcalsInfo.setCarb((short) carbs);
 
         return kcalsInfo;
     }
