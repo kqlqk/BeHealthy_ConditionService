@@ -1,5 +1,6 @@
 package me.kqlqk.behealthy.kcal_counter_service.service.impl;
 
+import lombok.NonNull;
 import me.kqlqk.behealthy.kcal_counter_service.model.KcalsInfo;
 import me.kqlqk.behealthy.kcal_counter_service.model.enums.Gender;
 import me.kqlqk.behealthy.kcal_counter_service.model.enums.Goal;
@@ -24,10 +25,12 @@ public class KcalsInfoServiceImpl implements KcalsInfoService {
     }
 
     @Override
-    public KcalsInfo generateDailyKcals(Gender gender, byte age, short height, short weight, Intensity intensity, Goal goal) {
-        if (gender == null) {
-            throw new IllegalArgumentException("Gender cannot be null");
-        }
+    public KcalsInfo generateDailyKcals(@NonNull Gender gender,
+                                        byte age,
+                                        short height,
+                                        short weight,
+                                        @NonNull Intensity intensity,
+                                        @NonNull Goal goal) {
         if (age <= 10) {
             throw new IllegalArgumentException("Age cannot be <= 10");
         }
@@ -36,12 +39,6 @@ public class KcalsInfoServiceImpl implements KcalsInfoService {
         }
         if (weight <= 30) {
             throw new IllegalArgumentException("Weight cannot be <= 30");
-        }
-        if (intensity == null) {
-            throw new IllegalArgumentException("Intensity cannot be null");
-        }
-        if (goal == null) {
-            throw new IllegalArgumentException("Goal cannot be null");
         }
 
         double basicMetabolism = 0;

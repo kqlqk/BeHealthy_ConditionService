@@ -1,5 +1,6 @@
 package me.kqlqk.behealthy.kcal_counter_service.service.impl;
 
+import lombok.NonNull;
 import me.kqlqk.behealthy.kcal_counter_service.exception.exceptions.UserConditionAlreadyExistsException;
 import me.kqlqk.behealthy.kcal_counter_service.exception.exceptions.UserConditionNotFound;
 import me.kqlqk.behealthy.kcal_counter_service.model.KcalsInfo;
@@ -52,17 +53,14 @@ public class UserConditionServiceImpl implements UserConditionService {
 
     @Override
     public void generateAndSaveCondition(long userId,
-                                         Gender gender,
+                                         @NonNull Gender gender,
                                          byte age,
                                          short height,
                                          short weight,
-                                         Intensity intensity,
-                                         Goal goal) {
+                                         @NonNull Intensity intensity,
+                                         @NonNull Goal goal) {
         if (userId <= 0) {
             throw new IllegalArgumentException("UserId cannot be <= 0");
-        }
-        if (gender == null) {
-            throw new IllegalArgumentException("Gender cannot be null");
         }
         if (age <= 10) {
             throw new IllegalArgumentException("Age cannot be <= 10");
@@ -72,12 +70,6 @@ public class UserConditionServiceImpl implements UserConditionService {
         }
         if (weight <= 30) {
             throw new IllegalArgumentException("Weight cannot be <= 30");
-        }
-        if (intensity == null) {
-            throw new IllegalArgumentException("Intensity cannot be null");
-        }
-        if (goal == null) {
-            throw new IllegalArgumentException("Goal cannot be null");
         }
         if (existsByUserId(userId)) {
             throw new UserConditionAlreadyExistsException("User condition with userId = " + userId + " already exists");
@@ -93,17 +85,14 @@ public class UserConditionServiceImpl implements UserConditionService {
 
     @Override
     public void updateCondition(long userId,
-                                Gender gender,
+                                @NonNull Gender gender,
                                 byte age,
                                 short height,
                                 short weight,
-                                Intensity intensity,
-                                Goal goal) {
+                                @NonNull Intensity intensity,
+                                @NonNull Goal goal) {
         if (userId <= 0) {
             throw new IllegalArgumentException("userId cannot be <= 0");
-        }
-        if (gender == null) {
-            throw new IllegalArgumentException("Gender cannot be null");
         }
         if (age <= 10) {
             throw new IllegalArgumentException("Age cannot be <= 10");
@@ -113,12 +102,6 @@ public class UserConditionServiceImpl implements UserConditionService {
         }
         if (weight <= 30) {
             throw new IllegalArgumentException("Weight cannot be <= 30");
-        }
-        if (intensity == null) {
-            throw new IllegalArgumentException("Intensity cannot be null");
-        }
-        if (goal == null) {
-            throw new IllegalArgumentException("Goal cannot be null");
         }
         if (!existsByUserId(userId)) {
             throw new UserConditionNotFound("User condition with userId = " + userId + " not found");

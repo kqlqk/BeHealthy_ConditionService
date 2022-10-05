@@ -1,5 +1,6 @@
 package me.kqlqk.behealthy.kcal_counter_service.service.impl;
 
+import lombok.NonNull;
 import me.kqlqk.behealthy.kcal_counter_service.model.DailyFood;
 import me.kqlqk.behealthy.kcal_counter_service.repository.DailyFoodRepository;
 import me.kqlqk.behealthy.kcal_counter_service.service.DailyFoodService;
@@ -28,12 +29,9 @@ public class DailyFoodServiceImpl implements DailyFoodService {
     }
 
     @Override
-    public void add(long userId, String name, double weight, double kcals, double proteins, double fats, double carbs) {
+    public void add(long userId, @NonNull String name, double weight, double kcals, double proteins, double fats, double carbs) {
         if (userId <= 0) {
             throw new IllegalArgumentException("UserId cannot be <= 0");
-        }
-        if (name == null || name.equals("")) {
-            throw new IllegalArgumentException("Name cannot be null");
         }
         if (weight <= 0) {
             throw new IllegalArgumentException("Weight cannot be <= 0");

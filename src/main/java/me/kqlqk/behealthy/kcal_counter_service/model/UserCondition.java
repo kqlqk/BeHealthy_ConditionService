@@ -1,5 +1,7 @@
 package me.kqlqk.behealthy.kcal_counter_service.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import me.kqlqk.behealthy.kcal_counter_service.model.enums.Gender;
 import me.kqlqk.behealthy.kcal_counter_service.model.enums.Goal;
 import me.kqlqk.behealthy.kcal_counter_service.model.enums.Intensity;
@@ -8,6 +10,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user_condition")
+@Data
+@NoArgsConstructor
 public class UserCondition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,10 +47,6 @@ public class UserCondition {
     private Goal goal;
 
 
-    public UserCondition() {
-
-    }
-
     public UserCondition(long userId,
                          KcalsInfo kcalsInfo,
                          Gender gender,
@@ -62,92 +62,5 @@ public class UserCondition {
         this.weight = weight;
         this.intensity = intensity;
         this.goal = goal;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public KcalsInfo getKcalsInfo() {
-        return kcalsInfo;
-    }
-
-    public void setKcalsInfo(KcalsInfo kcalsInfo) {
-        this.kcalsInfo = kcalsInfo;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public byte getAge() {
-        return age;
-    }
-
-    public void setAge(byte age) {
-        this.age = age;
-    }
-
-    public short getHeight() {
-        return height;
-    }
-
-    public void setHeight(short height) {
-        this.height = height;
-    }
-
-    public short getWeight() {
-        return weight;
-    }
-
-    public void setWeight(short weight) {
-        this.weight = weight;
-    }
-
-    public Intensity getIntensity() {
-        return intensity;
-    }
-
-    public void setIntensity(Intensity intensity) {
-        this.intensity = intensity;
-    }
-
-    public Goal getGoal() {
-        return goal;
-    }
-
-    public void setGoal(Goal goal) {
-        this.goal = goal;
-    }
-
-    @Override
-    public String toString() {
-        return "UserCondition{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", kcalsInfo=" + kcalsInfo +
-                ", gender=" + gender +
-                ", age=" + age +
-                ", height=" + height +
-                ", weight=" + weight +
-                ", intensity=" + intensity +
-                ", goal=" + goal +
-                '}';
     }
 }

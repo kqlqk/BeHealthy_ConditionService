@@ -1,9 +1,12 @@
 package me.kqlqk.behealthy.kcal_counter_service.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "kcals_info")
+@Data
 public class KcalsInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,46 +21,4 @@ public class KcalsInfo {
 
     @Column(name = "carbs", nullable = false)
     private short carb;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public short getProtein() {
-        return protein;
-    }
-
-    public void setProtein(short protein) {
-        this.protein = protein;
-    }
-
-    public short getFat() {
-        return fat;
-    }
-
-    public void setFat(short fat) {
-        this.fat = fat;
-    }
-
-    public short getCarb() {
-        return carb;
-    }
-
-    public void setCarb(short carb) {
-        this.carb = carb;
-    }
-
-    @Override
-    public String toString() {
-        return "KcalsInfo{" +
-                "id=" + id +
-                ", protein=" + protein +
-                ", fat=" + fat +
-                ", carb=" + carb +
-                '}';
-    }
 }

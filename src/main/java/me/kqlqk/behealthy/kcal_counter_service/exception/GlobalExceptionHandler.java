@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({UserConditionAlreadyExistsException.class, UserConditionNotFound.class, IllegalArgumentException.class})
+    @ExceptionHandler({UserConditionAlreadyExistsException.class, UserConditionNotFound.class, IllegalArgumentException.class, NullPointerException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionDTO handle(Exception e) {
         ExceptionDTO exceptionDTO = new ExceptionDTO();
