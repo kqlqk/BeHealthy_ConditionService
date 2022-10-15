@@ -13,7 +13,7 @@
 
 ## About The Microservice
 
-Kcal counter service provides user's calorie counting and management
+Kcals counter service provides user's calorie counting and management
 
 <b>Devs:</b> <a href="https://github.com/kqlqk">Kqlqk</a> <br/>
 <b>Current version:</b> - <br/>
