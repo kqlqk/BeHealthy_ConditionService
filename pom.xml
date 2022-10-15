@@ -10,14 +10,14 @@
     </parent>
 
     <groupId>me.kqlqk.behealthy</groupId>
-    <artifactId>kcalCounterService</artifactId>
+    <artifactId>kcalsCounterService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>kcalCounterService</name>
+    <name>kcalsCounterService</name>
 
     <properties>
         <java.version>11</java.version>
-        <start-class>me.kqlqk.behealthy.kcal_counter_service.KcalCounterServiceApplication</start-class>
+        <start-class>me.kqlqk.behealthy.kcal_counter_service.KcalsCounterServiceApplication</start-class>
     </properties>
 
     <dependencies>
@@ -41,6 +41,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>3.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-config-client</artifactId>
             <version>3.1.3</version>
         </dependency>
 
