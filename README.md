@@ -5,9 +5,9 @@
     Microservice. Part of <a href="https://github.com/kqlqk/BeHealthy">BeHealthy</a>
     <br />
     ·
-    <a href="https://github.com/kqlqk/BeHealthy_KcalCounterService/issues">Report Bug</a>
+    <a href="https://github.com/kqlqk/BeHealthy_KcalsCounterService/issues">Report Bug</a>
     ·
-    <a href="https://github.com/kqlqk/BeHealthy_KcalCounterService/issues">Request Feature</a>
+    <a href="https://github.com/kqlqk/BeHealthy_KcalsCounterService/issues">Request Feature</a>
   </p>
 </div>
 
