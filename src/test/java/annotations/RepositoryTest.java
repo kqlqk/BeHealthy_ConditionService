@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 
 @SpringBootTest(classes = KcalsCounterServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@TestPropertySource("/test_application.properties")
+@TestPropertySource(properties = "spring.profiles.active=test")
 @Sql(value = {"/create_tables.sql", "/add_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public @interface RepositoryTest {
 }
