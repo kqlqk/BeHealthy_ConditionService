@@ -1,11 +1,11 @@
 package integration.me.kqlqk.behealthy.kcal_counter_service.service;
 
 import annotations.ServiceTest;
-import me.kqlqk.behealthy.kcal_counter_service.model.KcalsInfo;
-import me.kqlqk.behealthy.kcal_counter_service.model.enums.Gender;
-import me.kqlqk.behealthy.kcal_counter_service.model.enums.Goal;
-import me.kqlqk.behealthy.kcal_counter_service.model.enums.Intensity;
-import me.kqlqk.behealthy.kcal_counter_service.service.impl.KcalsInfoServiceImpl;
+import me.kqlqk.behealthy.kcals_counter_service.model.KcalsInfo;
+import me.kqlqk.behealthy.kcals_counter_service.model.enums.Gender;
+import me.kqlqk.behealthy.kcals_counter_service.model.enums.Goal;
+import me.kqlqk.behealthy.kcals_counter_service.model.enums.Intensity;
+import me.kqlqk.behealthy.kcals_counter_service.service.impl.KcalsInfoServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

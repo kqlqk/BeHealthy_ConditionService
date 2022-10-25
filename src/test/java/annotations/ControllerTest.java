@@ -1,6 +1,6 @@
 package annotations;
 
-import me.kqlqk.behealthy.kcal_counter_service.KcalsCounterServiceApplication;
+import me.kqlqk.behealthy.kcals_counter_service.KcalsCounterServiceApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
