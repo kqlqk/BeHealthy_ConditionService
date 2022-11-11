@@ -2,8 +2,8 @@ package integration.me.kqlqk.behealthy.kcal_counter_service.controller.rest.v1;
 
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.kqlqk.behealthy.kcals_counter_service.dto.DailyFoodDTO;
-import me.kqlqk.behealthy.kcals_counter_service.service.DailyFoodService;
+import me.kqlqk.behealthy.condition_service.dto.DailyFoodDTO;
+import me.kqlqk.behealthy.condition_service.service.DailyFoodService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

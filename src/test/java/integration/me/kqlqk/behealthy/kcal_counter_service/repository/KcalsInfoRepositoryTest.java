@@ -1,8 +1,8 @@
 package integration.me.kqlqk.behealthy.kcal_counter_service.repository;
 
 import annotations.RepositoryTest;
-import me.kqlqk.behealthy.kcals_counter_service.model.KcalsInfo;
-import me.kqlqk.behealthy.kcals_counter_service.repository.KcalsInfoRepository;
+import me.kqlqk.behealthy.condition_service.model.KcalsInfo;
+import me.kqlqk.behealthy.condition_service.repository.KcalsInfoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

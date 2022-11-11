@@ -1,7 +1,7 @@
 package integration.me.kqlqk.behealthy.kcal_counter_service.service;
 
 import annotations.ServiceTest;
-import me.kqlqk.behealthy.kcals_counter_service.service.impl.DailyFoodServiceImpl;
+import me.kqlqk.behealthy.condition_service.service.impl.DailyFoodServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

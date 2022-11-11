@@ -1,13 +1,13 @@
 package integration.me.kqlqk.behealthy.kcal_counter_service.service;
 
 import annotations.ServiceTest;
-import me.kqlqk.behealthy.kcals_counter_service.model.UserCondition;
-import me.kqlqk.behealthy.kcals_counter_service.model.enums.Gender;
-import me.kqlqk.behealthy.kcals_counter_service.model.enums.Goal;
-import me.kqlqk.behealthy.kcals_counter_service.model.enums.Intensity;
-import me.kqlqk.behealthy.kcals_counter_service.repository.KcalsInfoRepository;
-import me.kqlqk.behealthy.kcals_counter_service.repository.UserConditionRepository;
-import me.kqlqk.behealthy.kcals_counter_service.service.impl.UserConditionServiceImpl;
+import me.kqlqk.behealthy.condition_service.model.UserCondition;
+import me.kqlqk.behealthy.condition_service.model.enums.Gender;
+import me.kqlqk.behealthy.condition_service.model.enums.Goal;
+import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
+import me.kqlqk.behealthy.condition_service.repository.KcalsInfoRepository;
+import me.kqlqk.behealthy.condition_service.repository.UserConditionRepository;
+import me.kqlqk.behealthy.condition_service.service.impl.UserConditionServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

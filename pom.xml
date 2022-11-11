@@ -10,14 +10,14 @@
     </parent>
 
     <groupId>me.kqlqk.behealthy</groupId>
-    <artifactId>kcalsCounterService</artifactId>
+    <artifactId>conditionService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>kcalsCounterService</name>
+    <name>conditionService</name>
 
     <properties>
         <java.version>11</java.version>
-        <start-class>me.kqlqk.behealthy.kcals_counter_service.KcalsCounterServiceApplication</start-class>
+        <start-class>me.kqlqk.behealthy.condition_service.ConditionServiceApplication</start-class>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -88,7 +88,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>kcals-counter-service</finalName>
+        <finalName>condition-service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
