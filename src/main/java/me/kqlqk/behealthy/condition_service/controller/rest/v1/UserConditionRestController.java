@@ -19,9 +19,9 @@ public class UserConditionRestController {
     }
 
     @PostMapping("/condition")
-    public ResponseEntity<?> createUserCondition(@RequestBody UserConditionDTO userConditionDTO) {
+    public ResponseEntity<?> createUserCondition(@RequestParam long userId, @RequestBody UserConditionDTO userConditionDTO) {
         userConditionService.generateAndSaveCondition(
-                userConditionDTO.getUserId(),
+                userId,
                 userConditionDTO.getGender(),
                 userConditionDTO.getAge(),
                 userConditionDTO.getHeight(),
@@ -41,12 +41,8 @@ public class UserConditionRestController {
         return UserConditionDTO.convertUserConditionToUserConditionDTO(userConditionService.getByUserId(userId));
     }
 
-    @PutMapping("/condition")
+    @PatchMapping("/condition")
     public ResponseEntity<?> updateCondition(@RequestParam long userId, @RequestBody UserConditionDTO userConditionDTO) {
-        if (!userConditionService.existsByUserId(userId)) {
-            throw new UserConditionNotFound("User condition with userId = " + userId + " not found");
-        }
-
         userConditionService.updateCondition(
                 userId,
                 userConditionDTO.getGender(),

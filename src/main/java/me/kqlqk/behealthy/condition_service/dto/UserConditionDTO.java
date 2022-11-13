@@ -13,7 +13,6 @@ import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 @AllArgsConstructor
 public class UserConditionDTO {
     private long id;
-    private long userId;
     private Gender gender;
     private byte age;
     private short height;
@@ -25,7 +24,6 @@ public class UserConditionDTO {
     public static UserConditionDTO convertUserConditionToUserConditionDTO(UserCondition userCondition) {
         return new UserConditionDTO(
                 userCondition.getId(),
-                userCondition.getUserId(),
                 userCondition.getGender(),
                 userCondition.getAge(),
                 userCondition.getHeight(),
