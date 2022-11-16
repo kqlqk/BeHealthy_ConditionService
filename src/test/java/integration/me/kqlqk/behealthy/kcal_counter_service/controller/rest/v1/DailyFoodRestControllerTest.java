@@ -25,7 +25,7 @@ public class DailyFoodRestControllerTest {
 
     @Test
     public void getDailyFoodForUser_shouldReturnListWithAllDailyFoodForUser() throws Exception {
-        mockMvc.perform(get("/api/v1/daily_food")
+        mockMvc.perform(get("/api/v1/food")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("userId", "1"))
                 .andDo(print())
@@ -33,14 +33,13 @@ public class DailyFoodRestControllerTest {
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$[0].id").exists())
-                .andExpect(jsonPath("$[0].userId").exists())
                 .andExpect(jsonPath("$[0].name").exists())
                 .andExpect(jsonPath("$[0].weight").exists())
                 .andExpect(jsonPath("$[0].proteins").exists())
                 .andExpect(jsonPath("$[0].fats").exists())
                 .andExpect(jsonPath("$[0].carbs").exists());
 
-        mockMvc.perform(get("/api/v1/daily_food")
+        mockMvc.perform(get("/api/v1/food")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("userId", "99"))
                 .andDo(print())
@@ -51,7 +50,6 @@ public class DailyFoodRestControllerTest {
     @Test
     public void addDailyFoodForUser_shouldCreateAndAddToDbNewDailyFoodForUser() throws Exception {
         DailyFoodDTO dailyFoodDTO = new DailyFoodDTO();
-        dailyFoodDTO.setUserId(1);
         dailyFoodDTO.setName("Potatoes");
         dailyFoodDTO.setWeight(500);
         dailyFoodDTO.setKcals(200);
@@ -64,7 +62,8 @@ public class DailyFoodRestControllerTest {
 
         assertThat(dailyFoodService.getByUserId(1)).hasSize(2);
 
-        mockMvc.perform(post("/api/v1/daily_food")
+        mockMvc.perform(post("/api/v1/food")
+                        .param("userId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonDailyFoodDTO))
                 .andDo(print())
@@ -77,7 +76,7 @@ public class DailyFoodRestControllerTest {
     public void deleteDailyFoodFromUser_shouldDeleteDailyFoodFromDb() throws Exception {
         assertThat(dailyFoodService.getByUserId(1)).hasSize(2);
 
-        mockMvc.perform(delete("/api/v1/daily_food/")
+        mockMvc.perform(delete("/api/v1/food/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("productId", "1"))
                 .andDo(print())

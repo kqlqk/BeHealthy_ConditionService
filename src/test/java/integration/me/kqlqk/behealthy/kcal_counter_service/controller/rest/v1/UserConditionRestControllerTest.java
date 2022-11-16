@@ -35,7 +35,6 @@ public class UserConditionRestControllerTest {
     @Test
     public void createUserCondition_ShouldCreateUserConditionAndKcalsInfo() throws Exception {
         UserConditionDTO userConditionDTO = new UserConditionDTO();
-        userConditionDTO.setUserId(4);
         userConditionDTO.setGender(Gender.FEMALE);
         userConditionDTO.setAge((byte) 20);
         userConditionDTO.setHeight((short) 160);
@@ -50,6 +49,7 @@ public class UserConditionRestControllerTest {
         byte kcalsInfoCount = (byte) kcalsInfoRepository.findAll().size();
 
         mockMvc.perform(post("/api/v1/condition")
+                        .param("userId", "3")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonConditionDTO))
                 .andDo(print())
@@ -62,7 +62,6 @@ public class UserConditionRestControllerTest {
     @Test
     public void createUserCondition_ShouldReturnJsonWithException() throws Exception {
         UserConditionDTO userConditionDTO = new UserConditionDTO();
-        userConditionDTO.setUserId(1);
         userConditionDTO.setAge((byte) 20);
         userConditionDTO.setGender(Gender.MALE);
         userConditionDTO.setHeight((short) 190);
@@ -74,6 +73,7 @@ public class UserConditionRestControllerTest {
         String jsonConditionDTO = objectMapper.writeValueAsString(userConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
+                        .param("userId", "3")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
@@ -82,6 +82,7 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Required request body is missing")));
 
         mockMvc.perform(post("/api/v1/condition")
+                        .param("userId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonConditionDTO))
                 .andDo(print())
@@ -101,7 +102,6 @@ public class UserConditionRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.userId").exists())
                 .andExpect(jsonPath("$.gender").exists())
                 .andExpect(jsonPath("$.age").exists())
                 .andExpect(jsonPath("$.height").exists())
@@ -127,7 +127,6 @@ public class UserConditionRestControllerTest {
         UserCondition oldUserCondition = userConditionRepository.findByUserId(1);
 
         UserConditionDTO userConditionDTO = new UserConditionDTO();
-        userConditionDTO.setUserId(oldUserCondition.getUserId());
         userConditionDTO.setGender(Gender.FEMALE);
         userConditionDTO.setAge((byte) 30);
         userConditionDTO.setHeight((short) 160);
@@ -160,10 +159,7 @@ public class UserConditionRestControllerTest {
 
     @Test
     public void updateCondition_shouldReturnJsonWithException() throws Exception {
-        UserCondition oldUserCondition = userConditionRepository.findByUserId(1);
-
         UserConditionDTO userConditionDTO = new UserConditionDTO();
-        userConditionDTO.setUserId(oldUserCondition.getUserId());
         userConditionDTO.setGender(Gender.FEMALE);
         userConditionDTO.setAge((byte) 30);
         userConditionDTO.setHeight((short) 160);
@@ -174,7 +170,8 @@ public class UserConditionRestControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonConditionDTO = objectMapper.writeValueAsString(userConditionDTO);
 
-        mockMvc.perform(post("/api/v1/condition")
+        mockMvc.perform(put("/api/v1/condition")
+                        .param("userId", "1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest())

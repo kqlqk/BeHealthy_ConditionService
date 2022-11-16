@@ -41,7 +41,7 @@ public class UserConditionRestController {
         return UserConditionDTO.convertUserConditionToUserConditionDTO(userConditionService.getByUserId(userId));
     }
 
-    @PatchMapping("/condition")
+    @PutMapping("/condition")
     public ResponseEntity<?> updateCondition(@RequestParam long userId, @RequestBody UserConditionDTO userConditionDTO) {
         userConditionService.updateCondition(
                 userId,
