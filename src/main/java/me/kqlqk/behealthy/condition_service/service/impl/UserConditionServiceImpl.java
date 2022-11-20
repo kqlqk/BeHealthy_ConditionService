@@ -2,7 +2,7 @@ package me.kqlqk.behealthy.condition_service.service.impl;
 
 import lombok.NonNull;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionAlreadyExistsException;
-import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFound;
+import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.KcalsInfo;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
@@ -38,7 +38,7 @@ public class UserConditionServiceImpl implements UserConditionService {
     @Override
     public KcalsInfo getKcalsInfoByUserId(long id) {
         if (!existsByUserId(id)) {
-            throw new UserConditionNotFound("User condition with userId = " + id + " not found");
+            throw new UserConditionNotFoundException("User condition with userId = " + id + " not found");
         }
 
         UserCondition userCondition = getByUserId(id);
@@ -104,7 +104,7 @@ public class UserConditionServiceImpl implements UserConditionService {
             throw new IllegalArgumentException("Weight cannot be <= 30");
         }
         if (!existsByUserId(userId)) {
-            throw new UserConditionNotFound("User condition with userId = " + userId + " not found");
+            throw new UserConditionNotFoundException("User condition with userId = " + userId + " not found");
         }
 
         UserCondition userCondition = getByUserId(userId);

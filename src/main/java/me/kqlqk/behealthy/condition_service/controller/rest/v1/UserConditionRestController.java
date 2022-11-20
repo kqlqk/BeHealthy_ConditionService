@@ -1,7 +1,7 @@
 package me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
-import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFound;
+import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.KcalsInfo;
 import me.kqlqk.behealthy.condition_service.service.UserConditionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class UserConditionRestController {
     @GetMapping("/condition")
     public UserConditionDTO getUserConditionByUserId(@RequestParam long userId) {
         if (!userConditionService.existsByUserId(userId)) {
-            throw new UserConditionNotFound("User condition with userId = " + userId + " not found");
+            throw new UserConditionNotFoundException("User condition with userId = " + userId + " not found");
         }
 
         return UserConditionDTO.convertUserConditionToUserConditionDTO(userConditionService.getByUserId(userId));
