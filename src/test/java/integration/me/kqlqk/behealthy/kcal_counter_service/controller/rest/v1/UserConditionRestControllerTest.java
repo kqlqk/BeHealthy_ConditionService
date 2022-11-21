@@ -89,7 +89,7 @@ public class UserConditionRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("User condition with userId = 1 already exists")));
+                .andExpect(jsonPath("$.info", is("UserConditionAlreadyExists | User condition with userId = 1 already exists")));
 
     }
 
@@ -119,7 +119,7 @@ public class UserConditionRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("User condition with userId = 99 not found")));
+                .andExpect(jsonPath("$.info", is("UserConditionNotFound | User condition with userId = 99 not found")));
     }
 
     @Test
@@ -187,7 +187,7 @@ public class UserConditionRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("User condition with userId = 99 not found")));
+                .andExpect(jsonPath("$.info", is("UserConditionNotFound | User condition with userId = 99 not found")));
     }
 
     @Test
@@ -213,6 +213,6 @@ public class UserConditionRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("User condition with userId = 99 not found")));
+                .andExpect(jsonPath("$.info", is("UserConditionNotFound | User condition with userId = 99 not found")));
     }
 }
