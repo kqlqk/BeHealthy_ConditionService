@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "daily_food")
+@Table(name = "daily_food", schema = "public", catalog = "conditionservicedb")
 @Data
 public class DailyFood {
     @Id

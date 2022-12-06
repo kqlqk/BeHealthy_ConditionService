@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "kcals_info")
+@Table(name = "kcals_info", schema = "public", catalog = "conditionservicedb")
 @Data
 public class KcalsInfo {
     @Id

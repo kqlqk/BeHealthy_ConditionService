@@ -9,7 +9,7 @@ import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_condition")
+@Table(name = "user_condition", schema = "public", catalog = "conditionservicedb")
 @Data
 @NoArgsConstructor
 public class UserCondition {
