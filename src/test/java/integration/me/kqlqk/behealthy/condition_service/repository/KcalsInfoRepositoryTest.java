@@ -1,4 +1,4 @@
-package integration.me.kqlqk.behealthy.kcal_counter_service.repository;
+package integration.me.kqlqk.behealthy.condition_service.repository;
 
 import annotations.RepositoryTest;
 import me.kqlqk.behealthy.condition_service.model.KcalsInfo;

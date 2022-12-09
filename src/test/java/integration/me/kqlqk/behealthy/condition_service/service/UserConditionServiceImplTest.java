@@ -1,4 +1,4 @@
-package integration.me.kqlqk.behealthy.kcal_counter_service.service;
+package integration.me.kqlqk.behealthy.condition_service.service;
 
 import annotations.ServiceTest;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;

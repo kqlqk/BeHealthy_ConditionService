@@ -1,4 +1,4 @@
-package integration.me.kqlqk.behealthy.kcal_counter_service.controller.rest.v1;
+package integration.me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
