@@ -28,7 +28,7 @@ public class UserConditionServiceImplTest {
     public void generateAndSaveCondition_shouldGenerateAndSaveToDbUserCondition() {
         byte userConditionCount = (byte) userConditionRepository.findAll().size();
         byte kcalsInfoCount = (byte) kcalsInfoRepository.findAll().size();
-        userConditionService.generateAndSaveCondition(4L, Gender.MALE, (byte) 20, (short) 180, (short) 90, Intensity.AVG, Goal.MAINTAIN);
+        userConditionService.generateAndSaveCondition(4L, Gender.MALE, (byte) 20, (short) 180, (short) 90, Intensity.AVG, Goal.MAINTAIN, 14.3);
 
         assertThat(userConditionRepository.findAll().size()).isEqualTo(userConditionCount + 1);
         assertThat(kcalsInfoRepository.findAll().size()).isEqualTo(kcalsInfoCount + 1);
@@ -39,7 +39,7 @@ public class UserConditionServiceImplTest {
         UserCondition oldUserCondition = userConditionService.getByUserId(1);
 
         userConditionService.updateCondition(
-                oldUserCondition.getUserId(), Gender.FEMALE, (byte) 30, (short) 160, (short) 50, Intensity.MIN, Goal.GAIN);
+                oldUserCondition.getUserId(), Gender.FEMALE, (byte) 30, (short) 160, (short) 50, Intensity.MIN, Goal.GAIN, 13.4);
 
         UserCondition newUserCondition = userConditionService.getByUserId(1);
 

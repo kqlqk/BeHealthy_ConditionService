@@ -27,7 +27,8 @@ public class UserConditionRestController {
                 userConditionDTO.getHeight(),
                 userConditionDTO.getWeight(),
                 userConditionDTO.getIntensity(),
-                userConditionDTO.getGoal());
+                userConditionDTO.getGoal(),
+                userConditionDTO.getFatPercent());
 
         return ResponseEntity.ok().build();
     }
@@ -50,7 +51,8 @@ public class UserConditionRestController {
                 userConditionDTO.getHeight(),
                 userConditionDTO.getWeight(),
                 userConditionDTO.getIntensity(),
-                userConditionDTO.getGoal());
+                userConditionDTO.getGoal(),
+                userConditionDTO.getFatPercent());
 
         return ResponseEntity.ok().build();
     }

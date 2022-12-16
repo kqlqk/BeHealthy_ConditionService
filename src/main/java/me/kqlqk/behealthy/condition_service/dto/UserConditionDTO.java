@@ -19,6 +19,7 @@ public class UserConditionDTO {
     private short weight;
     private Intensity intensity;
     private Goal goal;
+    private double fatPercent;
 
 
     public static UserConditionDTO convertUserConditionToUserConditionDTO(UserCondition userCondition) {
@@ -29,6 +30,7 @@ public class UserConditionDTO {
                 userCondition.getHeight(),
                 userCondition.getWeight(),
                 userCondition.getIntensity(),
-                userCondition.getGoal());
+                userCondition.getGoal(),
+                userCondition.getFatPercent());
     }
 }

@@ -41,6 +41,7 @@ public class UserConditionRestControllerTest {
         userConditionDTO.setWeight((short) 80);
         userConditionDTO.setGoal(Goal.LOSE);
         userConditionDTO.setIntensity(Intensity.MAX);
+        userConditionDTO.setFatPercent(13);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonConditionDTO = objectMapper.writeValueAsString(userConditionDTO);
@@ -68,6 +69,7 @@ public class UserConditionRestControllerTest {
         userConditionDTO.setWeight((short) 80);
         userConditionDTO.setGoal(Goal.GAIN);
         userConditionDTO.setIntensity(Intensity.AVG);
+        userConditionDTO.setFatPercent(13);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonConditionDTO = objectMapper.writeValueAsString(userConditionDTO);
@@ -133,6 +135,7 @@ public class UserConditionRestControllerTest {
         userConditionDTO.setWeight((short) 50);
         userConditionDTO.setGoal(Goal.GAIN);
         userConditionDTO.setIntensity(Intensity.MIN);
+        userConditionDTO.setFatPercent(13);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonConditionDTO = objectMapper.writeValueAsString(userConditionDTO);

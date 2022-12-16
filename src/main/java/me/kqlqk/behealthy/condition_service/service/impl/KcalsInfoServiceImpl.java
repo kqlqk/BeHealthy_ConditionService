@@ -25,7 +25,7 @@ public class KcalsInfoServiceImpl implements KcalsInfoService {
     }
 
     @Override
-    public KcalsInfo generateDailyKcals(@NonNull Gender gender,
+    public KcalsInfo generateDailyKcals(@NonNull Gender gender, //FIXME
                                         byte age,
                                         short height,
                                         short weight,

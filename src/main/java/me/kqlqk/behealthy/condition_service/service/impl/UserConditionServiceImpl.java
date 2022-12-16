@@ -58,7 +58,8 @@ public class UserConditionServiceImpl implements UserConditionService {
                                          short height,
                                          short weight,
                                          @NonNull Intensity intensity,
-                                         @NonNull Goal goal) {
+                                         @NonNull Goal goal,
+                                         double fatPercent) {
         if (userId <= 0) {
             throw new IllegalArgumentException("UserId cannot be <= 0");
         }
@@ -74,11 +75,14 @@ public class UserConditionServiceImpl implements UserConditionService {
         if (existsByUserId(userId)) {
             throw new UserConditionAlreadyExistsException("User condition with userId = " + userId + " already exists");
         }
+        if (fatPercent < 1 || fatPercent > 50) {
+            throw new IllegalArgumentException("Fat percent cannot be < 1 or > 50");
+        }
 
         KcalsInfo kcalsInfo = kcalsInfoService.generateDailyKcals(
                 gender, age, height, weight, intensity, goal);
 
-        UserCondition userCondition = new UserCondition(userId, kcalsInfo, gender, age, height, weight, intensity, goal);
+        UserCondition userCondition = new UserCondition(userId, kcalsInfo, gender, age, height, weight, intensity, goal, fatPercent);
 
         userConditionRepository.save(userCondition);
     }
@@ -90,7 +94,8 @@ public class UserConditionServiceImpl implements UserConditionService {
                                 short height,
                                 short weight,
                                 @NonNull Intensity intensity,
-                                @NonNull Goal goal) {
+                                @NonNull Goal goal,
+                                double fatPercent) {
         if (userId <= 0) {
             throw new IllegalArgumentException("userId cannot be <= 0");
         }
@@ -105,6 +110,9 @@ public class UserConditionServiceImpl implements UserConditionService {
         }
         if (!existsByUserId(userId)) {
             throw new UserConditionNotFoundException("User condition with userId = " + userId + " not found");
+        }
+        if (fatPercent < 1 || fatPercent > 50) {
+            throw new IllegalArgumentException("Fat percent cannot be < 1 or > 50");
         }
 
         UserCondition userCondition = getByUserId(userId);
@@ -121,6 +129,7 @@ public class UserConditionServiceImpl implements UserConditionService {
         userCondition.setWeight(weight);
         userCondition.setIntensity(intensity);
         userCondition.setGoal(goal);
+        userCondition.setFatPercent(fatPercent);
 
         userConditionRepository.save(userCondition);
     }

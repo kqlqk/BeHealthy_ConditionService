@@ -23,7 +23,8 @@ public interface UserConditionService {
                                   short height,
                                   short weight,
                                   Intensity intensity,
-                                  Goal goal);
+                                  Goal goal,
+                                  double fatPercent);
 
     void updateCondition(long userId,
                          Gender gender,
@@ -31,5 +32,6 @@ public interface UserConditionService {
                          short height,
                          short weight,
                          Intensity intensity,
-                         Goal goal);
+                         Goal goal,
+                         double fatPercent);
 }

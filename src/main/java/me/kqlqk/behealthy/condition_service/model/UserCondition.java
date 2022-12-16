@@ -46,6 +46,9 @@ public class UserCondition {
     @Column(name = "goal", nullable = false, length = 10)
     private Goal goal;
 
+    @Column(name = "fat_percent", nullable = false, precision = 3, scale = 1)
+    private double fatPercent;
+
 
     public UserCondition(long userId,
                          KcalsInfo kcalsInfo,
@@ -53,7 +56,9 @@ public class UserCondition {
                          byte age,
                          short height,
                          short weight,
-                         Intensity intensity, Goal goal) {
+                         Intensity intensity,
+                         Goal goal,
+                         double fatPercent) {
         this.userId = userId;
         this.kcalsInfo = kcalsInfo;
         this.gender = gender;
