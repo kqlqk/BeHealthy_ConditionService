@@ -14,9 +14,9 @@ import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 public class UserConditionDTO {
     private long id;
     private Gender gender;
-    private byte age;
-    private short height;
-    private short weight;
+    private int age;
+    private int height;
+    private int weight;
     private Intensity intensity;
     private Goal goal;
     private double fatPercent;

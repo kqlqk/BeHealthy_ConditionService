@@ -54,9 +54,9 @@ public class UserConditionServiceImpl implements UserConditionService {
     @Override
     public void generateAndSaveCondition(long userId,
                                          @NonNull Gender gender,
-                                         byte age,
-                                         short height,
-                                         short weight,
+                                         int age,
+                                         int height,
+                                         int weight,
                                          @NonNull Intensity intensity,
                                          @NonNull Goal goal,
                                          double fatPercent) {
@@ -90,9 +90,9 @@ public class UserConditionServiceImpl implements UserConditionService {
     @Override
     public void updateCondition(long userId,
                                 @NonNull Gender gender,
-                                byte age,
-                                short height,
-                                short weight,
+                                int age,
+                                int height,
+                                int weight,
                                 @NonNull Intensity intensity,
                                 @NonNull Goal goal,
                                 double fatPercent) {

@@ -30,13 +30,13 @@ public class UserCondition {
     private Gender gender;
 
     @Column(name = "age", nullable = false)
-    private byte age;
+    private int age;
 
     @Column(name = "height", nullable = false)
-    private short height;
+    private int height;
 
     @Column(name = "weight", nullable = false)
-    private short weight;
+    private int weight;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "intensity", nullable = false, length = 10)
@@ -53,9 +53,9 @@ public class UserCondition {
     public UserCondition(long userId,
                          KcalsInfo kcalsInfo,
                          Gender gender,
-                         byte age,
-                         short height,
-                         short weight,
+                         int age,
+                         int height,
+                         int weight,
                          Intensity intensity,
                          Goal goal,
                          double fatPercent) {
@@ -67,5 +67,6 @@ public class UserCondition {
         this.weight = weight;
         this.intensity = intensity;
         this.goal = goal;
+        this.fatPercent = fatPercent;
     }
 }

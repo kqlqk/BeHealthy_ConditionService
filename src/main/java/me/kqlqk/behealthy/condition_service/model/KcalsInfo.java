@@ -14,11 +14,11 @@ public class KcalsInfo {
     private long id;
 
     @Column(name = "proteins", nullable = false)
-    private short protein;
+    private int protein;
 
     @Column(name = "fats", nullable = false)
-    private short fat;
+    private int fat;
 
     @Column(name = "carbs", nullable = false)
-    private short carb;
+    private int carb;
 }

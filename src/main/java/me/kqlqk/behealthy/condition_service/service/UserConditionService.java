@@ -19,18 +19,18 @@ public interface UserConditionService {
 
     void generateAndSaveCondition(long userId,
                                   Gender gender,
-                                  byte age,
-                                  short height,
-                                  short weight,
+                                  int age,
+                                  int height,
+                                  int weight,
                                   Intensity intensity,
                                   Goal goal,
                                   double fatPercent);
 
     void updateCondition(long userId,
                          Gender gender,
-                         byte age,
-                         short height,
-                         short weight,
+                         int age,
+                         int height,
+                         int weight,
                          Intensity intensity,
                          Goal goal,
                          double fatPercent);

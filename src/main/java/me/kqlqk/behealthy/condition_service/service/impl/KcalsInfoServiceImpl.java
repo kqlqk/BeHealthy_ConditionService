@@ -26,9 +26,9 @@ public class KcalsInfoServiceImpl implements KcalsInfoService {
 
     @Override
     public KcalsInfo generateDailyKcals(@NonNull Gender gender, //FIXME
-                                        byte age,
-                                        short height,
-                                        short weight,
+                                        int age,
+                                        int height,
+                                        int weight,
                                         @NonNull Intensity intensity,
                                         @NonNull Goal goal) {
         if (age <= 10) {
@@ -52,7 +52,7 @@ public class KcalsInfoServiceImpl implements KcalsInfoService {
                 break;
         }
 
-        short fullMetabolism = (short) Math.round(basicMetabolism * intensity.getActivity());
+        int fullMetabolism = (int) Math.round(basicMetabolism * intensity.getActivity());
 
         double proteins = 0;
         double fats = 0;
@@ -95,9 +95,9 @@ public class KcalsInfoServiceImpl implements KcalsInfoService {
         }
 
         KcalsInfo kcalsInfo = new KcalsInfo();
-        kcalsInfo.setProtein((short) Math.round(proteins));
-        kcalsInfo.setFat((short) Math.round(fats));
-        kcalsInfo.setCarb((short) carbs);
+        kcalsInfo.setProtein((int) Math.round(proteins));
+        kcalsInfo.setFat((int) Math.round(fats));
+        kcalsInfo.setCarb((int) carbs);
 
         return kcalsInfo;
     }
