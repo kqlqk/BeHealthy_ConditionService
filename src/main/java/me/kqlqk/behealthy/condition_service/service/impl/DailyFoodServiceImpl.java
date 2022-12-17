@@ -74,6 +74,7 @@ public class DailyFoodServiceImpl implements DailyFoodService {
     }
 
     @Scheduled(cron = "0 0 0 * * *")
+    @Override
     public void deleteFoodEveryMidnight() {
         dailyFoodRepository.deleteAll();
     }
