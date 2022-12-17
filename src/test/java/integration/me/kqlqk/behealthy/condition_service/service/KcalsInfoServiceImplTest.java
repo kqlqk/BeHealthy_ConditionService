@@ -17,9 +17,9 @@ public class KcalsInfoServiceImplTest {
     private KcalsInfoServiceImpl kcalsInfoService;
 
     @Test
-    public void generateDailyKcals() {
+    public void generateDailyKcals_shouldGenerateDailyKcals() {
         KcalsInfo kcalsInfo =
-                kcalsInfoService.generateDailyKcals(Gender.FEMALE, (byte) 20, (short) 160, (short) 60, Intensity.AVG, Goal.LOSE);
+                kcalsInfoService.generateDailyKcals(Gender.MALE, 20, 183, 85, Intensity.AVG, Goal.LOSE, 20);
 
         assertThat(kcalsInfo.getProtein()).isNotNull();
         assertThat(kcalsInfo.getFat()).isNotNull();

@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class KcalsInfoServiceImpl implements KcalsInfoService {
+    private static final int COEFFICIENT_KCALS_FOR_LOSE = 400;
+    private static final int COEFFICIENT_KCALS_FOR_GAIN = 500;
+
     private final KcalsInfoRepository kcalsInfoRepository;
 
     @Autowired
@@ -25,12 +28,13 @@ public class KcalsInfoServiceImpl implements KcalsInfoService {
     }
 
     @Override
-    public KcalsInfo generateDailyKcals(@NonNull Gender gender, //FIXME
+    public KcalsInfo generateDailyKcals(@NonNull Gender gender,
                                         int age,
                                         int height,
                                         int weight,
                                         @NonNull Intensity intensity,
-                                        @NonNull Goal goal) {
+                                        @NonNull Goal goal,
+                                        double fatPercent) {
         if (age <= 10) {
             throw new IllegalArgumentException("Age cannot be <= 10");
         }
@@ -40,65 +44,62 @@ public class KcalsInfoServiceImpl implements KcalsInfoService {
         if (weight <= 30) {
             throw new IllegalArgumentException("Weight cannot be <= 30");
         }
-
-        double basicMetabolism = 0;
-        switch (gender) {
-            case MALE:
-                basicMetabolism = 66.5 + (13.75 * weight) + (5.003 * height) - (6.775 * age);
-                break;
-
-            case FEMALE:
-                basicMetabolism = 655.1 + (9.563 * weight) + (1.85 * height) - (4.676 * age);
-                break;
+        if (fatPercent < 1 || fatPercent > 50) {
+            throw new IllegalArgumentException("Fat percent cannot be < 1 or > 50");
         }
 
-        int fullMetabolism = (int) Math.round(basicMetabolism * intensity.getActivity());
-
-        double proteins = 0;
-        double fats = 0;
-        double carbs = 0;
-
-        switch (goal) {
-            case MAINTAIN:
-                proteins = fullMetabolism * 0.3 / 4;
-                fats = fullMetabolism * 0.25 / 9;
-                carbs = (fullMetabolism - (proteins * 4) - (fats * 9)) / 4;
-
-                if (carbs > 300) {
-                    carbs = 300;
-                    fats = (fullMetabolism - (proteins * 4) - (carbs * 4)) / 9;
-                }
-                break;
-            case LOSE:
-                fullMetabolism = (short) (fullMetabolism - 400);
-                proteins = fullMetabolism * 0.35 / 4;
-
-                fats = fullMetabolism * 0.3 / 9;
-
-                if (fats > 180) {
-                    fats = 180;
-                }
-
-                carbs = (fullMetabolism - (proteins * 4) - (fats * 9)) / 4;
-                break;
-            case GAIN:
-                fullMetabolism = (short) (fullMetabolism + 400);
-                proteins = fullMetabolism * 0.3 / 4;
-
-                fats = fullMetabolism * 0.2 / 9;
-                carbs = (fullMetabolism - (proteins * 4) - (fats * 9)) / 4;
-                break;
-        }
-
-        if (proteins > 200) {
-            proteins = 200;
-        }
+        int dailyKcals = (int) (formulaKatchMcArdle(weight, fatPercent) * intensity.getCoefficient());
 
         KcalsInfo kcalsInfo = new KcalsInfo();
-        kcalsInfo.setProtein((int) Math.round(proteins));
-        kcalsInfo.setFat((int) Math.round(fats));
-        kcalsInfo.setCarb((int) carbs);
+        int proteins = 0;
+        int fats = 0;
+        int carbs = 0;
+        switch (goal) {
+            case LOSE:
+                double onLoseKCals = dailyKcals - COEFFICIENT_KCALS_FOR_LOSE;
+                proteins = (int) (2.2 * leanBodyMass(weight, fatPercent));
+                double onLoseKCalsWithoutProtein = onLoseKCals - proteins * 4;
+                fats = (int) (onLoseKCalsWithoutProtein * 60 / 100) / 9;
+                carbs = (int) (onLoseKCalsWithoutProtein * 40 / 100) / 4;
+
+                break;
+
+            case MAINTAIN:
+                if (intensity.getCoefficient() > 1.55) {
+                    proteins = (int) (1.9 * leanBodyMass(weight, fatPercent));
+                    double onMaintainKCalsWithoutProtein = dailyKcals - proteins * 4;
+                    fats = (int) (onMaintainKCalsWithoutProtein * 40 / 100) / 9;
+                    carbs = (int) (onMaintainKCalsWithoutProtein * 60 / 100) / 4;
+                } else {
+                    proteins = (dailyKcals * 25 / 100) / 4;
+                    fats = (dailyKcals * 35 / 100) / 9;
+                    carbs = (dailyKcals * 40 / 100) / 4;
+                }
+
+                break;
+
+            case GAIN:
+                double onGainKCals = dailyKcals + COEFFICIENT_KCALS_FOR_GAIN;
+                proteins = (int) (2 * leanBodyMass(weight, fatPercent));
+                double onGainKCalsWithoutProtein = onGainKCals - proteins * 4;
+                fats = (int) (onGainKCalsWithoutProtein * 40 / 100) / 9;
+                carbs = (int) (onGainKCalsWithoutProtein * 60 / 100) / 4;
+
+                break;
+        }
+
+        kcalsInfo.setProtein(proteins);
+        kcalsInfo.setFat(fats);
+        kcalsInfo.setCarb(carbs);
 
         return kcalsInfo;
+    }
+
+    private double formulaKatchMcArdle(int weight, double fatPercent) {
+        return (370 + (21.6 * ((weight) * (100 - fatPercent) / 100)));
+    }
+
+    private double leanBodyMass(int weight, double fatPercent) {
+        return (weight - (weight * fatPercent / 100));
     }
 }

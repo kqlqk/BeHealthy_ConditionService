@@ -10,5 +10,11 @@ import org.springframework.stereotype.Service;
 public interface KcalsInfoService {
     KcalsInfo getById(long id);
 
-    KcalsInfo generateDailyKcals(Gender gender, int age, int height, int weight, Intensity intensity, Goal goal);
+    KcalsInfo generateDailyKcals(Gender gender,
+                                 int age,
+                                 int height,
+                                 int weight,
+                                 Intensity intensity,
+                                 Goal goal,
+                                 double fatPercent);
 }

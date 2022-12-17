@@ -72,15 +72,15 @@ public class UserConditionServiceImpl implements UserConditionService {
         if (weight <= 30) {
             throw new IllegalArgumentException("Weight cannot be <= 30");
         }
-        if (existsByUserId(userId)) {
-            throw new UserConditionAlreadyExistsException("User condition with userId = " + userId + " already exists");
-        }
         if (fatPercent < 1 || fatPercent > 50) {
             throw new IllegalArgumentException("Fat percent cannot be < 1 or > 50");
         }
+        if (existsByUserId(userId)) {
+            throw new UserConditionAlreadyExistsException("User condition with userId = " + userId + " already exists");
+        }
 
         KcalsInfo kcalsInfo = kcalsInfoService.generateDailyKcals(
-                gender, age, height, weight, intensity, goal);
+                gender, age, height, weight, intensity, goal, fatPercent);
 
         UserCondition userCondition = new UserCondition(userId, kcalsInfo, gender, age, height, weight, intensity, goal, fatPercent);
 
@@ -108,16 +108,16 @@ public class UserConditionServiceImpl implements UserConditionService {
         if (weight <= 30) {
             throw new IllegalArgumentException("Weight cannot be <= 30");
         }
-        if (!existsByUserId(userId)) {
-            throw new UserConditionNotFoundException("User condition with userId = " + userId + " not found");
-        }
         if (fatPercent < 1 || fatPercent > 50) {
             throw new IllegalArgumentException("Fat percent cannot be < 1 or > 50");
+        }
+        if (!existsByUserId(userId)) {
+            throw new UserConditionNotFoundException("User condition with userId = " + userId + " not found");
         }
 
         UserCondition userCondition = getByUserId(userId);
         KcalsInfo kcalsInfo = userCondition.getKcalsInfo();
-        KcalsInfo updatedKcalsInfo = kcalsInfoService.generateDailyKcals(gender, age, height, weight, intensity, goal);
+        KcalsInfo updatedKcalsInfo = kcalsInfoService.generateDailyKcals(gender, age, height, weight, intensity, goal, fatPercent);
 
         kcalsInfo.setProtein(updatedKcalsInfo.getProtein());
         kcalsInfo.setFat(updatedKcalsInfo.getFat());

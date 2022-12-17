@@ -169,6 +169,7 @@ public class UserConditionRestControllerTest {
         userConditionDTO.setWeight((short) 50);
         userConditionDTO.setGoal(Goal.GAIN);
         userConditionDTO.setIntensity(Intensity.MIN);
+        userConditionDTO.setFatPercent(15);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonConditionDTO = objectMapper.writeValueAsString(userConditionDTO);
