@@ -63,17 +63,17 @@ public class UserConditionServiceImpl implements UserConditionService {
         if (userId <= 0) {
             throw new IllegalArgumentException("UserId cannot be <= 0");
         }
-        if (age <= 10) {
-            throw new IllegalArgumentException("Age cannot be <= 10");
+        if (age < 15 || age > 60) {
+            throw new IllegalArgumentException("Age should be between 15 and 60");
         }
-        if (height <= 130) {
-            throw new IllegalArgumentException("Height cannot be <= 130");
+        if (height < 150 || height > 200) {
+            throw new IllegalArgumentException("Height should be between 150 and 200");
         }
-        if (weight <= 30) {
-            throw new IllegalArgumentException("Weight cannot be <= 30");
+        if (weight < 40 || weight > 150) {
+            throw new IllegalArgumentException("Weight should be between 40 and 150");
         }
         if (fatPercent < 1 || fatPercent > 50) {
-            throw new IllegalArgumentException("Fat percent cannot be < 1 or > 50");
+            throw new IllegalArgumentException("Fat percent cannot be between 1 and 50");
         }
         if (existsByUserId(userId)) {
             throw new UserConditionAlreadyExistsException("User condition with userId = " + userId + " already exists");
@@ -99,17 +99,17 @@ public class UserConditionServiceImpl implements UserConditionService {
         if (userId <= 0) {
             throw new IllegalArgumentException("userId cannot be <= 0");
         }
-        if (age <= 10) {
-            throw new IllegalArgumentException("Age cannot be <= 10");
+        if (age < 15 || age > 60) {
+            throw new IllegalArgumentException("Age should be between 15 and 60");
         }
-        if (height <= 130) {
-            throw new IllegalArgumentException("Height cannot be <= 130");
+        if (height < 150 || height > 200) {
+            throw new IllegalArgumentException("Height should be between 150 and 200");
         }
-        if (weight <= 30) {
-            throw new IllegalArgumentException("Weight cannot be <= 30");
+        if (weight < 40 || weight > 150) {
+            throw new IllegalArgumentException("Weight should be between 40 and 150");
         }
         if (fatPercent < 1 || fatPercent > 50) {
-            throw new IllegalArgumentException("Fat percent cannot be < 1 or > 50");
+            throw new IllegalArgumentException("Fat percent cannot be between 1 and 50");
         }
         if (!existsByUserId(userId)) {
             throw new UserConditionNotFoundException("User condition with userId = " + userId + " not found");
