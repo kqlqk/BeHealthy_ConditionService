@@ -1,9 +1,9 @@
 package me.kqlqk.behealthy.condition_service.service.impl;
 
 import lombok.NonNull;
-import me.kqlqk.behealthy.condition_service.model.DailyFood;
-import me.kqlqk.behealthy.condition_service.repository.DailyFoodRepository;
-import me.kqlqk.behealthy.condition_service.service.DailyFoodService;
+import me.kqlqk.behealthy.condition_service.model.DailyAteFood;
+import me.kqlqk.behealthy.condition_service.repository.DailyAteFoodRepository;
+import me.kqlqk.behealthy.condition_service.service.DailyAteFoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -11,22 +11,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DailyFoodServiceImpl implements DailyFoodService {
-    private final DailyFoodRepository dailyFoodRepository;
+public class DailyAteFoodServiceImpl implements DailyAteFoodService {
+    private final DailyAteFoodRepository dailyAteFoodRepository;
 
     @Autowired
-    public DailyFoodServiceImpl(DailyFoodRepository dailyFoodRepository) {
-        this.dailyFoodRepository = dailyFoodRepository;
+    public DailyAteFoodServiceImpl(DailyAteFoodRepository dailyAteFoodRepository) {
+        this.dailyAteFoodRepository = dailyAteFoodRepository;
     }
 
     @Override
-    public DailyFood getById(long id) {
-        return dailyFoodRepository.findById(id);
+    public DailyAteFood getById(long id) {
+        return dailyAteFoodRepository.findById(id);
     }
 
     @Override
-    public List<DailyFood> getByUserId(long userId) {
-        return dailyFoodRepository.findByUserId(userId);
+    public List<DailyAteFood> getByUserId(long userId) {
+        return dailyAteFoodRepository.findByUserId(userId);
     }
 
     @Override
@@ -50,32 +50,32 @@ public class DailyFoodServiceImpl implements DailyFoodService {
             throw new IllegalArgumentException("Carbs cannot be < 0");
         }
 
-        DailyFood dailyFood = new DailyFood();
-        dailyFood.setUserId(userId);
-        dailyFood.setName(name);
-        dailyFood.setWeight(weight);
-        dailyFood.setKcals(kcals);
-        dailyFood.setProteins(proteins);
-        dailyFood.setFats(fats);
-        dailyFood.setCarbs(carbs);
+        DailyAteFood dailyAteFood = new DailyAteFood();
+        dailyAteFood.setUserId(userId);
+        dailyAteFood.setName(name);
+        dailyAteFood.setWeight(weight);
+        dailyAteFood.setKcals(kcals);
+        dailyAteFood.setProteins(proteins);
+        dailyAteFood.setFats(fats);
+        dailyAteFood.setCarbs(carbs);
 
-        dailyFoodRepository.save(dailyFood);
+        dailyAteFoodRepository.save(dailyAteFood);
     }
 
     @Override
     public void delete(long id) {
-        DailyFood dailyFood = getById(id);
+        DailyAteFood dailyAteFood = getById(id);
 
-        if (dailyFood == null) {
+        if (dailyAteFood == null) {
             throw new IllegalArgumentException("DailyFood with id = " + id + " not found");
         }
 
-        dailyFoodRepository.delete(dailyFood);
+        dailyAteFoodRepository.delete(dailyAteFood);
     }
 
     @Scheduled(cron = "0 0 0 * * *")
     @Override
     public void deleteFoodEveryMidnight() {
-        dailyFoodRepository.deleteAll();
+        dailyAteFoodRepository.deleteAll();
     }
 }

@@ -17,13 +17,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserConditionServiceImpl implements UserConditionService {
     private final UserConditionRepository userConditionRepository;
-    private final KcalsInfoService kcalsInfoService;
+    private DailyKcalsService dailyKcalsService;
 
     @Autowired
-    public UserConditionServiceImpl(UserConditionRepository userConditionRepository, KcalsInfoService kcalsInfoService) {
+    public UserConditionServiceImpl(UserConditionRepository userConditionRepository) {
         this.userConditionRepository = userConditionRepository;
-        this.kcalsInfoService = kcalsInfoService;
     }
+
+    @Autowired
+    @Lazy
+    public void setDailyKcalsService(DailyKcalsService dailyKcalsService) {
+        this.dailyKcalsService = dailyKcalsService;
+    }
+
 
     @Override
     public UserCondition getById(long id) {
@@ -79,10 +85,9 @@ public class UserConditionServiceImpl implements UserConditionService {
             throw new UserConditionAlreadyExistsException("User condition with userId = " + userId + " already exists");
         }
 
-        KcalsInfo kcalsInfo = kcalsInfoService.generateDailyKcals(
-                gender, age, height, weight, intensity, goal, fatPercent);
+        DailyKcals dailyKcals = dailyKcalsService.generateDailyKcals(gender, age, height, weight, intensity, goal, fatPercent);
 
-        UserCondition userCondition = new UserCondition(userId, kcalsInfo, gender, age, height, weight, intensity, goal, fatPercent);
+        UserCondition userCondition = new UserCondition(userId, dailyKcals, gender, age, height, weight, intensity, goal, fatPercent);
 
         userConditionRepository.save(userCondition);
     }
@@ -116,12 +121,12 @@ public class UserConditionServiceImpl implements UserConditionService {
         }
 
         UserCondition userCondition = getByUserId(userId);
-        KcalsInfo kcalsInfo = userCondition.getKcalsInfo();
-        KcalsInfo updatedKcalsInfo = kcalsInfoService.generateDailyKcals(gender, age, height, weight, intensity, goal, fatPercent);
 
-        kcalsInfo.setProtein(updatedKcalsInfo.getProtein());
-        kcalsInfo.setFat(updatedKcalsInfo.getFat());
-        kcalsInfo.setCarb(updatedKcalsInfo.getCarb());
+        DailyKcals dailyKcals = userCondition.getDailyKcals();
+        DailyKcals updatedDailyKcals = dailyKcalsService.generateDailyKcals(gender, age, height, weight, intensity, goal, fatPercent);
+        dailyKcals.setProtein(updatedDailyKcals.getProtein());
+        dailyKcals.setFat(updatedDailyKcals.getFat());
+        dailyKcals.setCarb(updatedDailyKcals.getCarb());
 
         userCondition.setGender(gender);
         userCondition.setAge(age);
