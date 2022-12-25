@@ -2,8 +2,8 @@ package integration.me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.kqlqk.behealthy.condition_service.dto.DailyFoodDTO;
-import me.kqlqk.behealthy.condition_service.service.DailyFoodService;
+import me.kqlqk.behealthy.condition_service.dto.DailyAteFoodDTO;
+import me.kqlqk.behealthy.condition_service.service.DailyAteFoodService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,15 +16,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ControllerTest
-public class DailyFoodRestControllerTest {
+public class DailyAteFoodRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private DailyFoodService dailyFoodService;
+    private DailyAteFoodService dailyAteFoodService;
 
     @Test
-    public void getDailyFoodForUser_shouldReturnListWithAllDailyFoodForUser() throws Exception {
+    public void getDailyAteFoodForUser_shouldReturnListWithAllDailyAteFoodForUser() throws Exception {
         mockMvc.perform(get("/api/v1/food")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("userId", "1"))
@@ -48,19 +48,19 @@ public class DailyFoodRestControllerTest {
     }
 
     @Test
-    public void addDailyFoodForUser_shouldCreateAndAddToDbNewDailyFoodForUser() throws Exception {
-        DailyFoodDTO dailyFoodDTO = new DailyFoodDTO();
-        dailyFoodDTO.setName("Potatoes");
-        dailyFoodDTO.setWeight(500);
-        dailyFoodDTO.setKcals(200);
-        dailyFoodDTO.setProteins(7);
-        dailyFoodDTO.setFats(4);
-        dailyFoodDTO.setCarbs(50);
+    public void addDailyAteFoodForUser_shouldCreateAndAddToDbNewDailyAteFoodForUser() throws Exception {
+        DailyAteFoodDTO dailyAteFoodDTO = new DailyAteFoodDTO();
+        dailyAteFoodDTO.setName("Potatoes");
+        dailyAteFoodDTO.setWeight(500);
+        dailyAteFoodDTO.setKcals(200);
+        dailyAteFoodDTO.setProteins(7);
+        dailyAteFoodDTO.setFats(4);
+        dailyAteFoodDTO.setCarbs(50);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonDailyFoodDTO = objectMapper.writeValueAsString(dailyFoodDTO);
+        String jsonDailyFoodDTO = objectMapper.writeValueAsString(dailyAteFoodDTO);
 
-        assertThat(dailyFoodService.getByUserId(1)).hasSize(2);
+        assertThat(dailyAteFoodService.getByUserId(1)).hasSize(2);
 
         mockMvc.perform(post("/api/v1/food")
                         .param("userId", "1")
@@ -69,12 +69,12 @@ public class DailyFoodRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        assertThat(dailyFoodService.getByUserId(1)).hasSize(3);
+        assertThat(dailyAteFoodService.getByUserId(1)).hasSize(3);
     }
 
     @Test
-    public void deleteDailyFoodFromUser_shouldDeleteDailyFoodFromDb() throws Exception {
-        assertThat(dailyFoodService.getByUserId(1)).hasSize(2);
+    public void deleteDailyAteFoodFromUser_shouldDeleteDailyAteFoodFromDb() throws Exception {
+        assertThat(dailyAteFoodService.getByUserId(1)).hasSize(2);
 
         mockMvc.perform(delete("/api/v1/food/")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -82,6 +82,6 @@ public class DailyFoodRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        assertThat(dailyFoodService.getByUserId(1)).hasSize(1);
+        assertThat(dailyAteFoodService.getByUserId(1)).hasSize(1);
     }
 }

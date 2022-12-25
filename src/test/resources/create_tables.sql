@@ -1,8 +1,8 @@
 drop table if exists user_condition;
-drop table if exists kcals_info;
-drop table if exists daily_food;
+drop table if exists daily_kcals;
+drop table if exists daily_ate_food;
 
-create table daily_food
+create table daily_ate_food
 (
     id               bigint        not null unique auto_increment,
     user_id          bigint        not null,
@@ -16,7 +16,7 @@ create table daily_food
     primary key (id)
 );
 
-create table kcals_info
+create table daily_kcals
 (
     id       bigint   not null unique auto_increment,
     proteins smallint not null,
@@ -41,7 +41,7 @@ create table user_condition
 
     primary key (id),
     foreign key (kcals_info_id)
-        references kcals_info (id)
+        references daily_kcals (id)
         on update cascade
         on delete cascade
 );

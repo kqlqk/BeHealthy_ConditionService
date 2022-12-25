@@ -1,6 +1,5 @@
 package me.kqlqk.behealthy.condition_service.service;
 
-import me.kqlqk.behealthy.condition_service.model.KcalsInfo;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
@@ -12,8 +11,6 @@ public interface UserConditionService {
     UserCondition getById(long id);
 
     UserCondition getByUserId(long id);
-
-    KcalsInfo getKcalsInfoByUserId(long id);
 
     boolean existsByUserId(long id);
 

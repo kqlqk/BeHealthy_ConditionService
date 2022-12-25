@@ -2,7 +2,8 @@ package me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
-import me.kqlqk.behealthy.condition_service.model.KcalsInfo;
+import me.kqlqk.behealthy.condition_service.model.DailyKcals;
+import me.kqlqk.behealthy.condition_service.service.DailyKcalsService;
 import me.kqlqk.behealthy.condition_service.service.UserConditionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 public class UserConditionRestController {
     private final UserConditionService userConditionService;
+    private final DailyKcalsService dailyKcalsService;
 
     @Autowired
-    public UserConditionRestController(UserConditionService userConditionService) {
+    public UserConditionRestController(UserConditionService userConditionService, DailyKcalsService dailyKcalsService) {
         this.userConditionService = userConditionService;
+        this.dailyKcalsService = dailyKcalsService;
     }
 
     @PostMapping("/condition")
@@ -58,7 +61,7 @@ public class UserConditionRestController {
     }
 
     @GetMapping("/kcals")
-    public KcalsInfo getKcalsInfoByUserId(@RequestParam long userId) {
-        return userConditionService.getKcalsInfoByUserId(userId);
+    public DailyKcals getDailyKcalsByUserId(@RequestParam long userId) {
+        return dailyKcalsService.getByUserId(userId);
     }
 }

@@ -3,15 +3,16 @@ package me.kqlqk.behealthy.condition_service.service.impl;
 import lombok.NonNull;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionAlreadyExistsException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
-import me.kqlqk.behealthy.condition_service.model.KcalsInfo;
+import me.kqlqk.behealthy.condition_service.model.DailyKcals;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
 import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 import me.kqlqk.behealthy.condition_service.repository.UserConditionRepository;
-import me.kqlqk.behealthy.condition_service.service.KcalsInfoService;
+import me.kqlqk.behealthy.condition_service.service.DailyKcalsService;
 import me.kqlqk.behealthy.condition_service.service.UserConditionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,17 +40,6 @@ public class UserConditionServiceImpl implements UserConditionService {
     @Override
     public UserCondition getByUserId(long id) {
         return userConditionRepository.findByUserId(id);
-    }
-
-    @Override
-    public KcalsInfo getKcalsInfoByUserId(long id) {
-        if (!existsByUserId(id)) {
-            throw new UserConditionNotFoundException("User condition with userId = " + id + " not found");
-        }
-
-        UserCondition userCondition = getByUserId(id);
-
-        return userCondition.getKcalsInfo();
     }
 
     @Override
