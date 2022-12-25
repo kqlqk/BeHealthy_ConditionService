@@ -5,9 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "daily_food", schema = "public", catalog = "conditionservicedb")
+@Table(name = "daily_ate_food", schema = "public", catalog = "conditionservicedb")
 @Data
-public class DailyFood {
+public class DailyAteFood {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false, insertable = false, updatable = false)
