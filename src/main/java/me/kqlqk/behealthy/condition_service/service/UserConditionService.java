@@ -1,5 +1,6 @@
 package me.kqlqk.behealthy.condition_service.service;
 
+import lombok.NonNull;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
@@ -13,6 +14,27 @@ public interface UserConditionService {
     UserCondition getByUserId(long id);
 
     boolean existsByUserId(long id);
+
+    void generateAndSaveConditionWithoutFatPercentForMale(long userId,
+                                                          int age,
+                                                          int height,
+                                                          int weight,
+                                                          @NonNull Intensity intensity,
+                                                          @NonNull Goal goal,
+                                                          int fatFoldBetweenChestAndIlium,
+                                                          int fatFoldBetweenNavelAndLowerBelly,
+                                                          int fatFoldBetweenNippleAndArmpit,
+                                                          int fatFoldBetweenNippleAndUpperChest);
+
+    void generateAndSaveConditionWithoutFatPercentForFemale(long userId,
+                                                            int age,
+                                                            int height,
+                                                            int weight,
+                                                            @NonNull Intensity intensity,
+                                                            @NonNull Goal goal,
+                                                            int fatFoldBetweenShoulderAndElbow,
+                                                            int fatFoldBetweenChestAndIlium,
+                                                            int fatFoldBetweenNippleAndArmpit);
 
     void generateAndSaveCondition(long userId,
                                   Gender gender,
