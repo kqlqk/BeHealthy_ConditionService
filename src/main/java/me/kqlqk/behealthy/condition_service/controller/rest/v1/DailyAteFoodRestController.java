@@ -20,7 +20,7 @@ public class DailyAteFoodRestController {
 
     @GetMapping("/food")
     public List<DailyAteFoodDTO> getDailyAteFoodForUser(@RequestParam("userId") long userId) {
-        return DailyAteFoodDTO.convertListOfDailyAteFoodToListOFDailyAteFoodDTO(dailyAteFoodService.getByUserId(userId));
+        return DailyAteFoodDTO.convertListOfDailyAteFoodToListOfDailyAteFoodDTO(dailyAteFoodService.getByUserId(userId));
     }
 
     @PostMapping("/food")
@@ -38,8 +38,8 @@ public class DailyAteFoodRestController {
     }
 
     @DeleteMapping("/food")
-    public ResponseEntity<?> deleteDailyAteFoodFromUser(@RequestParam("productId") long id) {
-        dailyAteFoodService.delete(id);
+    public ResponseEntity<?> deleteDailyAteFoodFromUser(@RequestParam long productId, @RequestParam long userId) {
+        dailyAteFoodService.delete(productId, userId);
 
         return ResponseEntity.ok().build();
     }

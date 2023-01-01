@@ -1,6 +1,7 @@
 package me.kqlqk.behealthy.condition_service.service.impl;
 
 import lombok.NonNull;
+import me.kqlqk.behealthy.condition_service.exception.exceptions.FoodNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyAteFood;
 import me.kqlqk.behealthy.condition_service.repository.DailyAteFoodRepository;
 import me.kqlqk.behealthy.condition_service.service.DailyAteFoodService;
@@ -63,12 +64,18 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
     }
 
     @Override
-    public void delete(long id) {
-        DailyAteFood dailyAteFood = getById(id);
+    public void delete(long id, long userId) {
+        List<DailyAteFood> dailyAteFoodsForUser = getByUserId(userId);
 
-        if (dailyAteFood == null) {
-            throw new IllegalArgumentException("DailyFood with id = " + id + " not found");
+        if (dailyAteFoodsForUser.isEmpty()) {
+            throw new FoodNotFoundException("User's daily food not found");
         }
+
+        DailyAteFood dailyAteFood = dailyAteFoodsForUser
+                .stream()
+                .filter(product -> product.getId() == id)
+                .findAny()
+                .orElseThrow(() -> new FoodNotFoundException("Daily food with id = " + id + " not found for user with userId = " + id));
 
         dailyAteFoodRepository.delete(dailyAteFood);
     }

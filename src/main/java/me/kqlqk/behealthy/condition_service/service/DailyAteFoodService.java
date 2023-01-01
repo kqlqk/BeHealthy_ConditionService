@@ -13,7 +13,7 @@ public interface DailyAteFoodService {
 
     void add(long userId, String name, double weight, double kcals, double proteins, double fats, double carbs);
 
-    void delete(long id);
+    void delete(long id, long userId);
 
     void deleteFoodEveryMidnight();
 }

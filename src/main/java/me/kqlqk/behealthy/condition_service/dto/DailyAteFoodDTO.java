@@ -32,7 +32,7 @@ public class DailyAteFoodDTO {
         );
     }
 
-    public static List<DailyAteFoodDTO> convertListOfDailyAteFoodToListOFDailyAteFoodDTO(List<DailyAteFood> dailyAteFoods) {
+    public static List<DailyAteFoodDTO> convertListOfDailyAteFoodToListOfDailyAteFoodDTO(List<DailyAteFood> dailyAteFoods) {
         List<DailyAteFoodDTO> dailyAteFoodDTOS = new ArrayList<>();
 
         for (DailyAteFood dailyAteFood : dailyAteFoods) {

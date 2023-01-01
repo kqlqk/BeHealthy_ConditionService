@@ -74,14 +74,17 @@ public class DailyAteFoodRestControllerTest {
 
     @Test
     public void deleteDailyAteFoodFromUser_shouldDeleteDailyAteFoodFromDb() throws Exception {
-        assertThat(dailyAteFoodService.getByUserId(1)).hasSize(2);
+        int oldDailyFoodSize = dailyAteFoodService.getByUserId(1).size();
 
         mockMvc.perform(delete("/api/v1/food/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .param("productId", "1"))
+                        .param("productId", "1")
+                        .param("userId", "1"))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        assertThat(dailyAteFoodService.getByUserId(1)).hasSize(1);
+        int newDailyFoodSize = dailyAteFoodService.getByUserId(1).size();
+
+        assertThat(newDailyFoodSize).isEqualTo(oldDailyFoodSize - 1);
     }
 }
