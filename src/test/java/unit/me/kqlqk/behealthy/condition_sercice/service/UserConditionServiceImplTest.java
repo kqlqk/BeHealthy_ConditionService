@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.validation.Validator;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)
@@ -18,6 +20,9 @@ public class UserConditionServiceImplTest {
 
     @Mock
     private UserConditionRepository userConditionRepository;
+
+    @Mock
+    private Validator validator;
 
     @Test
     public void getFetPercent_shouldReturnFatPercentByMeasurements() {

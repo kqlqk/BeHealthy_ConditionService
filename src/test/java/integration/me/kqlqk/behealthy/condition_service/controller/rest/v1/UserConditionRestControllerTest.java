@@ -33,7 +33,7 @@ public class UserConditionRestControllerTest {
     private DailyKcalsRepository dailyKcalsRepository;
 
     @Test
-    public void createUserCondition_ShouldCreateUserConditionAndDailyKcals() throws Exception {
+    public void createUserCondition_shouldCreateUserConditionAndDailyKcals() throws Exception {
         UserConditionDTO userConditionDTO = new UserConditionDTO();
         userConditionDTO.setGender(Gender.FEMALE);
         userConditionDTO.setAge(20);
@@ -64,7 +64,7 @@ public class UserConditionRestControllerTest {
     }
 
     @Test
-    public void createUserCondition_ShouldReturnJsonWithException() throws Exception {
+    public void createUserCondition_shouldReturnJsonWithException() throws Exception {
         UserConditionDTO userConditionDTO = new UserConditionDTO();
         userConditionDTO.setAge(20);
         userConditionDTO.setGender(Gender.MALE);

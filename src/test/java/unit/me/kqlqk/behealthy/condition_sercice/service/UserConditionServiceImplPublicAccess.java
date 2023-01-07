@@ -4,9 +4,11 @@ import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.repository.UserConditionRepository;
 import me.kqlqk.behealthy.condition_service.service.impl.UserConditionServiceImpl;
 
+import javax.validation.Validator;
+
 public class UserConditionServiceImplPublicAccess extends UserConditionServiceImpl {
-    public UserConditionServiceImplPublicAccess(UserConditionRepository userConditionRepository) {
-        super(userConditionRepository);
+    public UserConditionServiceImplPublicAccess(UserConditionRepository userConditionRepository, Validator validator) {
+        super(userConditionRepository, validator);
     }
 
     protected double getFetPercentTest(Gender gender,

@@ -1,13 +1,13 @@
 package me.kqlqk.behealthy.condition_service.service.impl;
 
 import lombok.NonNull;
+import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionAlreadyExistsException;
+import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyKcals;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
-import me.kqlqk.behealthy.condition_service.model.enums.Goal;
-import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 import me.kqlqk.behealthy.condition_service.repository.UserConditionRepository;
 import me.kqlqk.behealthy.condition_service.service.DailyKcalsService;
 import me.kqlqk.behealthy.condition_service.service.UserConditionService;
@@ -15,14 +15,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.Set;
+
 @Service
 public class UserConditionServiceImpl implements UserConditionService {
     private final UserConditionRepository userConditionRepository;
+    private final Validator validator;
     private DailyKcalsService dailyKcalsService;
 
     @Autowired
-    public UserConditionServiceImpl(UserConditionRepository userConditionRepository) {
+    public UserConditionServiceImpl(UserConditionRepository userConditionRepository, Validator validator) {
         this.userConditionRepository = userConditionRepository;
+        this.validator = validator;
     }
 
     @Autowired
@@ -48,28 +54,27 @@ public class UserConditionServiceImpl implements UserConditionService {
     }
 
     @Override
-    public void generateAndSaveConditionWithoutFatPercentForMale(long userId,
-                                                                 int age,
-                                                                 int height,
-                                                                 int weight,
-                                                                 @NonNull Intensity intensity,
-                                                                 @NonNull Goal goal,
+    public void generateAndSaveConditionWithoutFatPercentForMale(@NonNull UserConditionDTO userConditionDTO,
                                                                  int fatFoldBetweenChestAndIlium,
                                                                  int fatFoldBetweenNavelAndLowerBelly,
                                                                  int fatFoldBetweenNippleAndArmpit,
                                                                  int fatFoldBetweenNippleAndUpperChest) {
-        if (userId <= 0) {
-            throw new IllegalArgumentException("UserId cannot be <= 0");
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsAge = validator.validateProperty(userConditionDTO, "age");
+        if (!constraintViolationsAge.isEmpty()) {
+            throw new UserConditionException(constraintViolationsAge.iterator().next().getMessage());
         }
-        if (age < 15 || age > 60) {
-            throw new IllegalArgumentException("Age should be between 15 and 60");
+
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsHeight = validator.validateProperty(userConditionDTO, "height");
+        if (!constraintViolationsHeight.isEmpty()) {
+            throw new UserConditionException(constraintViolationsHeight.iterator().next().getMessage());
         }
-        if (height < 150 || height > 200) {
-            throw new IllegalArgumentException("Height should be between 150 and 200");
+
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsWeight = validator.validateProperty(userConditionDTO, "weight");
+        if (!constraintViolationsWeight.isEmpty()) {
+            throw new UserConditionException(constraintViolationsWeight.iterator().next().getMessage());
         }
-        if (weight < 40 || weight > 150) {
-            throw new IllegalArgumentException("Weight should be between 40 and 150");
-        }
+
+
         if (fatFoldBetweenChestAndIlium < 2 || fatFoldBetweenChestAndIlium > 50) {
             throw new IllegalArgumentException("Fat fold between chest and ilium should be between 2 and 50");
         }
@@ -82,42 +87,43 @@ public class UserConditionServiceImpl implements UserConditionService {
         if (fatFoldBetweenNippleAndUpperChest < 2 || fatFoldBetweenNippleAndUpperChest > 50) {
             throw new IllegalArgumentException("Fat fold between nipple and upper chest should be between 2 and 50");
         }
-        if (existsByUserId(userId)) {
-            throw new UserConditionAlreadyExistsException("User condition with userId = " + userId + " already exists");
+        if (existsByUserId(userConditionDTO.getUserId())) {
+            throw new UserConditionAlreadyExistsException("User condition with userId = " + userConditionDTO.getUserId() + " already exists");
         }
 
-        generateAndSaveCondition(userId, Gender.MALE, age, height, weight, intensity, goal, getFatPercent(
+        userConditionDTO.setFatPercent(getFatPercent(
                 Gender.MALE,
                 fatFoldBetweenChestAndIlium,
                 fatFoldBetweenNavelAndLowerBelly,
                 fatFoldBetweenNippleAndArmpit,
                 fatFoldBetweenNippleAndUpperChest,
                 0,
-                age));
+                userConditionDTO.getAge()));
+
+        generateAndSaveCondition(userConditionDTO);
     }
 
     @Override
-    public void generateAndSaveConditionWithoutFatPercentForFemale(long userId,
-                                                                   int age,
-                                                                   int height,
-                                                                   int weight,
-                                                                   @NonNull Intensity intensity,
-                                                                   @NonNull Goal goal,
+    public void generateAndSaveConditionWithoutFatPercentForFemale(@NonNull UserConditionDTO userConditionDTO,
                                                                    int fatFoldBetweenShoulderAndElbow,
                                                                    int fatFoldBetweenChestAndIlium,
                                                                    int fatFoldBetweenNavelAndLowerBelly) {
-        if (userId <= 0) {
-            throw new IllegalArgumentException("UserId cannot be <= 0");
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsAge = validator.validateProperty(userConditionDTO, "age");
+        if (!constraintViolationsAge.isEmpty()) {
+            throw new UserConditionException(constraintViolationsAge.iterator().next().getMessage());
         }
-        if (age < 15 || age > 60) {
-            throw new IllegalArgumentException("Age should be between 15 and 60");
+
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsHeight = validator.validateProperty(userConditionDTO, "height");
+        if (!constraintViolationsHeight.isEmpty()) {
+            throw new UserConditionException(constraintViolationsHeight.iterator().next().getMessage());
         }
-        if (height < 150 || height > 200) {
-            throw new IllegalArgumentException("Height should be between 150 and 200");
+
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsWeight = validator.validateProperty(userConditionDTO, "weight");
+        if (!constraintViolationsWeight.isEmpty()) {
+            throw new UserConditionException(constraintViolationsWeight.iterator().next().getMessage());
         }
-        if (weight < 40 || weight > 150) {
-            throw new IllegalArgumentException("Weight should be between 40 and 150");
-        }
+
+
         if (fatFoldBetweenShoulderAndElbow < 2 || fatFoldBetweenShoulderAndElbow > 50) {
             throw new IllegalArgumentException("Fat fold between shoulder and elbow should be between 5 and 50");
         }
@@ -127,18 +133,20 @@ public class UserConditionServiceImpl implements UserConditionService {
         if (fatFoldBetweenNavelAndLowerBelly < 5 || fatFoldBetweenNavelAndLowerBelly > 70) {
             throw new IllegalArgumentException("Fat fold between navel and lower belly should be between 5 and 70");
         }
-        if (existsByUserId(userId)) {
-            throw new UserConditionAlreadyExistsException("User condition with userId = " + userId + " already exists");
+        if (existsByUserId(userConditionDTO.getUserId())) {
+            throw new UserConditionAlreadyExistsException("User condition with userId = " + userConditionDTO.getUserId() + " already exists");
         }
 
-        generateAndSaveCondition(userId, Gender.FEMALE, age, height, weight, intensity, goal, getFatPercent(
+        userConditionDTO.setFatPercent(getFatPercent(
                 Gender.FEMALE,
                 fatFoldBetweenChestAndIlium,
                 fatFoldBetweenNavelAndLowerBelly,
                 0,
                 0,
                 fatFoldBetweenShoulderAndElbow,
-                age));
+                userConditionDTO.getAge()));
+
+        generateAndSaveCondition(userConditionDTO);
     }
 
     protected double getFatPercent(Gender gender,
@@ -166,83 +174,70 @@ public class UserConditionServiceImpl implements UserConditionService {
     }
 
     @Override
-    public void generateAndSaveCondition(long userId,
-                                         @NonNull Gender gender,
-                                         int age,
-                                         int height,
-                                         int weight,
-                                         @NonNull Intensity intensity,
-                                         @NonNull Goal goal,
-                                         double fatPercent) {
-        if (userId <= 0) {
-            throw new IllegalArgumentException("UserId cannot be <= 0");
-        }
-        if (age < 15 || age > 60) {
-            throw new IllegalArgumentException("Age should be between 15 and 60");
-        }
-        if (height < 150 || height > 200) {
-            throw new IllegalArgumentException("Height should be between 150 and 200");
-        }
-        if (weight < 40 || weight > 150) {
-            throw new IllegalArgumentException("Weight should be between 40 and 150");
-        }
-        if (fatPercent < 1 || fatPercent > 50) {
-            throw new IllegalArgumentException("Fat percent should be between 1 and 50");
-        }
-        if (existsByUserId(userId)) {
-            throw new UserConditionAlreadyExistsException("User condition with userId = " + userId + " already exists");
+    public void generateAndSaveCondition(@NonNull UserConditionDTO userConditionDTO) {
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolations = validator.validate(userConditionDTO);
+
+        if (!constraintViolations.isEmpty()) {
+            throw new UserConditionException(constraintViolations.iterator().next().getMessage());
         }
 
-        DailyKcals dailyKcals = dailyKcalsService.generateDailyKcals(gender, age, height, weight, intensity, goal, fatPercent);
+        if (existsByUserId(userConditionDTO.getUserId())) {
+            throw new UserConditionAlreadyExistsException("User condition with userId = " + userConditionDTO.getUserId() + " already exists");
+        }
 
-        UserCondition userCondition = new UserCondition(userId, dailyKcals, gender, age, height, weight, intensity, goal, fatPercent);
+        DailyKcals dailyKcals = dailyKcalsService.generateDailyKcals(userConditionDTO);
+
+        UserCondition userCondition = new UserCondition(
+                userConditionDTO.getUserId(),
+                dailyKcals,
+                userConditionDTO.getGender(),
+                userConditionDTO.getAge(),
+                userConditionDTO.getHeight(),
+                userConditionDTO.getWeight(),
+                userConditionDTO.getIntensity(),
+                userConditionDTO.getGoal(),
+                userConditionDTO.getFatPercent());
 
         userConditionRepository.save(userCondition);
     }
 
     @Override
-    public void updateCondition(long userId,
-                                @NonNull Gender gender,
-                                int age,
-                                int height,
-                                int weight,
-                                @NonNull Intensity intensity,
-                                @NonNull Goal goal,
-                                double fatPercent) {
-        if (userId <= 0) {
-            throw new IllegalArgumentException("userId cannot be <= 0");
-        }
-        if (age < 15 || age > 60) {
-            throw new IllegalArgumentException("Age should be between 15 and 60");
-        }
-        if (height < 150 || height > 200) {
-            throw new IllegalArgumentException("Height should be between 150 and 200");
-        }
-        if (weight < 40 || weight > 150) {
-            throw new IllegalArgumentException("Weight should be between 40 and 150");
-        }
-        if (fatPercent < 1 || fatPercent > 50) {
-            throw new IllegalArgumentException("Fat percent should be between 1 and 50");
-        }
-        if (!existsByUserId(userId)) {
-            throw new UserConditionNotFoundException("User condition with userId = " + userId + " not found");
+    public void updateCondition(@NonNull UserConditionDTO userConditionDTO) {
+        if (userConditionDTO.getGender() == null &&
+                userConditionDTO.getAge() == 0 &&
+                userConditionDTO.getHeight() == 0 &&
+                userConditionDTO.getWeight() == 0 &&
+                userConditionDTO.getIntensity() == null &&
+                userConditionDTO.getGoal() == null &&
+                userConditionDTO.getFatPercent() == 0) {
+            throw new IllegalArgumentException("Minimum 1 field should be updated");
         }
 
-        UserCondition userCondition = getByUserId(userId);
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolations = validator.validate(userConditionDTO);
+
+        if (!constraintViolations.isEmpty()) {
+            throw new UserConditionException(constraintViolations.iterator().next().getMessage());
+        }
+
+        if (!existsByUserId(userConditionDTO.getUserId())) {
+            throw new UserConditionNotFoundException("User condition with userId = " + userConditionDTO.getUserId() + " not found");
+        }
+
+        UserCondition userCondition = getByUserId(userConditionDTO.getUserId());
 
         DailyKcals dailyKcals = userCondition.getDailyKcals();
-        DailyKcals updatedDailyKcals = dailyKcalsService.generateDailyKcals(gender, age, height, weight, intensity, goal, fatPercent);
+        DailyKcals updatedDailyKcals = dailyKcalsService.generateDailyKcals(userConditionDTO);
         dailyKcals.setProtein(updatedDailyKcals.getProtein());
         dailyKcals.setFat(updatedDailyKcals.getFat());
         dailyKcals.setCarb(updatedDailyKcals.getCarb());
 
-        userCondition.setGender(gender);
-        userCondition.setAge(age);
-        userCondition.setHeight(height);
-        userCondition.setWeight(weight);
-        userCondition.setIntensity(intensity);
-        userCondition.setGoal(goal);
-        userCondition.setFatPercent(fatPercent);
+        userCondition.setGender(userConditionDTO.getGender());
+        userCondition.setAge(userConditionDTO.getAge());
+        userCondition.setHeight(userConditionDTO.getHeight());
+        userCondition.setWeight(userConditionDTO.getWeight());
+        userCondition.setIntensity(userConditionDTO.getIntensity());
+        userCondition.setGoal(userConditionDTO.getGoal());
+        userCondition.setFatPercent(userConditionDTO.getFatPercent());
 
         userConditionRepository.save(userCondition);
     }

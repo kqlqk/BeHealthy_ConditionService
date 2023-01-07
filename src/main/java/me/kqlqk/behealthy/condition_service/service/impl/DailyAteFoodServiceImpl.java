@@ -1,6 +1,8 @@
 package me.kqlqk.behealthy.condition_service.service.impl;
 
 import lombok.NonNull;
+import me.kqlqk.behealthy.condition_service.dto.DailyAteFoodDTO;
+import me.kqlqk.behealthy.condition_service.exception.exceptions.FoodException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.FoodNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyAteFood;
 import me.kqlqk.behealthy.condition_service.repository.DailyAteFoodRepository;
@@ -9,15 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class DailyAteFoodServiceImpl implements DailyAteFoodService {
     private final DailyAteFoodRepository dailyAteFoodRepository;
+    private final Validator validator;
 
     @Autowired
-    public DailyAteFoodServiceImpl(DailyAteFoodRepository dailyAteFoodRepository) {
+    public DailyAteFoodServiceImpl(DailyAteFoodRepository dailyAteFoodRepository, Validator validator) {
         this.dailyAteFoodRepository = dailyAteFoodRepository;
+        this.validator = validator;
     }
 
     @Override
@@ -31,34 +38,21 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
     }
 
     @Override
-    public void add(long userId, @NonNull String name, double weight, double kcals, double proteins, double fats, double carbs) {
-        if (userId <= 0) {
-            throw new IllegalArgumentException("UserId cannot be <= 0");
-        }
-        if (weight <= 0) {
-            throw new IllegalArgumentException("Weight cannot be <= 0");
-        }
-        if (kcals < 0) {
-            throw new IllegalArgumentException("Kcals cannot be < 0");
-        }
-        if (proteins < 0) {
-            throw new IllegalArgumentException("Proteins cannot be < 0");
-        }
-        if (fats < 0) {
-            throw new IllegalArgumentException("Fats cannot be < 0");
-        }
-        if (carbs < 0) {
-            throw new IllegalArgumentException("Carbs cannot be < 0");
+    public void add(@NonNull DailyAteFoodDTO dailyAteFoodDTO) {
+        Set<ConstraintViolation<DailyAteFoodDTO>> constraintViolations = validator.validate(dailyAteFoodDTO);
+
+        if (!constraintViolations.isEmpty()) {
+            throw new FoodException(constraintViolations.iterator().next().getMessage());
         }
 
         DailyAteFood dailyAteFood = new DailyAteFood();
-        dailyAteFood.setUserId(userId);
-        dailyAteFood.setName(name);
-        dailyAteFood.setWeight(weight);
-        dailyAteFood.setKcals(kcals);
-        dailyAteFood.setProteins(proteins);
-        dailyAteFood.setFats(fats);
-        dailyAteFood.setCarbs(carbs);
+        dailyAteFood.setUserId(dailyAteFoodDTO.getUserId());
+        dailyAteFood.setName(dailyAteFoodDTO.getName());
+        dailyAteFood.setWeight(dailyAteFoodDTO.getWeight());
+        dailyAteFood.setKcals(dailyAteFoodDTO.getKcals());
+        dailyAteFood.setProteins(dailyAteFoodDTO.getProteins());
+        dailyAteFood.setFats(dailyAteFoodDTO.getFats());
+        dailyAteFood.setCarbs(dailyAteFoodDTO.getCarbs());
 
         dailyAteFoodRepository.save(dailyAteFood);
     }
