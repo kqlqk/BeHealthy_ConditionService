@@ -25,14 +25,8 @@ public class DailyAteFoodRestController {
 
     @PostMapping("/food")
     public ResponseEntity<?> addDailyAteFoodForUser(@RequestParam long userId, @RequestBody DailyAteFoodDTO dailyAteFoodDTO) {
-        dailyAteFoodService.add(
-                userId,
-                dailyAteFoodDTO.getName(),
-                dailyAteFoodDTO.getWeight(),
-                dailyAteFoodDTO.getKcals(),
-                dailyAteFoodDTO.getProteins(),
-                dailyAteFoodDTO.getFats(),
-                dailyAteFoodDTO.getCarbs());
+        dailyAteFoodDTO.setUserId(userId);
+        dailyAteFoodService.add(dailyAteFoodDTO);
 
         return ResponseEntity.ok().build();
     }

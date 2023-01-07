@@ -23,15 +23,8 @@ public class UserConditionRestController {
 
     @PostMapping("/condition")
     public ResponseEntity<?> createUserCondition(@RequestParam long userId, @RequestBody UserConditionDTO userConditionDTO) {
-        userConditionService.generateAndSaveCondition(
-                userId,
-                userConditionDTO.getGender(),
-                userConditionDTO.getAge(),
-                userConditionDTO.getHeight(),
-                userConditionDTO.getWeight(),
-                userConditionDTO.getIntensity(),
-                userConditionDTO.getGoal(),
-                userConditionDTO.getFatPercent());
+        userConditionDTO.setUserId(userId);
+        userConditionService.generateAndSaveCondition(userConditionDTO);
 
         return ResponseEntity.ok().build();
     }
@@ -47,15 +40,8 @@ public class UserConditionRestController {
 
     @PutMapping("/condition")
     public ResponseEntity<?> updateCondition(@RequestParam long userId, @RequestBody UserConditionDTO userConditionDTO) {
-        userConditionService.updateCondition(
-                userId,
-                userConditionDTO.getGender(),
-                userConditionDTO.getAge(),
-                userConditionDTO.getHeight(),
-                userConditionDTO.getWeight(),
-                userConditionDTO.getIntensity(),
-                userConditionDTO.getGoal(),
-                userConditionDTO.getFatPercent());
+        userConditionDTO.setUserId(userId);
+        userConditionService.updateCondition(userConditionDTO);
 
         return ResponseEntity.ok().build();
     }
