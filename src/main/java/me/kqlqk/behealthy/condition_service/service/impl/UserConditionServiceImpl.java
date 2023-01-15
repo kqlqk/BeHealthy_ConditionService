@@ -39,11 +39,6 @@ public class UserConditionServiceImpl implements UserConditionService {
 
 
     @Override
-    public UserCondition getById(long id) {
-        return userConditionRepository.findById(id);
-    }
-
-    @Override
     public UserCondition getByUserId(long id) {
         return userConditionRepository.findByUserId(id);
     }
@@ -72,6 +67,16 @@ public class UserConditionServiceImpl implements UserConditionService {
         Set<ConstraintViolation<UserConditionDTO>> constraintViolationsWeight = validator.validateProperty(userConditionDTO, "weight");
         if (!constraintViolationsWeight.isEmpty()) {
             throw new UserConditionException(constraintViolationsWeight.iterator().next().getMessage());
+        }
+
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsIntensity = validator.validateProperty(userConditionDTO, "intensity");
+        if (!constraintViolationsIntensity.isEmpty()) {
+            throw new UserConditionException(constraintViolationsIntensity.iterator().next().getMessage());
+        }
+
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsGoal = validator.validateProperty(userConditionDTO, "goal");
+        if (!constraintViolationsGoal.isEmpty()) {
+            throw new UserConditionException(constraintViolationsGoal.iterator().next().getMessage());
         }
 
 
@@ -121,6 +126,16 @@ public class UserConditionServiceImpl implements UserConditionService {
         Set<ConstraintViolation<UserConditionDTO>> constraintViolationsWeight = validator.validateProperty(userConditionDTO, "weight");
         if (!constraintViolationsWeight.isEmpty()) {
             throw new UserConditionException(constraintViolationsWeight.iterator().next().getMessage());
+        }
+
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsIntensity = validator.validateProperty(userConditionDTO, "intensity");
+        if (!constraintViolationsIntensity.isEmpty()) {
+            throw new UserConditionException(constraintViolationsIntensity.iterator().next().getMessage());
+        }
+
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsGoal = validator.validateProperty(userConditionDTO, "goal");
+        if (!constraintViolationsGoal.isEmpty()) {
+            throw new UserConditionException(constraintViolationsGoal.iterator().next().getMessage());
         }
 
 
@@ -203,20 +218,9 @@ public class UserConditionServiceImpl implements UserConditionService {
 
     @Override
     public void updateCondition(@NonNull UserConditionDTO userConditionDTO) {
-        if (userConditionDTO.getGender() == null &&
-                userConditionDTO.getAge() == 0 &&
-                userConditionDTO.getHeight() == 0 &&
-                userConditionDTO.getWeight() == 0 &&
-                userConditionDTO.getIntensity() == null &&
-                userConditionDTO.getGoal() == null &&
-                userConditionDTO.getFatPercent() == 0) {
-            throw new IllegalArgumentException("Minimum 1 field should be updated");
-        }
-
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolations = validator.validate(userConditionDTO);
-
-        if (!constraintViolations.isEmpty()) {
-            throw new UserConditionException(constraintViolations.iterator().next().getMessage());
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsAge = validator.validate(userConditionDTO);
+        if (!constraintViolationsAge.isEmpty()) {
+            throw new UserConditionException(constraintViolationsAge.iterator().next().getMessage());
         }
 
         if (!existsByUserId(userConditionDTO.getUserId())) {

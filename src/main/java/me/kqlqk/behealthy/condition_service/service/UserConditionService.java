@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserConditionService {
-    UserCondition getById(long id);
-
     UserCondition getByUserId(long id);
 
     boolean existsByUserId(long id);

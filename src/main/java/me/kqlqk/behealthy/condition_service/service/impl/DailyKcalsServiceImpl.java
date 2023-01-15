@@ -6,7 +6,6 @@ import me.kqlqk.behealthy.condition_service.exception.exceptions.KcalsException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyKcals;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
-import me.kqlqk.behealthy.condition_service.repository.DailyKcalsRepository;
 import me.kqlqk.behealthy.condition_service.service.DailyKcalsService;
 import me.kqlqk.behealthy.condition_service.service.UserConditionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +21,11 @@ public class DailyKcalsServiceImpl implements DailyKcalsService {
     private static final int COEFFICIENT_KCALS_FOR_LOSE = 400;
     private static final int COEFFICIENT_KCALS_FOR_GAIN = 500;
 
-    private final DailyKcalsRepository dailyKcalsRepository;
     private final Validator validator;
     private UserConditionService userConditionService;
 
     @Autowired
-    public DailyKcalsServiceImpl(DailyKcalsRepository dailyKcalsRepository, Validator validator) {
-        this.dailyKcalsRepository = dailyKcalsRepository;
+    public DailyKcalsServiceImpl(Validator validator) {
         this.validator = validator;
     }
 
@@ -36,11 +33,6 @@ public class DailyKcalsServiceImpl implements DailyKcalsService {
     @Lazy
     public void setUserConditionService(UserConditionService userConditionService) {
         this.userConditionService = userConditionService;
-    }
-
-    @Override
-    public DailyKcals getById(long id) {
-        return dailyKcalsRepository.findById(id);
     }
 
     @Override
@@ -57,11 +49,26 @@ public class DailyKcalsServiceImpl implements DailyKcalsService {
 
     @Override
     public DailyKcals generateDailyKcals(@NonNull UserConditionDTO userConditionDTO) {
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolations = validator.validate(userConditionDTO);
-
-        if (!constraintViolations.isEmpty()) {
-            throw new KcalsException(constraintViolations.iterator().next().getMessage());
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsWeight = validator.validateProperty(userConditionDTO, "weight");
+        if (!constraintViolationsWeight.isEmpty()) {
+            throw new KcalsException(constraintViolationsWeight.iterator().next().getMessage());
         }
+
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsIntensity = validator.validateProperty(userConditionDTO, "intensity");
+        if (!constraintViolationsIntensity.isEmpty()) {
+            throw new KcalsException(constraintViolationsIntensity.iterator().next().getMessage());
+        }
+
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsGoal = validator.validateProperty(userConditionDTO, "goal");
+        if (!constraintViolationsGoal.isEmpty()) {
+            throw new KcalsException(constraintViolationsGoal.iterator().next().getMessage());
+        }
+
+        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsFatPercent = validator.validateProperty(userConditionDTO, "fatPercent");
+        if (!constraintViolationsFatPercent.isEmpty()) {
+            throw new KcalsException(constraintViolationsFatPercent.iterator().next().getMessage());
+        }
+
 
         int dailyKcals = (int) (formulaKatchMcArdle(userConditionDTO.getWeight(), userConditionDTO.getFatPercent()) * userConditionDTO.getIntensity().getCoefficient());
 

@@ -19,18 +19,6 @@ public class DailyKcalsServiceImplTest {
 
     @Test
     public void generateDailyKcals_shouldThrowException() {
-        int invalidAge = 90;
-        UserConditionDTO userConditionDTO = new UserConditionDTO(10, Gender.MALE, invalidAge, 183, 85, Intensity.AVG, Goal.LOSE, 20);
-
-        assertThrows(KcalsException.class, () -> kcalsInfoService.generateDailyKcals(userConditionDTO));
-
-
-        int invalidHeight = 250;
-        UserConditionDTO userConditionDTO2 = new UserConditionDTO(10, Gender.MALE, 20, invalidHeight, 85, Intensity.AVG, Goal.LOSE, 20);
-
-        assertThrows(KcalsException.class, () -> kcalsInfoService.generateDailyKcals(userConditionDTO2));
-
-
         int invalidWeight = 170;
         UserConditionDTO userConditionDTO3 = new UserConditionDTO(10, Gender.MALE, 183, 183, invalidWeight, Intensity.AVG, Goal.LOSE, 20);
 
@@ -41,5 +29,15 @@ public class DailyKcalsServiceImplTest {
         UserConditionDTO userConditionDTO4 = new UserConditionDTO(10, Gender.MALE, 183, 183, 85, Intensity.AVG, Goal.LOSE, invalidFatPercent);
 
         assertThrows(KcalsException.class, () -> kcalsInfoService.generateDailyKcals(userConditionDTO4));
+
+
+        UserConditionDTO userConditionDTO5 = new UserConditionDTO(10, Gender.MALE, 183, 183, 85, null, Goal.LOSE, invalidFatPercent);
+
+        assertThrows(KcalsException.class, () -> kcalsInfoService.generateDailyKcals(userConditionDTO5));
+
+
+        UserConditionDTO userConditionDTO6 = new UserConditionDTO(10, Gender.MALE, 183, 183, 85, Intensity.AVG, null, invalidFatPercent);
+
+        assertThrows(KcalsException.class, () -> kcalsInfoService.generateDailyKcals(userConditionDTO6));
     }
 }

@@ -64,6 +64,16 @@ public class UserConditionServiceImplTest {
         UserConditionDTO userConditionDTO4 = new UserConditionDTO(10, Gender.MALE, 183, 183, 85, Intensity.AVG, Goal.LOSE, invalidFatPercent);
 
         assertThrows(UserConditionException.class, () -> userConditionService.generateAndSaveCondition(userConditionDTO4));
+
+
+        UserConditionDTO userConditionDTO5 = new UserConditionDTO(10, Gender.MALE, 183, 183, 85, null, Goal.LOSE, 20);
+
+        assertThrows(UserConditionException.class, () -> userConditionService.generateAndSaveCondition(userConditionDTO5));
+
+
+        UserConditionDTO userConditionDTO6 = new UserConditionDTO(10, Gender.MALE, 183, 183, 85, Intensity.AVG, null, 20);
+
+        assertThrows(UserConditionException.class, () -> userConditionService.generateAndSaveCondition(userConditionDTO6));
     }
 
     @Test
@@ -98,25 +108,33 @@ public class UserConditionServiceImplTest {
     public void updateCondition_shouldThrowException() {
         int invalidAge = 90;
         UserConditionDTO userConditionDTO = new UserConditionDTO(1, Gender.MALE, invalidAge, 183, 85, Intensity.AVG, Goal.LOSE, 20);
-
         assertThrows(UserConditionException.class, () -> userConditionService.updateCondition(userConditionDTO));
 
 
         int invalidHeight = 250;
         UserConditionDTO userConditionDTO2 = new UserConditionDTO(1, Gender.MALE, 20, invalidHeight, 85, Intensity.AVG, Goal.LOSE, 20);
-
         assertThrows(UserConditionException.class, () -> userConditionService.updateCondition(userConditionDTO2));
 
 
         int invalidWeight = 170;
         UserConditionDTO userConditionDTO3 = new UserConditionDTO(1, Gender.MALE, 183, 183, invalidWeight, Intensity.AVG, Goal.LOSE, 20);
-
         assertThrows(UserConditionException.class, () -> userConditionService.updateCondition(userConditionDTO3));
 
 
         int invalidFatPercent = 70;
         UserConditionDTO userConditionDTO4 = new UserConditionDTO(1, Gender.MALE, 183, 183, 85, Intensity.AVG, Goal.LOSE, invalidFatPercent);
-
         assertThrows(UserConditionException.class, () -> userConditionService.updateCondition(userConditionDTO4));
+
+
+        UserConditionDTO userConditionDTO5 = new UserConditionDTO(1, Gender.MALE, 20, 183, 85, null, Goal.LOSE, 20);
+        assertThrows(UserConditionException.class, () -> userConditionService.updateCondition(userConditionDTO5));
+
+
+        UserConditionDTO userConditionDTO6 = new UserConditionDTO(1, Gender.MALE, 20, 183, 85, Intensity.AVG, null, 20);
+        assertThrows(UserConditionException.class, () -> userConditionService.updateCondition(userConditionDTO6));
+
+
+        UserConditionDTO userConditionDTO7 = new UserConditionDTO(1, null, 20, 183, 85, Intensity.AVG, Goal.MAINTAIN, 20);
+        assertThrows(UserConditionException.class, () -> userConditionService.updateCondition(userConditionDTO7));
     }
 }

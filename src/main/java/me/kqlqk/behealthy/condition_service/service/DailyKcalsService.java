@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface DailyKcalsService {
-    DailyKcals getById(long id);
-
     DailyKcals getByUserId(long id);
 
     DailyKcals generateDailyKcals(UserConditionDTO userConditionDTO);

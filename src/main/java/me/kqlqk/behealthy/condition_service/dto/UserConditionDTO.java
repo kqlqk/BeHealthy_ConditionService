@@ -10,6 +10,7 @@ import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -19,6 +20,7 @@ public class UserConditionDTO {
 
     private long userId;
 
+    @NotNull(message = "name cannot be null")
     private Gender gender;
 
     @Min(value = 15, message = "Please use valid age (between 15 and 60)")
@@ -33,8 +35,10 @@ public class UserConditionDTO {
     @Max(value = 150, message = "Please use valid weight (between 40 and 90)")
     private int weight;
 
+    @NotNull(message = "name cannot be null")
     private Intensity intensity;
 
+    @NotNull(message = "name cannot be null")
     private Goal goal;
 
     @Min(value = 1, message = "Please use valid fatPercent (between 1 and 50)")

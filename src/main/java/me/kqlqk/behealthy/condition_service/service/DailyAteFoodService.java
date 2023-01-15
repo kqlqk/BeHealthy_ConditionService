@@ -8,8 +8,6 @@ import java.util.List;
 
 @Service
 public interface DailyAteFoodService {
-    DailyAteFood getById(long id);
-
     List<DailyAteFood> getByUserId(long userId);
 
     void add(DailyAteFoodDTO dailyAteFoodDTO);

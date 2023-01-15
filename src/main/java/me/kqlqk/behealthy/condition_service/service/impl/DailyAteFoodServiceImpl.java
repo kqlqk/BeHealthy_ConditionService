@@ -28,11 +28,6 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
     }
 
     @Override
-    public DailyAteFood getById(long id) {
-        return dailyAteFoodRepository.findById(id);
-    }
-
-    @Override
     public List<DailyAteFood> getByUserId(long userId) {
         return dailyAteFoodRepository.findByUserId(userId);
     }
