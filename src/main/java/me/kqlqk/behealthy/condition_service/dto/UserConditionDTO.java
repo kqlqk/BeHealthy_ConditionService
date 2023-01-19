@@ -20,29 +20,29 @@ public class UserConditionDTO {
 
     private long userId;
 
-    @NotNull(message = "name cannot be null")
+    @NotNull(message = "Gender cannot be null")
     private Gender gender;
 
-    @Min(value = 15, message = "Please use valid age (between 15 and 60)")
-    @Max(value = 60, message = "Please use valid age (between 15 and 60)")
+    @Min(value = 15, message = "Age should be between 15 and 60")
+    @Max(value = 60, message = "Age should be between 15 and 60")
     private int age;
 
-    @Min(value = 150, message = "Please use valid height (between 150 and 200)")
-    @Max(value = 200, message = "Please use valid height (between 150 and 200)")
+    @Min(value = 150, message = "Height should be between 150 and 200")
+    @Max(value = 200, message = "Height should be between 150 and 200")
     private int height;
 
-    @Min(value = 40, message = "Please use valid weight (between 40 and 90)")
-    @Max(value = 150, message = "Please use valid weight (between 40 and 90)")
+    @Min(value = 40, message = "Weight should be between 40 and 90")
+    @Max(value = 150, message = "Weight should be between 40 and 90")
     private int weight;
 
-    @NotNull(message = "name cannot be null")
+    @NotNull(message = "Intensity cannot be null")
     private Intensity intensity;
 
-    @NotNull(message = "name cannot be null")
+    @NotNull(message = "Goal cannot be null")
     private Goal goal;
 
-    @Min(value = 1, message = "Please use valid fatPercent (between 1 and 50)")
-    @Max(value = 50, message = "Please use valid fatPercent (between 1 and 50)")
+    @Min(value = 1, message = "FatPercent should be between 1 and 50")
+    @Max(value = 40, message = "FatPercent should be between 1 and 40")
     private double fatPercent;
 
 

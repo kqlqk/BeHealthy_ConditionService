@@ -7,6 +7,7 @@ import me.kqlqk.behealthy.condition_service.model.DailyAteFood;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class DailyAteFoodDTO {
     private long userId;
 
     @Pattern(regexp = ".{2,50}", message = "Product name should be between 2 and 50 characters")
+    @NotEmpty(message = "Name cannot be null")
     private String name;
 
     @DecimalMin(value = "0.1", message = "Weight should be > 0")
