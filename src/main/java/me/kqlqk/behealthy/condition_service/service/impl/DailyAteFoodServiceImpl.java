@@ -64,7 +64,7 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
                 .stream()
                 .filter(product -> product.getId() == id)
                 .findAny()
-                .orElseThrow(() -> new FoodNotFoundException("Daily food with id = " + id + " not found for user with userId = " + id));
+                .orElseThrow(() -> new FoodNotFoundException("Daily food with id = " + id + " not found for user with userId = " + userId));
 
         dailyAteFoodRepository.delete(dailyAteFood);
     }
