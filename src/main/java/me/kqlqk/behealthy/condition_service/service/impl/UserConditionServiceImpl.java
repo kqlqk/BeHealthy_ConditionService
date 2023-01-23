@@ -2,6 +2,8 @@ package me.kqlqk.behealthy.condition_service.service.impl;
 
 import lombok.NonNull;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
+import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentFemaleDTO;
+import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentMaleDTO;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionAlreadyExistsException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
@@ -49,143 +51,85 @@ public class UserConditionServiceImpl implements UserConditionService {
     }
 
     @Override
-    public void generateAndSaveConditionWithoutFatPercentForMale(@NonNull UserConditionDTO userConditionDTO,
-                                                                 int fatFoldBetweenChestAndIlium,
-                                                                 int fatFoldBetweenNavelAndLowerBelly,
-                                                                 int fatFoldBetweenNippleAndArmpit,
-                                                                 int fatFoldBetweenNippleAndUpperChest) {
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsAge = validator.validateProperty(userConditionDTO, "age");
-        if (!constraintViolationsAge.isEmpty()) {
-            throw new UserConditionException(constraintViolationsAge.iterator().next().getMessage());
+    public void generateAndSaveConditionWithoutFatPercent(UserConditionWithoutFatPercentMaleDTO userConditionWithoutFatPercentMaleDTO,
+                                                          UserConditionWithoutFatPercentFemaleDTO userConditionWithoutFatPercentFemaleDTO) {
+        if (userConditionWithoutFatPercentMaleDTO != null) {
+            generateAndSaveConditionWithoutFatPercentForMale(userConditionWithoutFatPercentMaleDTO);
+        } else {
+            generateAndSaveConditionWithoutFatPercentForFemale(userConditionWithoutFatPercentFemaleDTO);
         }
+    }
 
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsHeight = validator.validateProperty(userConditionDTO, "height");
-        if (!constraintViolationsHeight.isEmpty()) {
-            throw new UserConditionException(constraintViolationsHeight.iterator().next().getMessage());
-        }
+    private void generateAndSaveConditionWithoutFatPercentForMale(
+            @NonNull UserConditionWithoutFatPercentMaleDTO userConditionWithoutFatPercentMaleDTO) {
 
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsWeight = validator.validateProperty(userConditionDTO, "weight");
-        if (!constraintViolationsWeight.isEmpty()) {
-            throw new UserConditionException(constraintViolationsWeight.iterator().next().getMessage());
-        }
+        Set<ConstraintViolation<UserConditionWithoutFatPercentMaleDTO>> constraintViolations =
+                validator.validate(userConditionWithoutFatPercentMaleDTO);
 
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsIntensity = validator.validateProperty(userConditionDTO, "intensity");
-        if (!constraintViolationsIntensity.isEmpty()) {
-            throw new UserConditionException(constraintViolationsIntensity.iterator().next().getMessage());
-        }
-
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsGoal = validator.validateProperty(userConditionDTO, "goal");
-        if (!constraintViolationsGoal.isEmpty()) {
-            throw new UserConditionException(constraintViolationsGoal.iterator().next().getMessage());
+        if (!constraintViolations.isEmpty()) {
+            throw new UserConditionException(constraintViolations.iterator().next().getMessage());
         }
 
 
-        if (fatFoldBetweenChestAndIlium < 2 || fatFoldBetweenChestAndIlium > 50) {
-            throw new IllegalArgumentException("Fat fold between chest and ilium should be between 2 and 50");
-        }
-        if (fatFoldBetweenNavelAndLowerBelly < 5 || fatFoldBetweenNavelAndLowerBelly > 70) {
-            throw new IllegalArgumentException("Fat fold between navel and lower belly should be between 5 and 70");
-        }
-        if (fatFoldBetweenNippleAndArmpit < 2 || fatFoldBetweenNippleAndArmpit > 50) {
-            throw new IllegalArgumentException("Fat fold between nipple and armpit should be between 2 and 50");
-        }
-        if (fatFoldBetweenNippleAndUpperChest < 2 || fatFoldBetweenNippleAndUpperChest > 50) {
-            throw new IllegalArgumentException("Fat fold between nipple and upper chest should be between 2 and 50");
-        }
-        if (existsByUserId(userConditionDTO.getUserId())) {
-            throw new UserConditionAlreadyExistsException("User condition with userId = " + userConditionDTO.getUserId() + " already exists");
-        }
-
-        userConditionDTO.setFatPercent(getFatPercent(
-                Gender.MALE,
-                fatFoldBetweenChestAndIlium,
-                fatFoldBetweenNavelAndLowerBelly,
-                fatFoldBetweenNippleAndArmpit,
-                fatFoldBetweenNippleAndUpperChest,
-                0,
-                userConditionDTO.getAge()));
+        UserConditionDTO userConditionDTO = new UserConditionDTO();
+        userConditionDTO.setUserId(userConditionWithoutFatPercentMaleDTO.getUserId());
+        userConditionDTO.setGoal(userConditionWithoutFatPercentMaleDTO.getGoal());
+        userConditionDTO.setGender(Gender.MALE);
+        userConditionDTO.setAge(userConditionWithoutFatPercentMaleDTO.getAge());
+        userConditionDTO.setHeight(userConditionWithoutFatPercentMaleDTO.getHeight());
+        userConditionDTO.setWeight(userConditionWithoutFatPercentMaleDTO.getWeight());
+        userConditionDTO.setIntensity(userConditionWithoutFatPercentMaleDTO.getIntensity());
+        userConditionDTO.setFatPercent(getFatPercent(userConditionWithoutFatPercentMaleDTO, null));
 
         generateAndSaveCondition(userConditionDTO);
     }
 
-    @Override
-    public void generateAndSaveConditionWithoutFatPercentForFemale(@NonNull UserConditionDTO userConditionDTO,
-                                                                   int fatFoldBetweenShoulderAndElbow,
-                                                                   int fatFoldBetweenChestAndIlium,
-                                                                   int fatFoldBetweenNavelAndLowerBelly) {
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsAge = validator.validateProperty(userConditionDTO, "age");
-        if (!constraintViolationsAge.isEmpty()) {
-            throw new UserConditionException(constraintViolationsAge.iterator().next().getMessage());
+    private void generateAndSaveConditionWithoutFatPercentForFemale(
+            @NonNull UserConditionWithoutFatPercentFemaleDTO userConditionWithoutFatPercentFemaleDTO) {
+
+        Set<ConstraintViolation<UserConditionWithoutFatPercentFemaleDTO>> constraintViolations =
+                validator.validate(userConditionWithoutFatPercentFemaleDTO);
+
+        if (!constraintViolations.isEmpty()) {
+            throw new UserConditionException(constraintViolations.iterator().next().getMessage());
         }
 
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsHeight = validator.validateProperty(userConditionDTO, "height");
-        if (!constraintViolationsHeight.isEmpty()) {
-            throw new UserConditionException(constraintViolationsHeight.iterator().next().getMessage());
-        }
-
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsWeight = validator.validateProperty(userConditionDTO, "weight");
-        if (!constraintViolationsWeight.isEmpty()) {
-            throw new UserConditionException(constraintViolationsWeight.iterator().next().getMessage());
-        }
-
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsIntensity = validator.validateProperty(userConditionDTO, "intensity");
-        if (!constraintViolationsIntensity.isEmpty()) {
-            throw new UserConditionException(constraintViolationsIntensity.iterator().next().getMessage());
-        }
-
-        Set<ConstraintViolation<UserConditionDTO>> constraintViolationsGoal = validator.validateProperty(userConditionDTO, "goal");
-        if (!constraintViolationsGoal.isEmpty()) {
-            throw new UserConditionException(constraintViolationsGoal.iterator().next().getMessage());
-        }
-
-
-        if (fatFoldBetweenShoulderAndElbow < 2 || fatFoldBetweenShoulderAndElbow > 50) {
-            throw new IllegalArgumentException("Fat fold between shoulder and elbow should be between 5 and 50");
-        }
-        if (fatFoldBetweenChestAndIlium < 2 || fatFoldBetweenChestAndIlium > 50) {
-            throw new IllegalArgumentException("Fat fold between chest and ilium should be between 5 and 50");
-        }
-        if (fatFoldBetweenNavelAndLowerBelly < 5 || fatFoldBetweenNavelAndLowerBelly > 70) {
-            throw new IllegalArgumentException("Fat fold between navel and lower belly should be between 5 and 70");
-        }
-        if (existsByUserId(userConditionDTO.getUserId())) {
-            throw new UserConditionAlreadyExistsException("User condition with userId = " + userConditionDTO.getUserId() + " already exists");
-        }
-
-        userConditionDTO.setFatPercent(getFatPercent(
-                Gender.FEMALE,
-                fatFoldBetweenChestAndIlium,
-                fatFoldBetweenNavelAndLowerBelly,
-                0,
-                0,
-                fatFoldBetweenShoulderAndElbow,
-                userConditionDTO.getAge()));
+        UserConditionDTO userConditionDTO = new UserConditionDTO();
+        userConditionDTO.setUserId(userConditionWithoutFatPercentFemaleDTO.getUserId());
+        userConditionDTO.setGoal(userConditionWithoutFatPercentFemaleDTO.getGoal());
+        userConditionDTO.setGender(Gender.FEMALE);
+        userConditionDTO.setAge(userConditionWithoutFatPercentFemaleDTO.getAge());
+        userConditionDTO.setHeight(userConditionWithoutFatPercentFemaleDTO.getHeight());
+        userConditionDTO.setWeight(userConditionWithoutFatPercentFemaleDTO.getWeight());
+        userConditionDTO.setIntensity(userConditionWithoutFatPercentFemaleDTO.getIntensity());
+        userConditionDTO.setFatPercent(getFatPercent(null, userConditionWithoutFatPercentFemaleDTO));
 
         generateAndSaveCondition(userConditionDTO);
     }
 
-    protected double getFatPercent(Gender gender,
-                                   int fatFoldBetweenChestAndIlium,
-                                   int fatFoldBetweenNavelAndLowerBelly,
-                                   int fatFoldBetweenNippleAndArmpit,
-                                   int fatFoldBetweenNippleAndUpperChest,
-                                   int fatFoldBetweenShoulderAndElbow,
-                                   int age) {
-        switch (gender) {
-            case MALE:
-                return (
-                        (0.27784 * (fatFoldBetweenChestAndIlium + fatFoldBetweenNavelAndLowerBelly + fatFoldBetweenNippleAndArmpit + fatFoldBetweenNippleAndUpperChest)) -
-                                (0.00053 * (Math.pow(fatFoldBetweenChestAndIlium, 2) + Math.pow(fatFoldBetweenNavelAndLowerBelly, 2) + Math.pow(fatFoldBetweenNippleAndArmpit, 2) + Math.pow(fatFoldBetweenNippleAndUpperChest, 2))) +
-                                (0.12437 * age)) - 3.28791;
-
-            case FEMALE:
-                return (
-                        (0.41563 * (fatFoldBetweenShoulderAndElbow + fatFoldBetweenChestAndIlium + fatFoldBetweenNavelAndLowerBelly)) -
-                                (0.00112 * (Math.pow(fatFoldBetweenShoulderAndElbow, 2) + Math.pow(fatFoldBetweenChestAndIlium, 2) + Math.pow(fatFoldBetweenNavelAndLowerBelly, 2))) +
-                                (0.03661 * age)) - 4.03653;
+    protected double getFatPercent(UserConditionWithoutFatPercentMaleDTO userConditionWithoutFatPercentMaleDTO,
+                                   UserConditionWithoutFatPercentFemaleDTO userConditionWithoutFatPercentFemaleDTO) {
+        if (userConditionWithoutFatPercentMaleDTO != null) {
+            return (
+                    (0.27784 * (userConditionWithoutFatPercentMaleDTO.getFatFoldBetweenChestAndIlium() +
+                            userConditionWithoutFatPercentMaleDTO.getFatFoldBetweenNavelAndLowerBelly() +
+                            userConditionWithoutFatPercentMaleDTO.getFatFoldBetweenNippleAndArmpit() +
+                            userConditionWithoutFatPercentMaleDTO.getFatFoldBetweenNippleAndUpperChest())) -
+                            (0.00053 * (Math.pow(userConditionWithoutFatPercentMaleDTO.getFatFoldBetweenChestAndIlium(), 2) +
+                                    Math.pow(userConditionWithoutFatPercentMaleDTO.getFatFoldBetweenNavelAndLowerBelly(), 2) +
+                                    Math.pow(userConditionWithoutFatPercentMaleDTO.getFatFoldBetweenNippleAndArmpit(), 2) +
+                                    Math.pow(userConditionWithoutFatPercentMaleDTO.getFatFoldBetweenNippleAndUpperChest(), 2))) +
+                            (0.12437 * userConditionWithoutFatPercentMaleDTO.getAge())) - 3.28791;
+        } else {
+            return (
+                    (0.41563 * (userConditionWithoutFatPercentFemaleDTO.getFatFoldBetweenShoulderAndElbow() +
+                            userConditionWithoutFatPercentFemaleDTO.getFatFoldBetweenChestAndIlium() +
+                            userConditionWithoutFatPercentFemaleDTO.getFatFoldBetweenNavelAndLowerBelly())) -
+                            (0.00112 * (Math.pow(userConditionWithoutFatPercentFemaleDTO.getFatFoldBetweenShoulderAndElbow(), 2) +
+                                    Math.pow(userConditionWithoutFatPercentFemaleDTO.getFatFoldBetweenChestAndIlium(), 2) +
+                                    Math.pow(userConditionWithoutFatPercentFemaleDTO.getFatFoldBetweenNavelAndLowerBelly(), 2))) +
+                            (0.03661 * userConditionWithoutFatPercentFemaleDTO.getAge())) - 4.03653;
         }
-
-        return 0;
     }
 
     @Override
