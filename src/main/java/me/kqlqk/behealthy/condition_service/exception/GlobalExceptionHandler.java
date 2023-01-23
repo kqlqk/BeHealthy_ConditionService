@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.ServletException;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler({RuntimeException.class, ServletException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionDTO handle(Exception e) {
         ExceptionDTO exceptionDTO = new ExceptionDTO();
