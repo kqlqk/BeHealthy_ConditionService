@@ -3,6 +3,8 @@ package integration.me.kqlqk.behealthy.condition_service.controller.rest.v1;
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
+import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentFemaleDTO;
+import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentMaleDTO;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
@@ -87,6 +89,114 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Required request body is missing")));
 
         mockMvc.perform(post("/api/v1/condition")
+                        .param("userId", "1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonConditionDTO))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("UserConditionAlreadyExists | User condition with userId = 1 already exists")));
+
+    }
+
+    @Test
+    public void createUserConditionWithoutFatPercentMale_shouldCreateUserConditionWithoutFatPercentForMale() throws Exception {
+        UserConditionWithoutFatPercentMaleDTO userConditionWithoutFatPercentMaleDTO =
+                new UserConditionWithoutFatPercentMaleDTO(1, 19, 195, 80, Intensity.MAX, Goal.MAINTAIN, 12, 17, 20, 22);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(userConditionWithoutFatPercentMaleDTO);
+
+        int oldUserConditionSize = userConditionRepository.findAll().size();
+        int oldKcalsInfoSize = dailyKcalsRepository.findAll().size();
+
+        mockMvc.perform(post("/api/v1/condition/male/fatPercent")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("userId", "3")
+                        .content(json))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        int newUserConditionSize = userConditionRepository.findAll().size();
+        int newKcalsInfoSize = dailyKcalsRepository.findAll().size();
+
+        assertThat(newUserConditionSize).isEqualTo(oldUserConditionSize + 1);
+        assertThat(newKcalsInfoSize).isEqualTo(oldKcalsInfoSize + 1);
+    }
+
+    @Test
+    public void createUserConditionWithoutFatPercentMale_shouldReturnJsonWithException() throws Exception {
+        UserConditionWithoutFatPercentMaleDTO userConditionWithoutFatPercentMaleDTO =
+                new UserConditionWithoutFatPercentMaleDTO(1, 19, 195, 80, Intensity.MAX, Goal.MAINTAIN, 12, 17, 20, 22);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonConditionDTO = objectMapper.writeValueAsString(userConditionWithoutFatPercentMaleDTO);
+
+        mockMvc.perform(post("/api/v1/condition/male/fatPercent")
+                        .param("userId", "3")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request body is missing")));
+
+        mockMvc.perform(post("/api/v1/condition/male/fatPercent")
+                        .param("userId", "1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonConditionDTO))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("UserConditionAlreadyExists | User condition with userId = 1 already exists")));
+
+    }
+
+    @Test
+    public void createUserConditionWithoutFatPercentFemale_shouldCreateUserConditionWithoutFatPercentForFemale() throws Exception {
+        UserConditionWithoutFatPercentFemaleDTO userConditionWithoutFatPercentFemaleDTO =
+                new UserConditionWithoutFatPercentFemaleDTO(1, 19, 193, 80, Intensity.MAX, Goal.MAINTAIN, 15, 12, 17);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(userConditionWithoutFatPercentFemaleDTO);
+
+        int oldUserConditionSize = userConditionRepository.findAll().size();
+        int oldKcalsInfoSize = dailyKcalsRepository.findAll().size();
+
+        mockMvc.perform(post("/api/v1/condition/female/fatPercent")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("userId", "3")
+                        .content(json))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        int newUserConditionSize = userConditionRepository.findAll().size();
+        int newKcalsInfoSize = dailyKcalsRepository.findAll().size();
+
+        assertThat(newUserConditionSize).isEqualTo(oldUserConditionSize + 1);
+        assertThat(newKcalsInfoSize).isEqualTo(oldKcalsInfoSize + 1);
+    }
+
+    @Test
+    public void createUserConditionWithoutFatPercentFemale_shouldReturnJsonWithException() throws Exception {
+        UserConditionWithoutFatPercentFemaleDTO userConditionWithoutFatPercentFemaleDTO =
+                new UserConditionWithoutFatPercentFemaleDTO(1, 19, 193, 80, Intensity.MAX, Goal.MAINTAIN, 15, 12, 17);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonConditionDTO = objectMapper.writeValueAsString(userConditionWithoutFatPercentFemaleDTO);
+
+        mockMvc.perform(post("/api/v1/condition/female/fatPercent")
+                        .param("userId", "3")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request body is missing")));
+
+        mockMvc.perform(post("/api/v1/condition/female/fatPercent")
                         .param("userId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonConditionDTO))

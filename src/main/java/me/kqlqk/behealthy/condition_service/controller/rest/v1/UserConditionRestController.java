@@ -1,6 +1,8 @@
 package me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
+import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentFemaleDTO;
+import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentMaleDTO;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyKcals;
 import me.kqlqk.behealthy.condition_service.service.DailyKcalsService;
@@ -25,6 +27,24 @@ public class UserConditionRestController {
     public ResponseEntity<?> createUserCondition(@RequestParam long userId, @RequestBody UserConditionDTO userConditionDTO) {
         userConditionDTO.setUserId(userId);
         userConditionService.generateAndSaveCondition(userConditionDTO);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/condition/male/fatPercent")
+    public ResponseEntity<?> createUserConditionWithoutFatPercentMale(@RequestParam long userId,
+                                                                      @RequestBody UserConditionWithoutFatPercentMaleDTO userConditionWithoutFatPercentMaleDTO) {
+        userConditionWithoutFatPercentMaleDTO.setUserId(userId);
+        userConditionService.generateAndSaveConditionWithoutFatPercent(userConditionWithoutFatPercentMaleDTO, null);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/condition/female/fatPercent")
+    public ResponseEntity<?> createUserConditionWithoutFatPercentFemale(@RequestParam long userId,
+                                                                        @RequestBody UserConditionWithoutFatPercentFemaleDTO userConditionWithoutFatPercentFemaleDTO) {
+        userConditionWithoutFatPercentFemaleDTO.setUserId(userId);
+        userConditionService.generateAndSaveConditionWithoutFatPercent(null, userConditionWithoutFatPercentFemaleDTO);
 
         return ResponseEntity.ok().build();
     }
