@@ -1,4 +1,5 @@
 target/
+src/main/resources/user_photo/
 ### IntelliJ IDEA ###
 .idea
 *.iws
