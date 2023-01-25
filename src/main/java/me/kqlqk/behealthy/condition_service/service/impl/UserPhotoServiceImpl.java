@@ -22,7 +22,7 @@ import java.util.Set;
 
 @Service
 public class UserPhotoServiceImpl implements UserPhotoService {
-    private static final String USER_PHOTO_DIRECTORY = "C:\\Users\\kqlqk\\Desktop\\BeHealthy_project\\BeHealthy_ConditionService\\src\\main\\resources\\user_photo\\";
+    private static final String USER_PHOTO_TEMP_DIRECTORY = "BeHealthy_ConditionService\\src\\main\\resources\\user_photo\\";
 
     private final UserPhotoRepository userPhotoRepository;
     private final Validator validator;
@@ -73,7 +73,7 @@ public class UserPhotoServiceImpl implements UserPhotoService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
 
         String photoName = userId + "--" + dateFormat.format(photoDate);
-        String path = USER_PHOTO_DIRECTORY + photoName + ".jpg";
+        String path = USER_PHOTO_TEMP_DIRECTORY + photoName + ".jpg";
 
         byte[] decodedBytes = Base64.getDecoder().decode(encodedPhoto);
         try {
