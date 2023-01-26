@@ -1,5 +1,6 @@
 target/
 src/main/resources/user_photo/
+src/test/resources/tmp_files/
 ### IntelliJ IDEA ###
 .idea
 *.iws
