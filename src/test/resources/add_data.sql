@@ -36,4 +36,4 @@ values (2, 'rice', 100, 350, 10, 3, 70);
 
 
 insert into user_condition_photo(user_id, photo_path, photo_date)
-values (1, '/test/temp/1--20-12-23', '2023-12-20')
+values (1, '/src/test/resources/tmp_files/1--20-12-23', '2023-12-20')

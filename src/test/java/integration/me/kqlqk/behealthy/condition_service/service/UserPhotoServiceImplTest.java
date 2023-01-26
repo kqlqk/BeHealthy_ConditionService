@@ -23,6 +23,21 @@ public class UserPhotoServiceImplTest {
 
 
     @Test
+    public void getDTOWithEncodedPhoto_ShouldReturnUserPhotoDTO() throws IOException {
+        userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
+        UserPhotoDTO dto = new UserPhotoDTO(1, "someString", "02-01-23");
+        userPhotoService.savePhoto(dto);
+
+        UserPhotoDTO userPhotoDTO = userPhotoService.getDTOWithEncodedPhoto(1, "02-01-23");
+
+        File dir = new File("src/test/resources/tmp_files/");
+        FileUtils.cleanDirectory(dir);
+
+        assertThat(userPhotoDTO.getEncodedPhoto()).isNotNull();
+        assertThat(userPhotoDTO.getPhotoDate()).isNotNull();
+    }
+
+    @Test
     public void savePhoto_shouldSavePhotoToDB() throws IOException {
         userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
 
