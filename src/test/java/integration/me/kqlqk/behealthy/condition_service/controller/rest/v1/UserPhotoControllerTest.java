@@ -15,6 +15,7 @@ import java.io.File;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -30,6 +31,38 @@ public class UserPhotoControllerTest {
 
     @Autowired
     private UserPhotoServiceImpl userPhotoService;
+
+    @Test
+    public void getUserPhotoByDate_shouldReturnUserPhotoByUserIdAndDate() throws Exception {
+        userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
+        UserPhotoDTO dto = new UserPhotoDTO(1, "someString", "02-01-23");
+        userPhotoService.savePhoto(dto);
+
+        mockMvc.perform(get("/api/v1/photo")
+                        .param("userId", "1")
+                        .param("date", "02-01-23"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.userId").exists())
+                .andExpect(jsonPath("$.encodedPhoto").exists())
+                .andExpect(jsonPath("$.photoDate").exists());
+
+        File dir = new File("src/test/resources/tmp_files/");
+        FileUtils.cleanDirectory(dir);
+    }
+
+    @Test
+    public void getUserPhotoByDate_shouldReturnJsonWithException() throws Exception {
+        mockMvc.perform(get("/api/v1/photo")
+                        .param("userId", "1")
+                        .param("date", "12-01-233"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("UserPhotoNotFound | User photo with userId = 1 and date = 12-01-233 not found")));
+    }
 
     @Test
     public void saveUserPhoto_shouldSaveUserPhoto() throws Exception {
