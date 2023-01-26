@@ -1,6 +1,7 @@
 drop table if exists user_condition;
 drop table if exists daily_kcals;
 drop table if exists daily_ate_food;
+drop table if exists user_condition_photo;
 
 create table daily_ate_food
 (
@@ -44,4 +45,14 @@ create table user_condition
         references daily_kcals (id)
         on update cascade
         on delete cascade
+);
+
+create table user_condition_photo
+(
+    id         bigint  not null unique auto_increment,
+    user_id    bigint  not null,
+    photo_path varchar not null unique,
+    photo_date date    not null,
+
+    primary key (id)
 );
