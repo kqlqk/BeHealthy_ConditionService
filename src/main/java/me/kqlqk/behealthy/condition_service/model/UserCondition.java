@@ -9,7 +9,7 @@ import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_condition", schema = "public", catalog = "conditionservicedb")
+@Table(name = "user_condition", schema = "public", catalog = "condition_service_db")
 @Data
 @NoArgsConstructor
 public class UserCondition {
@@ -22,7 +22,7 @@ public class UserCondition {
     private long userId;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "kcals_info_id", referencedColumnName = "id")
+    @JoinColumn(name = "daily_kcals_id", referencedColumnName = "id")
     private DailyKcals dailyKcals;
 
     @Enumerated(EnumType.STRING)

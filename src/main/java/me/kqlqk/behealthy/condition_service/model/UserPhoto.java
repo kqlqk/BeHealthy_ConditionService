@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "user_condition_photo", schema = "public", catalog = "conditionservicedb")
+@Table(name = "user_condition_photo", schema = "public", catalog = "condition_service_db")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

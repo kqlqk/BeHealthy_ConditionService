@@ -15,10 +15,10 @@ insert into daily_kcals (proteins, fats, carbs)
 values (90, 80, 60);
 
 
-insert into user_condition (user_id, kcals_info_id, gender, age, height, weight, intensity, goal, fat_percent)
+insert into user_condition (user_id, daily_kcals_id, gender, age, height, weight, intensity, goal, fat_percent)
 values (1, 1, 'MALE', 19, 190, 70, 'MAX', 'LOSE', 14.3);
 
-insert into user_condition (user_id, kcals_info_id, gender, age, height, weight, intensity, goal, fat_percent)
+insert into user_condition (user_id, daily_kcals_id, gender, age, height, weight, intensity, goal, fat_percent)
 values (2, 2, 'FEMALE', 25, 160, 60, 'AVG', 'MAINTAIN', 13.4);
 
 
