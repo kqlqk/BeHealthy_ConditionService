@@ -44,10 +44,22 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
         dailyAteFood.setUserId(dailyAteFoodDTO.getUserId());
         dailyAteFood.setName(dailyAteFoodDTO.getName());
         dailyAteFood.setWeight(dailyAteFoodDTO.getWeight());
-        dailyAteFood.setKcals(dailyAteFoodDTO.getKcals());
         dailyAteFood.setProteins(dailyAteFoodDTO.getProteins());
         dailyAteFood.setFats(dailyAteFoodDTO.getFats());
         dailyAteFood.setCarbs(dailyAteFoodDTO.getCarbs());
+
+        if (dailyAteFoodDTO.getProteins() == 0) {
+            dailyAteFood.setKcals(dailyAteFoodDTO.getWeight() / 100 * (dailyAteFood.getFats() * 9 + dailyAteFoodDTO.getCarbs() * 4));
+        }
+        else if (dailyAteFoodDTO.getFats() == 0) {
+            dailyAteFood.setKcals(dailyAteFoodDTO.getWeight() / 100 * (dailyAteFoodDTO.getProteins() * 4 + dailyAteFoodDTO.getCarbs() * 4));
+        }
+        else if (dailyAteFoodDTO.getCarbs() == 0) {
+            dailyAteFood.setKcals(dailyAteFoodDTO.getWeight() / 100 * (dailyAteFoodDTO.getProteins() * 4 + dailyAteFood.getFats() * 9));
+        }
+        else {
+            dailyAteFood.setKcals(dailyAteFoodDTO.getWeight() / 100 * (dailyAteFoodDTO.getProteins() * 4 + dailyAteFood.getFats() * 9 + dailyAteFoodDTO.getCarbs() * 4));
+        }
 
         dailyAteFoodRepository.save(dailyAteFood);
     }

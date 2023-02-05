@@ -28,8 +28,6 @@ public class DailyAteFoodDTO {
     @DecimalMax(value = "9999.9", message = "Weight should be < 10000")
     private double weight;
 
-    @DecimalMin(value = "0.0", message = "Kcals should be > 0")
-    @DecimalMax(value = "999.9", message = "Kcals should be < 1000")
     private double kcals;
 
     @DecimalMin(value = "0.0", message = "Proteins should be > 0")
@@ -44,11 +42,10 @@ public class DailyAteFoodDTO {
     @DecimalMax(value = "999.9", message = "Carbs should be < 1000")
     private double carbs;
 
-    public DailyAteFoodDTO(long userId, String name, double weight, double kcals, double proteins, double fats, double carbs) {
+    public DailyAteFoodDTO(long userId, String name, double weight, double proteins, double fats, double carbs) {
         this.userId = userId;
         this.name = name;
         this.weight = weight;
-        this.kcals = kcals;
         this.proteins = proteins;
         this.fats = fats;
         this.carbs = carbs;
