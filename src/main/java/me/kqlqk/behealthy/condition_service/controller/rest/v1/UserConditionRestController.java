@@ -1,5 +1,6 @@
 package me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
+import me.kqlqk.behealthy.condition_service.dto.DailyKcalsDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentFemaleDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentMaleDTO;
@@ -69,5 +70,12 @@ public class UserConditionRestController {
     @GetMapping("/kcals")
     public DailyKcals getDailyKcalsByUserId(@RequestParam long userId) {
         return dailyKcalsService.getByUserId(userId);
+    }
+
+    @PutMapping("/kcals")
+    public ResponseEntity<?> updateDailyKcalsByUserId(@RequestParam long userId, @RequestBody DailyKcalsDTO dailyKcalsDTO) {
+        dailyKcalsService.updateDailyKcals(userId, dailyKcalsDTO);
+
+        return ResponseEntity.ok().build();
     }
 }

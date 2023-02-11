@@ -1,11 +1,14 @@
 package me.kqlqk.behealthy.condition_service.service.impl;
 
 import lombok.NonNull;
+import me.kqlqk.behealthy.condition_service.dto.DailyKcalsDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
+import me.kqlqk.behealthy.condition_service.exception.exceptions.DailyKcalsNotFoundException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.KcalsException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyKcals;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
+import me.kqlqk.behealthy.condition_service.repository.DailyKcalsRepository;
 import me.kqlqk.behealthy.condition_service.service.DailyKcalsService;
 import me.kqlqk.behealthy.condition_service.service.UserConditionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +26,12 @@ public class DailyKcalsServiceImpl implements DailyKcalsService {
 
     private final Validator validator;
     private UserConditionService userConditionService;
+    private final DailyKcalsRepository dailyKcalsRepository;
 
     @Autowired
-    public DailyKcalsServiceImpl(Validator validator) {
+    public DailyKcalsServiceImpl(Validator validator, DailyKcalsRepository dailyKcalsRepository) {
         this.validator = validator;
+        this.dailyKcalsRepository = dailyKcalsRepository;
     }
 
     @Autowired
@@ -44,6 +49,20 @@ public class DailyKcalsServiceImpl implements DailyKcalsService {
         UserCondition userCondition = userConditionService.getByUserId(id);
 
         return userCondition.getDailyKcals();
+    }
+
+    @Override
+    public void updateDailyKcals(long userId, DailyKcalsDTO dailyKcalsDTO) {
+        if (!userConditionService.existsByUserId(userId)) {
+            throw new DailyKcalsNotFoundException("UserCondition with userId = " + userId + " not found");
+        }
+
+        DailyKcals dailyKcals = getByUserId(userId);
+        dailyKcals.setProtein(dailyKcalsDTO.getProtein());
+        dailyKcals.setFat(dailyKcalsDTO.getFat());
+        dailyKcals.setCarb(dailyKcalsDTO.getCarb());
+
+        dailyKcalsRepository.save(dailyKcals);
     }
 
 

@@ -2,6 +2,7 @@ package integration.me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.kqlqk.behealthy.condition_service.dto.DailyKcalsDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentFemaleDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentMaleDTO;
@@ -321,12 +322,27 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.carb").exists());
 
         mockMvc.perform(get("/api/v1/kcals")
-                        .param("userId", "99")
-                        .contentType(MediaType.APPLICATION_JSON))
+                                .param("userId", "99")
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("UserConditionNotFound | User condition with userId = 99 not found")));
+    }
+
+    @Test
+    public void updateDailyKcals_shouldUpdateDailyKcals() throws Exception {
+        DailyKcalsDTO dailyKcalsDTO = new DailyKcalsDTO(1, 1, 1, 1);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonDailyKcalsDTO = objectMapper.writeValueAsString(dailyKcalsDTO);
+
+        mockMvc.perform(put("/api/v1/kcals")
+                                .param("userId", "1")
+                                .content(jsonDailyKcalsDTO)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }

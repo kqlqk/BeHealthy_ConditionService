@@ -55,7 +55,8 @@ public class UserConditionServiceImpl implements UserConditionService {
                                                           UserConditionWithoutFatPercentFemaleDTO userConditionWithoutFatPercentFemaleDTO) {
         if (userConditionWithoutFatPercentMaleDTO != null) {
             generateAndSaveConditionWithoutFatPercentForMale(userConditionWithoutFatPercentMaleDTO);
-        } else {
+        }
+        else {
             generateAndSaveConditionWithoutFatPercentForFemale(userConditionWithoutFatPercentFemaleDTO);
         }
     }
@@ -120,7 +121,8 @@ public class UserConditionServiceImpl implements UserConditionService {
                                     Math.pow(userConditionWithoutFatPercentMaleDTO.getFatFoldBetweenNippleAndArmpit(), 2) +
                                     Math.pow(userConditionWithoutFatPercentMaleDTO.getFatFoldBetweenNippleAndUpperChest(), 2))) +
                             (0.12437 * userConditionWithoutFatPercentMaleDTO.getAge())) - 3.28791;
-        } else {
+        }
+        else {
             return (
                     (0.41563 * (userConditionWithoutFatPercentFemaleDTO.getFatFoldBetweenShoulderAndElbow() +
                             userConditionWithoutFatPercentFemaleDTO.getFatFoldBetweenChestAndIlium() +
