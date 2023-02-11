@@ -20,7 +20,13 @@ public class OwnDailyKcalsServiceImpl implements OwnDailyKcalsService {
 
     @Override
     public OwnDailyKcals getByUserId(long userId) {
-        return ownDailyKcalsRepository.findByUserId(userId);
+        OwnDailyKcals ownDailyKcals = ownDailyKcalsRepository.findByUserId(userId);
+
+        if (ownDailyKcals == null) {
+            throw new OwnDailyKcalsNotFoundException("OwnDailyKcals with userId = " + userId + " not found");
+        }
+
+        return ownDailyKcals;
     }
 
     @Override
