@@ -6,6 +6,7 @@ import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentFe
 import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentMaleDTO;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyKcals;
+import me.kqlqk.behealthy.condition_service.model.OwnDailyKcals;
 import me.kqlqk.behealthy.condition_service.service.DailyKcalsService;
 import me.kqlqk.behealthy.condition_service.service.OwnDailyKcalsService;
 import me.kqlqk.behealthy.condition_service.service.UserConditionService;
@@ -75,7 +76,12 @@ public class UserConditionRestController {
         return dailyKcalsService.getByUserId(userId);
     }
 
-    @PostMapping("/kcals")
+    @GetMapping("/own/kcals")
+    public OwnDailyKcals getOwnDailyKcalsByUserId(@RequestParam long userId) {
+        return ownDailyKcalsService.getByUserId(userId);
+    }
+
+    @PostMapping("/own/kcals")
     public ResponseEntity<?> createOwnDailyKcals(@RequestParam long userId, @RequestBody OwnDailyKcalsDTO ownDailyKcalsDTO) {
         ownDailyKcalsDTO.setUserId(userId);
         ownDailyKcalsService.save(ownDailyKcalsDTO);
@@ -83,7 +89,7 @@ public class UserConditionRestController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/kcals")
+    @PutMapping("/own/kcals")
     public ResponseEntity<?> updateOwnDailyKcals(@RequestParam long userId, @RequestBody OwnDailyKcalsDTO ownDailyKcalsDTO) {
         ownDailyKcalsDTO.setUserId(userId);
         ownDailyKcalsService.update(ownDailyKcalsDTO);

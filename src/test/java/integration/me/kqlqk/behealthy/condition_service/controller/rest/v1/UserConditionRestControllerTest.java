@@ -331,6 +331,20 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("UserConditionNotFound | User condition with userId = 99 not found")));
     }
 
+    @Test
+    public void getOwnDailyKcalsByUserId_shouldReturnOwnDailyKcalsByUserId() throws Exception {
+        mockMvc.perform(get("/api/v1/own/kcals")
+                                .param("userId", "1")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.protein").exists())
+                .andExpect(jsonPath("$.fat").exists())
+                .andExpect(jsonPath("$.carb").exists())
+                .andExpect(jsonPath("$.userId").exists());
+    }
 
     @Test
     public void createDailyKcals_shouldCreateDailyKcals() throws Exception {
