@@ -29,7 +29,7 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
 
     @Override
     public List<DailyAteFood> getByUserId(long userId) {
-        return dailyAteFoodRepository.findByUserId(userId);
+        return dailyAteFoodRepository.findByUserIdOrderByIdAsc(userId);
     }
 
     @Override
