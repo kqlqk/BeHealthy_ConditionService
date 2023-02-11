@@ -1,10 +1,8 @@
 package integration.me.kqlqk.behealthy.condition_service.service;
 
 import annotations.ServiceTest;
-import me.kqlqk.behealthy.condition_service.dto.DailyKcalsDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.KcalsException;
-import me.kqlqk.behealthy.condition_service.model.DailyKcals;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
 import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
@@ -12,28 +10,12 @@ import me.kqlqk.behealthy.condition_service.service.impl.DailyKcalsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ServiceTest
 public class DailyKcalsServiceImplTest {
     @Autowired
     private DailyKcalsServiceImpl dailyKcalsService;
-
-    @Test
-    public void updateDailyKcals_shouldUpdateDailyKcals() {
-        DailyKcalsDTO dailyKcalsDTO = new DailyKcalsDTO();
-        dailyKcalsDTO.setProtein(99);
-        dailyKcalsDTO.setFat(99);
-        dailyKcalsDTO.setCarb(99);
-
-        dailyKcalsService.updateDailyKcals(1L, dailyKcalsDTO);
-
-        DailyKcals updatedDailyKcals = dailyKcalsService.getByUserId(1L);
-        assertEquals(99, updatedDailyKcals.getProtein());
-        assertEquals(99, updatedDailyKcals.getFat());
-        assertEquals(99, updatedDailyKcals.getCarb());
-    }
 
     @Test
     public void generateDailyKcals_shouldThrowException() {

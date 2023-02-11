@@ -2,7 +2,7 @@ package integration.me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.kqlqk.behealthy.condition_service.dto.DailyKcalsDTO;
+import me.kqlqk.behealthy.condition_service.dto.OwnDailyKcalsDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentFemaleDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentMaleDTO;
@@ -331,16 +331,32 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("UserConditionNotFound | User condition with userId = 99 not found")));
     }
 
+
     @Test
-    public void updateDailyKcals_shouldUpdateDailyKcals() throws Exception {
-        DailyKcalsDTO dailyKcalsDTO = new DailyKcalsDTO(1, 1, 1, 1);
+    public void createDailyKcals_shouldCreateDailyKcals() throws Exception {
+        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO(1, 1, 1, 2);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonDailyKcalsDTO = objectMapper.writeValueAsString(dailyKcalsDTO);
+        String jsonOwnDailyKcalsDTO = objectMapper.writeValueAsString(ownDailyKcalsDTO);
+
+        mockMvc.perform(post("/api/v1/kcals")
+                                .param("userId", "2")
+                                .content(jsonOwnDailyKcalsDTO)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateDailyKcals_shouldUpdateDailyKcals() throws Exception {
+        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO(1, 1, 1, 1);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonOwnDailyKcalsDTO = objectMapper.writeValueAsString(ownDailyKcalsDTO);
 
         mockMvc.perform(put("/api/v1/kcals")
                                 .param("userId", "1")
-                                .content(jsonDailyKcalsDTO)
+                                .content(jsonOwnDailyKcalsDTO)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());

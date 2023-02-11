@@ -2,6 +2,7 @@ drop table if exists user_condition;
 drop table if exists daily_kcals;
 drop table if exists daily_ate_food;
 drop table if exists user_condition_photo;
+drop table if exists own_daily_kcals;
 
 create table daily_ate_food
 (
@@ -53,6 +54,17 @@ create table user_condition_photo
     user_id    bigint  not null,
     photo_path varchar not null unique,
     photo_date date    not null,
+
+    primary key (id)
+);
+
+create table own_daily_kcals
+(
+    id       bigint   not null unique auto_increment,
+    proteins smallint not null,
+    fats     smallint not null,
+    carbs    smallint not null,
+    user_id  bigint   not null,
 
     primary key (id)
 );

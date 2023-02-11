@@ -1,9 +1,7 @@
 package me.kqlqk.behealthy.condition_service.service.impl;
 
 import lombok.NonNull;
-import me.kqlqk.behealthy.condition_service.dto.DailyKcalsDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
-import me.kqlqk.behealthy.condition_service.exception.exceptions.DailyKcalsNotFoundException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.KcalsException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyKcals;
@@ -50,21 +48,6 @@ public class DailyKcalsServiceImpl implements DailyKcalsService {
 
         return userCondition.getDailyKcals();
     }
-
-    @Override
-    public void updateDailyKcals(long userId, DailyKcalsDTO dailyKcalsDTO) {
-        if (!userConditionService.existsByUserId(userId)) {
-            throw new DailyKcalsNotFoundException("UserCondition with userId = " + userId + " not found");
-        }
-
-        DailyKcals dailyKcals = getByUserId(userId);
-        dailyKcals.setProtein(dailyKcalsDTO.getProtein());
-        dailyKcals.setFat(dailyKcalsDTO.getFat());
-        dailyKcals.setCarb(dailyKcalsDTO.getCarb());
-
-        dailyKcalsRepository.save(dailyKcals);
-    }
-
 
     @Override
     public DailyKcals generateDailyKcals(@NonNull UserConditionDTO userConditionDTO) {

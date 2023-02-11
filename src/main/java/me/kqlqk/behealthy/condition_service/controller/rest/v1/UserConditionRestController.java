@@ -1,12 +1,13 @@
 package me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
-import me.kqlqk.behealthy.condition_service.dto.DailyKcalsDTO;
+import me.kqlqk.behealthy.condition_service.dto.OwnDailyKcalsDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentFemaleDTO;
 import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentMaleDTO;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyKcals;
 import me.kqlqk.behealthy.condition_service.service.DailyKcalsService;
+import me.kqlqk.behealthy.condition_service.service.OwnDailyKcalsService;
 import me.kqlqk.behealthy.condition_service.service.UserConditionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserConditionRestController {
     private final UserConditionService userConditionService;
     private final DailyKcalsService dailyKcalsService;
+    private final OwnDailyKcalsService ownDailyKcalsService;
 
     @Autowired
-    public UserConditionRestController(UserConditionService userConditionService, DailyKcalsService dailyKcalsService) {
+    public UserConditionRestController(UserConditionService userConditionService, DailyKcalsService dailyKcalsService, OwnDailyKcalsService ownDailyKcalsService) {
         this.userConditionService = userConditionService;
         this.dailyKcalsService = dailyKcalsService;
+        this.ownDailyKcalsService = ownDailyKcalsService;
     }
 
     @PostMapping("/condition")
@@ -72,9 +75,18 @@ public class UserConditionRestController {
         return dailyKcalsService.getByUserId(userId);
     }
 
+    @PostMapping("/kcals")
+    public ResponseEntity<?> createOwnDailyKcals(@RequestParam long userId, @RequestBody OwnDailyKcalsDTO ownDailyKcalsDTO) {
+        ownDailyKcalsDTO.setUserId(userId);
+        ownDailyKcalsService.save(ownDailyKcalsDTO);
+
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/kcals")
-    public ResponseEntity<?> updateDailyKcalsByUserId(@RequestParam long userId, @RequestBody DailyKcalsDTO dailyKcalsDTO) {
-        dailyKcalsService.updateDailyKcals(userId, dailyKcalsDTO);
+    public ResponseEntity<?> updateOwnDailyKcals(@RequestParam long userId, @RequestBody OwnDailyKcalsDTO ownDailyKcalsDTO) {
+        ownDailyKcalsDTO.setUserId(userId);
+        ownDailyKcalsService.update(ownDailyKcalsDTO);
 
         return ResponseEntity.ok().build();
     }

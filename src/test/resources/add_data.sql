@@ -6,6 +6,8 @@ delete
 from daily_ate_food;
 delete
 from user_condition_photo;
+delete
+from own_daily_kcals;
 
 
 insert into daily_kcals (proteins, fats, carbs)
@@ -36,4 +38,8 @@ values (2, 'rice', 100, 350, 10, 3, 70);
 
 
 insert into user_condition_photo(user_id, photo_path, photo_date)
-values (1, '/src/test/resources/tmp_files/1--20-12-23', '2023-12-20')
+values (1, '/src/test/resources/tmp_files/1--20-12-23', '2023-12-20');
+
+
+insert into own_daily_kcals (proteins, fats, carbs, user_id)
+values (1, 1, 1, 1);
