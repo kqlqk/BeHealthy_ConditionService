@@ -31,7 +31,7 @@ public class OwnDailyKcalsServiceImpl implements OwnDailyKcalsService {
 
     @Override
     public void save(OwnDailyKcalsDTO ownDailyKcalsDTO) {
-        if (getByUserId(ownDailyKcalsDTO.getUserId()) != null) {
+        if (ownDailyKcalsRepository.existsByUserId(ownDailyKcalsDTO.getUserId())) {
             throw new OwnDailyKcalsAlreadyExistsException("OwnDailyKcals with userId = " + ownDailyKcalsDTO.getUserId() + " already exists");
         }
 
@@ -40,13 +40,14 @@ public class OwnDailyKcalsServiceImpl implements OwnDailyKcalsService {
         ownDailyKcals.setFat(ownDailyKcals.getFat());
         ownDailyKcals.setCarb(ownDailyKcals.getCarb());
         ownDailyKcals.setUserId(ownDailyKcals.getUserId());
+        ownDailyKcals.setInPriority(ownDailyKcalsDTO.isInPriority());
 
         ownDailyKcalsRepository.save(ownDailyKcals);
     }
 
     @Override
     public void update(OwnDailyKcalsDTO ownDailyKcalsDTO) {
-        if (getByUserId(ownDailyKcalsDTO.getUserId()) == null) {
+        if (!ownDailyKcalsRepository.existsByUserId(ownDailyKcalsDTO.getUserId())) {
             throw new OwnDailyKcalsNotFoundException("OwnDailyKcals with userId = " + ownDailyKcalsDTO.getUserId() + " not found");
         }
 
@@ -54,6 +55,19 @@ public class OwnDailyKcalsServiceImpl implements OwnDailyKcalsService {
         ownDailyKcals.setProtein(ownDailyKcalsDTO.getProtein());
         ownDailyKcals.setFat(ownDailyKcalsDTO.getFat());
         ownDailyKcals.setCarb(ownDailyKcalsDTO.getCarb());
+        ownDailyKcals.setInPriority(ownDailyKcalsDTO.isInPriority());
+
+        ownDailyKcalsRepository.save(ownDailyKcals);
+    }
+
+    @Override
+    public void changePriority(OwnDailyKcalsDTO ownDailyKcalsDTO) {
+        if (!ownDailyKcalsRepository.existsByUserId(ownDailyKcalsDTO.getUserId())) {
+            throw new OwnDailyKcalsNotFoundException("OwnDailyKcals with userId = " + ownDailyKcalsDTO.getUserId() + " not found");
+        }
+
+        OwnDailyKcals ownDailyKcals = getByUserId(ownDailyKcalsDTO.getUserId());
+        ownDailyKcals.setInPriority(ownDailyKcalsDTO.isInPriority());
 
         ownDailyKcalsRepository.save(ownDailyKcals);
     }

@@ -348,12 +348,12 @@ public class UserConditionRestControllerTest {
 
     @Test
     public void createDailyKcals_shouldCreateDailyKcals() throws Exception {
-        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO(1, 1, 1, 2);
+        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO(1, 1, 1, 2, true);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonOwnDailyKcalsDTO = objectMapper.writeValueAsString(ownDailyKcalsDTO);
 
-        mockMvc.perform(post("/api/v1/kcals")
+        mockMvc.perform(post("/api/v1/own/kcals")
                                 .param("userId", "2")
                                 .content(jsonOwnDailyKcalsDTO)
                                 .contentType(MediaType.APPLICATION_JSON))
@@ -363,12 +363,28 @@ public class UserConditionRestControllerTest {
 
     @Test
     public void updateDailyKcals_shouldUpdateDailyKcals() throws Exception {
-        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO(1, 1, 1, 1);
+        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO(1, 1, 1, 1, false);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonOwnDailyKcalsDTO = objectMapper.writeValueAsString(ownDailyKcalsDTO);
 
-        mockMvc.perform(put("/api/v1/kcals")
+        mockMvc.perform(put("/api/v1/own/kcals")
+                                .param("userId", "1")
+                                .content(jsonOwnDailyKcalsDTO)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void changePriorityOwnDailyKcals_shouldChangePriorityInDb() throws Exception {
+        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO();
+        ownDailyKcalsDTO.setInPriority(false);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonOwnDailyKcalsDTO = objectMapper.writeValueAsString(ownDailyKcalsDTO);
+
+        mockMvc.perform(put("/api/v1/own/kcals/priority")
                                 .param("userId", "1")
                                 .content(jsonOwnDailyKcalsDTO)
                                 .contentType(MediaType.APPLICATION_JSON))

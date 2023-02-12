@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OwnDailyKcalsRepository extends JpaRepository<OwnDailyKcals, Long> {
     OwnDailyKcals findByUserId(long userId);
+
+    boolean existsByUserId(long userId);
 }

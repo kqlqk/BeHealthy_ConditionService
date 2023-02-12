@@ -11,4 +11,6 @@ public interface OwnDailyKcalsService {
     void save(OwnDailyKcalsDTO ownDailyKcalsDTO);
 
     void update(OwnDailyKcalsDTO ownDailyKcalsDTO);
+
+    void changePriority(OwnDailyKcalsDTO ownDailyKcalsDTO);
 }

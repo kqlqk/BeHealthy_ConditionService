@@ -22,6 +22,9 @@ public class OwnDailyKcals {
     @Column(name = "carbs", nullable = false)
     private int carb;
 
-    @Column(name = "userId", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private long userId;
+
+    @Column(name = "in_priority", nullable = false)
+    private boolean inPriority;
 }

@@ -41,5 +41,5 @@ insert into user_condition_photo(user_id, photo_path, photo_date)
 values (1, '/src/test/resources/tmp_files/1--20-12-23', '2023-12-20');
 
 
-insert into own_daily_kcals (proteins, fats, carbs, user_id)
-values (1, 1, 1, 1);
+insert into own_daily_kcals (proteins, fats, carbs, user_id, in_priority)
+values (1, 1, 1, 1, true);

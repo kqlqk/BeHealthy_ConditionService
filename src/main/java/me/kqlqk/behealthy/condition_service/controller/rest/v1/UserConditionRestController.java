@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1")
 public class UserConditionRestController {
@@ -82,7 +84,7 @@ public class UserConditionRestController {
     }
 
     @PostMapping("/own/kcals")
-    public ResponseEntity<?> createOwnDailyKcals(@RequestParam long userId, @RequestBody OwnDailyKcalsDTO ownDailyKcalsDTO) {
+    public ResponseEntity<?> createOwnDailyKcals(@RequestParam long userId, @RequestBody @Valid OwnDailyKcalsDTO ownDailyKcalsDTO) {
         ownDailyKcalsDTO.setUserId(userId);
         ownDailyKcalsService.save(ownDailyKcalsDTO);
 
@@ -90,9 +92,17 @@ public class UserConditionRestController {
     }
 
     @PutMapping("/own/kcals")
-    public ResponseEntity<?> updateOwnDailyKcals(@RequestParam long userId, @RequestBody OwnDailyKcalsDTO ownDailyKcalsDTO) {
+    public ResponseEntity<?> updateOwnDailyKcals(@RequestParam long userId, @RequestBody @Valid OwnDailyKcalsDTO ownDailyKcalsDTO) {
         ownDailyKcalsDTO.setUserId(userId);
         ownDailyKcalsService.update(ownDailyKcalsDTO);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/own/kcals/priority")
+    public ResponseEntity<?> changePriorityOwnDailyKcals(@RequestParam long userId, @RequestBody OwnDailyKcalsDTO ownDailyKcalsDTO) {
+        ownDailyKcalsDTO.setUserId(userId);
+        ownDailyKcalsService.changePriority(ownDailyKcalsDTO);
 
         return ResponseEntity.ok().build();
     }

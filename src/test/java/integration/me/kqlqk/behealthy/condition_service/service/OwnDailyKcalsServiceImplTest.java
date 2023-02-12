@@ -20,7 +20,7 @@ public class OwnDailyKcalsServiceImplTest {
 
     @Test
     public void save_shouldSaveOwnDailyKcalsToDb() {
-        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO(1, 1, 1, 1, 2);
+        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO(1, 1, 1, 1, 2, true);
 
         int size = ownDailyKcalsRepository.findAll().size();
 
@@ -33,7 +33,7 @@ public class OwnDailyKcalsServiceImplTest {
 
     @Test
     public void update_shouldUpdateOwnDailyKcalsToDb() {
-        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO(2, 2, 2, 1);
+        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO(2, 2, 2, 1, false);
 
         ownDailyKcalsService.update(ownDailyKcalsDTO);
 
@@ -42,5 +42,18 @@ public class OwnDailyKcalsServiceImplTest {
         assertThat(ownDailyKcals.getProtein()).isEqualTo(2);
         assertThat(ownDailyKcals.getFat()).isEqualTo(2);
         assertThat(ownDailyKcals.getCarb()).isEqualTo(2);
+    }
+
+    @Test
+    public void changePriority_shouldChangePriorityInDb() {
+        OwnDailyKcalsDTO ownDailyKcalsDTO = new OwnDailyKcalsDTO();
+        ownDailyKcalsDTO.setUserId(1);
+        ownDailyKcalsDTO.setInPriority(false);
+
+        ownDailyKcalsService.update(ownDailyKcalsDTO);
+
+        OwnDailyKcals ownDailyKcals = ownDailyKcalsService.getByUserId(1);
+
+        assertThat(ownDailyKcals.isInPriority()).isEqualTo(false);
     }
 }

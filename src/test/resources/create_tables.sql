@@ -60,11 +60,12 @@ create table user_condition_photo
 
 create table own_daily_kcals
 (
-    id       bigint   not null unique auto_increment,
-    proteins smallint not null,
-    fats     smallint not null,
-    carbs    smallint not null,
-    user_id  bigint   not null,
+    id          bigint   not null unique auto_increment,
+    proteins    smallint not null,
+    fats        smallint not null,
+    carbs       smallint not null,
+    user_id     bigint   not null,
+    in_priority bool     not null,
 
     primary key (id)
 );
