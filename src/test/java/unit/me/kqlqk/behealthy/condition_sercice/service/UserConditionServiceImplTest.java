@@ -1,72 +1,59 @@
 package unit.me.kqlqk.behealthy.condition_sercice.service;
 
 
-import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentFemaleDTO;
-import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentMaleDTO;
 import me.kqlqk.behealthy.condition_service.repository.UserConditionRepository;
+import me.kqlqk.behealthy.condition_service.service.impl.UserConditionServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.validation.Validator;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class UserConditionServiceImplTest {
     @InjectMocks
-    private UserConditionServiceImplPublicAccess userConditionService;
+    private UserConditionServiceImpl userConditionService;
 
     @Mock
     private UserConditionRepository userConditionRepository;
 
-    @Mock
-    private Validator validator;
 
     @Test
-    public void getFatPercent_shouldReturnFatPercentByMeasurements() {
-        UserConditionWithoutFatPercentMaleDTO userConditionWithoutFatPercentMaleDTO = new UserConditionWithoutFatPercentMaleDTO(
-                1, 17, 0, 0, null, null, 25, 15, 20, 5);
-        double fatPercent = userConditionService.getFetPercentTest(userConditionWithoutFatPercentMaleDTO, null);
+    public void getFatPercentForMale_shouldReturnFatPercentByMeasurements() {
+        double result = userConditionService.generateFatPercentForMale(20, 10, 12, 8, 6);
+        assertEquals(9, result, 1);
 
-        assertThat(fatPercent).isBetween(15.0, 17.0);
+        result = userConditionService.generateFatPercentForMale(20, 12, 14, 10, 8);
+        assertEquals(11, result, 1);
 
+        result = userConditionService.generateFatPercentForMale(20, 14, 16, 12, 10);
+        assertEquals(13, result, 1);
 
-        UserConditionWithoutFatPercentMaleDTO userConditionWithoutFatPercentMaleDTO2 = new UserConditionWithoutFatPercentMaleDTO(
-                1, 40, 0, 0, null, null, 40, 30, 25, 10);
-        fatPercent = userConditionService.getFetPercentTest(userConditionWithoutFatPercentMaleDTO2, null);
+        result = userConditionService.generateFatPercentForMale(20, 16, 18, 14, 12);
+        assertEquals(15, result, 1);
 
-        assertThat(fatPercent).isBetween(26.0, 30.0);
+        result = userConditionService.generateFatPercentForMale(20, 20, 20, 16, 14);
+        assertEquals(17, result, 1);
+    }
 
+    @Test
+    public void getFatPercentForFemale_shouldReturnFatPercentByMeasurements() {
+        double result = userConditionService.generateFatPercentForFemale(20, 8, 10, 12);
+        assertEquals(9, result, 1);
 
-        UserConditionWithoutFatPercentMaleDTO userConditionWithoutFatPercentMaleDTO3 = new UserConditionWithoutFatPercentMaleDTO(
-                1, 25, 0, 0, null, null, 15, 9, 10, 4);
-        fatPercent = userConditionService.getFetPercentTest(userConditionWithoutFatPercentMaleDTO3, null);
+        result = userConditionService.generateFatPercentForFemale(20, 10, 12, 14);
+        assertEquals(11, result, 1);
 
-        assertThat(fatPercent).isBetween(9.0, 11.0);
+        result = userConditionService.generateFatPercentForFemale(20, 12, 14, 16);
+        assertEquals(13, result, 1);
 
+        result = userConditionService.generateFatPercentForFemale(20, 14, 16, 18);
+        assertEquals(15, result, 1);
 
-        UserConditionWithoutFatPercentFemaleDTO userConditionWithoutFatPercentFemaleDTO = new UserConditionWithoutFatPercentFemaleDTO(
-                1, 22, 0, 0, null, null, 10, 25, 20);
-        fatPercent = userConditionService.getFetPercentTest(null, userConditionWithoutFatPercentFemaleDTO);
-
-        assertThat(fatPercent).isBetween(17.0, 19.0);
-
-
-        UserConditionWithoutFatPercentFemaleDTO userConditionWithoutFatPercentFemaleDTO2 = new UserConditionWithoutFatPercentFemaleDTO(
-                1, 36, 0, 0, null, null, 15, 40, 30);
-        fatPercent = userConditionService.getFetPercentTest(null, userConditionWithoutFatPercentFemaleDTO2);
-
-        assertThat(fatPercent).isBetween(28.0, 31.0);
-
-
-        UserConditionWithoutFatPercentFemaleDTO userConditionWithoutFatPercentFemaleDTO3 = new UserConditionWithoutFatPercentFemaleDTO(
-                1, 25, 0, 0, null, null, 5, 20, 10);
-        fatPercent = userConditionService.getFetPercentTest(null, userConditionWithoutFatPercentFemaleDTO3);
-
-        assertThat(fatPercent).isBetween(9.0, 11.0);
+        result = userConditionService.generateFatPercentForFemale(20, 16, 18, 20);
+        assertEquals(18, result, 1);
     }
 }
 

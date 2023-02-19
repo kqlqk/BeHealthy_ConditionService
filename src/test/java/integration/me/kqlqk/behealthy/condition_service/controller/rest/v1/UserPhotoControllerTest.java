@@ -2,7 +2,9 @@ package integration.me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.kqlqk.behealthy.condition_service.dto.UserPhotoDTO;
+import integration.me.kqlqk.behealthy.condition_service.service.UserPhotoServiceImplTest;
+import me.kqlqk.behealthy.condition_service.dto.user_photo.AddUserPhotoDTO;
+import me.kqlqk.behealthy.condition_service.model.UserPhoto;
 import me.kqlqk.behealthy.condition_service.repository.UserPhotoRepository;
 import me.kqlqk.behealthy.condition_service.service.impl.UserPhotoServiceImpl;
 import org.apache.commons.io.FileUtils;
@@ -12,8 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.File;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,71 +36,128 @@ public class UserPhotoControllerTest {
     private UserPhotoServiceImpl userPhotoService;
 
     @Test
-    public void getUserPhotoByDate_shouldReturnUserPhotoByUserIdAndDate() throws Exception {
+    public void getEncodedPhotoByDate_shouldReturnEncodedPhoto() throws Exception {
+        UserPhoto userPhoto = new UserPhoto();
+        userPhoto.setUserId(1);
+        userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
+        userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
         userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
-        UserPhotoDTO dto = new UserPhotoDTO(1, "someString", "02-01-23");
-        userPhotoService.savePhoto(dto);
+        userPhotoService.savePhoto(userPhoto, UserPhotoServiceImplTest.encodedPhoto);
 
         mockMvc.perform(get("/api/v1/photo")
-                        .param("userId", "1")
-                        .param("date", "02-01-23"))
+                                .param("userId", "1")
+                                .param("date", "01-01-23")
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists())
-                .andExpect(jsonPath("$.userId").exists())
-                .andExpect(jsonPath("$.encodedPhoto").exists())
-                .andExpect(jsonPath("$.photoDate").exists());
+                .andExpect(jsonPath("$.encodedPhoto").exists());
 
-        File dir = new File("src/test/resources/tmp_files/");
-        FileUtils.cleanDirectory(dir);
+        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
     }
 
     @Test
-    public void getUserPhotoByDate_shouldReturnJsonWithException() throws Exception {
+    public void getEncodedPhotoByDate_shouldReturnJsonException() throws Exception {
         mockMvc.perform(get("/api/v1/photo")
-                        .param("userId", "1")
-                        .param("date", "12-01-233"))
+                                .param("userId", "1")
+                                .param("date", "01-01-23")
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("UserPhotoNotFound | User photo with userId = 1 and date = 12-01-233 not found")));
+                .andExpect(jsonPath("$.info", is("UserPhoto with userId = 1 and date = 01-01-23 not found")));
+    }
+
+    @Test
+    public void getAllPhotosAndFiles_shouldReturnAllPhotosAndFiles() throws Exception {
+        UserPhoto userPhoto = new UserPhoto();
+        userPhoto.setUserId(1);
+        userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
+        userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
+        userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
+        userPhotoService.savePhoto(userPhoto, UserPhotoServiceImplTest.encodedPhoto);
+
+        mockMvc.perform(get("/api/v1/photo/all")
+                                .param("userId", "1")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].photoPath").exists())
+                .andExpect(jsonPath("$[0].photoDate").exists())
+                .andExpect(jsonPath("$[0].encodedPhoto").exists());
+
+        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
+    }
+
+    @Test
+    public void getAllPhotosAndFiles_shouldReturnJsonException() throws Exception {
+        mockMvc.perform(get("/api/v1/photo/all")
+                                .param("userId", "1")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("UserPhotos with userId = 1 not found")));
     }
 
     @Test
     public void saveUserPhoto_shouldSaveUserPhoto() throws Exception {
-        UserPhotoDTO userPhotoDTO = new UserPhotoDTO(1, "someString", "20-11-23");
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(userPhotoDTO);
-
         userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
-        int oldUserPhotoCount = userPhotoRepository.findAll().size();
+        AddUserPhotoDTO addUserPhotoDTO = new AddUserPhotoDTO("01-01-23", UserPhotoServiceImplTest.encodedPhoto);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(addUserPhotoDTO);
 
         mockMvc.perform(post("/api/v1/photo")
-                        .param("userId", "1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                                .param("userId", "1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        int newUserPhotoCount = userPhotoRepository.findAll().size();
-
-        File dir = new File("src/test/resources/tmp_files/");
-        FileUtils.cleanDirectory(dir);
-
-        assertThat(newUserPhotoCount).isEqualTo(oldUserPhotoCount + 1);
+        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
     }
 
     @Test
-    public void saveUserPhoto_shouldThrowException() throws Exception {
+    public void saveUserPhoto_shouldReturnJsonWithException() throws Exception {
+        userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
+        AddUserPhotoDTO addUserPhotoDTO = new AddUserPhotoDTO("badFormat", UserPhotoServiceImplTest.encodedPhoto);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(addUserPhotoDTO);
+
         mockMvc.perform(post("/api/v1/photo")
-                        .param("userId", "1")
-                        .contentType(MediaType.APPLICATION_JSON))
+                                .param("userId", "1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("Required request body is missing")));
+                .andExpect(jsonPath("$.info", is("You should use the following pattern: 'dd-mm-yy'")));
+
+
+        UserPhoto userPhoto = new UserPhoto();
+        userPhoto.setUserId(1);
+        userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
+        userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
+        userPhotoService.savePhoto(userPhoto, UserPhotoServiceImplTest.encodedPhoto);
+        addUserPhotoDTO = new AddUserPhotoDTO("01-01-23", UserPhotoServiceImplTest.encodedPhoto);
+        json = mapper.writeValueAsString(addUserPhotoDTO);
+
+        mockMvc.perform(post("/api/v1/photo")
+                                .param("userId", "1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("UserPhoto with userId = 1 and photoDate = 01-01-23 already exists")));
+
+        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
     }
 
 }

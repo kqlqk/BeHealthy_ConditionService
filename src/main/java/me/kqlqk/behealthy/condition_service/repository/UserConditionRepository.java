@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserConditionRepository extends JpaRepository<UserCondition, Long> {
-    UserCondition findById(long id);
-
     UserCondition findByUserId(long id);
 
     boolean existsByUserId(long id);

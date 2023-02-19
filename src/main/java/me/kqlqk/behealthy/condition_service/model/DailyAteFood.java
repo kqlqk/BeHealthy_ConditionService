@@ -19,18 +19,18 @@ public class DailyAteFood {
     @Column(name = "product_name", nullable = false)
     private String name;
 
-    @Column(name = "product_weight", nullable = false, precision = 1, scale = 4)
+    @Column(name = "product_weight", nullable = false, precision = 1, scale = 5)
     private double weight;
 
     @Column(name = "product_kcals", nullable = false, precision = 1, scale = 4)
-    private double kcals;
+    private int kcal;
 
     @Column(name = "product_proteins", nullable = false, precision = 1, scale = 4)
-    private double proteins;
+    private int protein;
 
     @Column(name = "product_fats", nullable = false, precision = 1, scale = 4)
-    private double fats;
+    private int fat;
 
     @Column(name = "product_carbs", nullable = false, precision = 1, scale = 4)
-    private double carbs;
+    private int carb;
 }

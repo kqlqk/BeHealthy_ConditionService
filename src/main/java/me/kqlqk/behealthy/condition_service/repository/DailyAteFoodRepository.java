@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface DailyAteFoodRepository extends JpaRepository<DailyAteFood, Long> {
-    DailyAteFood findById(long id);
-
     List<DailyAteFood> findByUserIdOrderByIdAsc(long userId);
+
+    boolean existsByUserId(long userId);
 }

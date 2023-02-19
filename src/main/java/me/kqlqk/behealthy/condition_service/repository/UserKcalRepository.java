@@ -1,12 +1,12 @@
 package me.kqlqk.behealthy.condition_service.repository;
 
-import me.kqlqk.behealthy.condition_service.model.OwnDailyKcals;
+import me.kqlqk.behealthy.condition_service.model.UserKcal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OwnDailyKcalsRepository extends JpaRepository<OwnDailyKcals, Long> {
-    OwnDailyKcals findByUserId(long userId);
+public interface UserKcalRepository extends JpaRepository<UserKcal, Long> {
+    UserKcal findByUserId(long userId);
 
     boolean existsByUserId(long userId);
 }

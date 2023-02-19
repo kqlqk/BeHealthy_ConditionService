@@ -1,21 +1,26 @@
 package me.kqlqk.behealthy.condition_service.service;
 
-import me.kqlqk.behealthy.condition_service.dto.UserConditionDTO;
-import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentFemaleDTO;
-import me.kqlqk.behealthy.condition_service.dto.UserConditionWithoutFatPercentMaleDTO;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface UserConditionService {
-    UserCondition getByUserId(long id);
+    UserCondition getByUserId(long userId);
 
-    boolean existsByUserId(long id);
+    boolean existsByUserId(long userIdl);
 
-    void generateAndSaveConditionWithoutFatPercent(UserConditionWithoutFatPercentMaleDTO userConditionWithoutFatPercentMaleDTO,
-                                                   UserConditionWithoutFatPercentFemaleDTO userConditionWithoutFatPercentFemaleDTO);
+    double generateFatPercentForMale(int age,
+                                     int fatFoldBetweenChestAndIlium,
+                                     int fatFoldBetweenNavelAndLowerBelly,
+                                     int fatFoldBetweenNippleAndArmpit,
+                                     int fatFoldBetweenNippleAndUpperChest);
 
-    void generateAndSaveCondition(UserConditionDTO userConditionDTO);
+    double generateFatPercentForFemale(int age,
+                                       int fatFoldBetweenShoulderAndElbow,
+                                       int fatFoldBetweenChestAndIlium,
+                                       int fatFoldBetweenNavelAndLowerBelly);
 
-    void updateCondition(UserConditionDTO userConditionDTO);
+    void save(UserCondition userCondition);
+
+    void update(UserCondition userCondition);
 }

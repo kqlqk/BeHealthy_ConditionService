@@ -1,9 +1,7 @@
 package integration.me.kqlqk.behealthy.condition_service.service;
 
 import annotations.ServiceTest;
-import me.kqlqk.behealthy.condition_service.dto.DailyAteFoodDTO;
-import me.kqlqk.behealthy.condition_service.exception.exceptions.FoodException;
-import me.kqlqk.behealthy.condition_service.exception.exceptions.FoodNotFoundException;
+import me.kqlqk.behealthy.condition_service.exception.exceptions.DailyAteFoodNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyAteFood;
 import me.kqlqk.behealthy.condition_service.service.impl.DailyAteFoodServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -19,55 +17,34 @@ public class DailyAteFoodServiceImplTest {
 
 
     @Test
-    public void add_shouldAddNewDailyAteFoodToUser() {
-        int userId = 3;
+    public void add_shouldAddNewDailyAteFoodToDb() {
+        int userId = 1;
 
         int oldDailyFoodSize = dailyAteFoodService.getByUserId(userId).size();
 
-        dailyAteFoodService.add(new DailyAteFoodDTO(userId, "Chicken", 200, 20, 0, 0));
+        DailyAteFood dailyAteFood = new DailyAteFood();
+        dailyAteFood.setUserId(userId);
+        dailyAteFood.setName("Food");
+        dailyAteFood.setProtein(10);
+        dailyAteFood.setFat(3);
+        dailyAteFood.setCarb(20);
+        dailyAteFood.setWeight(300);
+        dailyAteFoodService.add(dailyAteFood);
+
+        dailyAteFoodService.add(dailyAteFood);
 
         int newDailyFoodSize = dailyAteFoodService.getByUserId(userId).size();
-        DailyAteFood dailyAteFood = dailyAteFoodService.getByUserId(userId).get(0);
-
 
         assertThat(newDailyFoodSize).isEqualTo(oldDailyFoodSize + 1);
-        assertThat(dailyAteFood.getKcals()).isEqualTo(2 * 20 * 4); // weight / 100g * proteins * 4
     }
 
     @Test
     public void add_shouldThrowException() {
-        String invalidProductName = " ";
-        DailyAteFoodDTO dailyAteFoodDTO = new DailyAteFoodDTO(1, invalidProductName, 1, 1, 1, 1);
-
-        assertThrows(FoodException.class, () -> dailyAteFoodService.add(dailyAteFoodDTO));
-
-
-        double invalidWeight = 10000;
-        DailyAteFoodDTO dailyAteFoodDTO2 = new DailyAteFoodDTO(1, "product", invalidWeight, 1, 1, 1);
-
-        assertThrows(FoodException.class, () -> dailyAteFoodService.add(dailyAteFoodDTO2));
-
-
-        double invalidProteins = 1000;
-        DailyAteFoodDTO dailyAteFoodDTO4 = new DailyAteFoodDTO(1, "product", 1, invalidProteins, 1, 1);
-
-        assertThrows(FoodException.class, () -> dailyAteFoodService.add(dailyAteFoodDTO4));
-
-
-        double invalidFats = 1000;
-        DailyAteFoodDTO dailyAteFoodDTO5 = new DailyAteFoodDTO(1, "product", 1, 1, invalidFats, 1);
-
-        assertThrows(FoodException.class, () -> dailyAteFoodService.add(dailyAteFoodDTO5));
-
-
-        double invalidCarbs = 1000;
-        DailyAteFoodDTO dailyAteFoodDTO6 = new DailyAteFoodDTO(1, "product", invalidWeight, 1, 1, invalidCarbs);
-
-        assertThrows(FoodException.class, () -> dailyAteFoodService.add(dailyAteFoodDTO6));
+        assertThrows(NullPointerException.class, () -> dailyAteFoodService.add(null));
     }
 
     @Test
-    public void delete_shouldDeleteFoodFromDailyAteFood() {
+    public void delete_shouldDeleteFoodFromDb() {
         int oldDailyAteFoodSize = dailyAteFoodService.getByUserId(1).size();
 
         dailyAteFoodService.delete(1, 1);
@@ -79,8 +56,7 @@ public class DailyAteFoodServiceImplTest {
 
     @Test
     public void delete_shouldThrowException() {
-        assertThrows(FoodNotFoundException.class, () -> dailyAteFoodService.delete(0, 0));
-
-        assertThrows(FoodNotFoundException.class, () -> dailyAteFoodService.delete(0, 1));
+        assertThrows(DailyAteFoodNotFoundException.class, () -> dailyAteFoodService.delete(0, 0));
+        assertThrows(DailyAteFoodNotFoundException.class, () -> dailyAteFoodService.delete(0, 1));
     }
 }

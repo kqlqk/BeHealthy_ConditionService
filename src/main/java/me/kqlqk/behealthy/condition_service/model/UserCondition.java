@@ -22,8 +22,8 @@ public class UserCondition {
     private long userId;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "daily_kcals_id", referencedColumnName = "id")
-    private DailyKcals dailyKcals;
+    @JoinColumn(name = "daily_kcal_id", referencedColumnName = "id", nullable = false)
+    private DailyKcal dailyKcal;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false, length = 10)
@@ -51,7 +51,7 @@ public class UserCondition {
 
 
     public UserCondition(long userId,
-                         DailyKcals dailyKcals,
+                         DailyKcal dailyKcal,
                          Gender gender,
                          int age,
                          int height,
@@ -60,7 +60,7 @@ public class UserCondition {
                          Goal goal,
                          double fatPercent) {
         this.userId = userId;
-        this.dailyKcals = dailyKcals;
+        this.dailyKcal = dailyKcal;
         this.gender = gender;
         this.age = age;
         this.height = height;
