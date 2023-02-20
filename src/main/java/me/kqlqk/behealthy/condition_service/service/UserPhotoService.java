@@ -18,7 +18,7 @@ public interface UserPhotoService {
 
     String getEncodedPhoto(long userId, Date date);
 
-    void savePhoto(UserPhoto userPhoto, String encodedPhoto);
+    void save(UserPhoto userPhoto, String encodedPhoto);
 
     Date convertStringToDate(String dateString);
 }

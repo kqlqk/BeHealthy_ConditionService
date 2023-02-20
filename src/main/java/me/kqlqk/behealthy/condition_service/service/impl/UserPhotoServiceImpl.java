@@ -97,7 +97,7 @@ public class UserPhotoServiceImpl implements UserPhotoService {
     }
 
     @Override
-    public void savePhoto(UserPhoto userPhoto, String encodedPhoto) {
+    public void save(UserPhoto userPhoto, String encodedPhoto) {
         if (userPhotoRepository.existsByUserIdAndPhotoDate(userPhoto.getUserId(), userPhoto.getPhotoDate())) {
             throw new UserPhotoAlreadyExistsException("UserPhoto with userId = " + userPhoto.getUserId() +
                                                               " and photoDate = " + dateFormat.format(userPhoto.getPhotoDate()) + " already exists");

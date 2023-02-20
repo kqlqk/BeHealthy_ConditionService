@@ -17,7 +17,7 @@ public class DailyAteFoodServiceImplTest {
 
 
     @Test
-    public void add_shouldAddNewDailyAteFoodToDb() {
+    public void save_shouldAddNewDailyAteFoodToDb() {
         int userId = 1;
 
         int oldDailyFoodSize = dailyAteFoodService.getByUserId(userId).size();
@@ -29,9 +29,9 @@ public class DailyAteFoodServiceImplTest {
         dailyAteFood.setFat(3);
         dailyAteFood.setCarb(20);
         dailyAteFood.setWeight(300);
-        dailyAteFoodService.add(dailyAteFood);
+        dailyAteFoodService.save(dailyAteFood);
 
-        dailyAteFoodService.add(dailyAteFood);
+        dailyAteFoodService.save(dailyAteFood);
 
         int newDailyFoodSize = dailyAteFoodService.getByUserId(userId).size();
 
@@ -39,8 +39,8 @@ public class DailyAteFoodServiceImplTest {
     }
 
     @Test
-    public void add_shouldThrowException() {
-        assertThrows(NullPointerException.class, () -> dailyAteFoodService.add(null));
+    public void save_shouldThrowException() {
+        assertThrows(NullPointerException.class, () -> dailyAteFoodService.save(null));
     }
 
     @Test

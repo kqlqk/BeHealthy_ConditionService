@@ -30,7 +30,7 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
     }
 
     @Override
-    public void add(@NonNull DailyAteFood dailyAteFood) {
+    public void save(@NonNull DailyAteFood dailyAteFood) {
         dailyAteFood.setKcal(getKcals(dailyAteFood.getWeight(), dailyAteFood.getProtein(), dailyAteFood.getFat(), dailyAteFood.getCarb()));
 
         dailyAteFoodRepository.save(dailyAteFood);

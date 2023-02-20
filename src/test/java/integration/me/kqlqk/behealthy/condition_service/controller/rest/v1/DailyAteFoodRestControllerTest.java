@@ -50,7 +50,7 @@ public class DailyAteFoodRestControllerTest {
     }
 
     @Test
-    public void addDailyAteFood_shouldAddDailyAteFoodToDb() throws Exception {
+    public void saveDailyAteFood_shouldSaveDailyAteFoodToDb() throws Exception {
         AddDailyAteFoodDTO addDailyAteFoodDTO = new AddDailyAteFoodDTO();
         addDailyAteFoodDTO.setName("name");
         addDailyAteFoodDTO.setWeight(333.2);
@@ -70,7 +70,7 @@ public class DailyAteFoodRestControllerTest {
     }
 
     @Test
-    public void addDailyAteFood_shouldThrowException() throws Exception {
+    public void saveDailyAteFood_shouldThrowException() throws Exception {
         AddDailyAteFoodDTO addDailyAteFoodDTO = new AddDailyAteFoodDTO("a", 333.2, 10, 20, 30);
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(addDailyAteFoodDTO);

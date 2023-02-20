@@ -83,7 +83,7 @@ public class UserPhotoServiceImplTest {
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
         userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
         userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
-        userPhotoService.savePhoto(userPhoto, encodedPhoto);
+        userPhotoService.save(userPhoto, encodedPhoto);
 
         String encodedPhoto = userPhotoService.getEncodedPhoto(1, "01-01-23");
 
@@ -99,7 +99,7 @@ public class UserPhotoServiceImplTest {
     }
 
     @Test
-    public void savePhoto_shouldSaveDateOfPhotoToDbAndPhotoToLocalFiles() throws IOException {
+    public void save_shouldSaveDateOfPhotoToDbAndPhotoToLocalFiles() throws IOException {
         int oldUserPhotoSize = userPhotoRepository.findAll().size();
 
         UserPhoto userPhoto = new UserPhoto();
@@ -107,7 +107,7 @@ public class UserPhotoServiceImplTest {
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
         userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
         userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
-        userPhotoService.savePhoto(userPhoto, encodedPhoto);
+        userPhotoService.save(userPhoto, encodedPhoto);
 
         int newUserPhotoSize = userPhotoRepository.findAll().size();
 
@@ -123,10 +123,10 @@ public class UserPhotoServiceImplTest {
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
         userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
         userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
-        userPhotoService.savePhoto(userPhoto, encodedPhoto);
+        userPhotoService.save(userPhoto, encodedPhoto);
 
         UserPhoto userPhotoToSave = userPhotoService.getByUserIdAndDate(1, "01-01-23");
-        assertThrows(UserPhotoAlreadyExistsException.class, () -> userPhotoService.savePhoto(userPhotoToSave, encodedPhoto));
+        assertThrows(UserPhotoAlreadyExistsException.class, () -> userPhotoService.save(userPhotoToSave, encodedPhoto));
 
         FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
     }

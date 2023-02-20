@@ -52,7 +52,7 @@ public class UserPhotoController {
         userPhoto.setUserId(userId);
         userPhoto.setPhotoDate(userPhotoService.convertStringToDate(addUserPhotoDTO.getPhotoDate()));
 
-        userPhotoService.savePhoto(userPhoto, addUserPhotoDTO.getEncodedPhoto());
+        userPhotoService.save(userPhoto, addUserPhotoDTO.getEncodedPhoto());
 
         return ResponseEntity.ok().build();
     }

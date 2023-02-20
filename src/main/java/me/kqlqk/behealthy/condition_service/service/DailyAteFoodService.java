@@ -9,7 +9,7 @@ import java.util.List;
 public interface DailyAteFoodService {
     List<DailyAteFood> getByUserId(long userId);
 
-    void add(DailyAteFood dailyAteFood);
+    void save(DailyAteFood dailyAteFood);
 
     int getKcals(double weight, int protein, int fat, int carb);
 

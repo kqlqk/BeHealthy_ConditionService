@@ -42,7 +42,7 @@ public class UserPhotoControllerTest {
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
         userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
         userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
-        userPhotoService.savePhoto(userPhoto, UserPhotoServiceImplTest.encodedPhoto);
+        userPhotoService.save(userPhoto, UserPhotoServiceImplTest.encodedPhoto);
 
         mockMvc.perform(get("/api/v1/photo")
                                 .param("userId", "1")
@@ -76,7 +76,7 @@ public class UserPhotoControllerTest {
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
         userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
         userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
-        userPhotoService.savePhoto(userPhoto, UserPhotoServiceImplTest.encodedPhoto);
+        userPhotoService.save(userPhoto, UserPhotoServiceImplTest.encodedPhoto);
 
         mockMvc.perform(get("/api/v1/photo/all")
                                 .param("userId", "1")
@@ -143,7 +143,7 @@ public class UserPhotoControllerTest {
         userPhoto.setUserId(1);
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
         userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
-        userPhotoService.savePhoto(userPhoto, UserPhotoServiceImplTest.encodedPhoto);
+        userPhotoService.save(userPhoto, UserPhotoServiceImplTest.encodedPhoto);
         addUserPhotoDTO = new AddUserPhotoDTO("01-01-23", UserPhotoServiceImplTest.encodedPhoto);
         json = mapper.writeValueAsString(addUserPhotoDTO);
 
