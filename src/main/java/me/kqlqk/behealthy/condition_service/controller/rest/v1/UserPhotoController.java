@@ -2,6 +2,7 @@ package me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import me.kqlqk.behealthy.condition_service.dto.user_photo.AddUserPhotoDTO;
 import me.kqlqk.behealthy.condition_service.dto.user_photo.FullUserPhotoDTO;
+import me.kqlqk.behealthy.condition_service.dto.user_photo.GetEncodedPhoto;
 import me.kqlqk.behealthy.condition_service.model.UserPhoto;
 import me.kqlqk.behealthy.condition_service.service.UserPhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -26,11 +25,11 @@ public class UserPhotoController {
 
 
     @GetMapping("/photo")
-    public ResponseEntity<?> getEncodedPhotoByDate(@RequestParam long userId, @RequestParam String date) {
-        Map<String, String> photo = new HashMap<>();
-        photo.put("encodedPhoto", userPhotoService.getEncodedPhoto(userId, date));
+    public GetEncodedPhoto getEncodedPhotoByDate(@RequestParam long userId, @RequestParam String date) {
+        GetEncodedPhoto getEncodedPhoto = new GetEncodedPhoto();
+        getEncodedPhoto.setEncodedPhoto(userPhotoService.getEncodedPhoto(userId, date));
 
-        return ResponseEntity.ok(photo);
+        return getEncodedPhoto;
     }
 
     @GetMapping("/photo/all")

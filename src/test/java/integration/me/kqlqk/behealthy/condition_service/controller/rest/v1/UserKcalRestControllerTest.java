@@ -21,7 +21,7 @@ public class UserKcalRestControllerTest {
 
     @Test
     public void getUserKcalByUserId_shouldReturnUserKcalByUserId() throws Exception {
-        mockMvc.perform(get("/api/v1/kcal/user")
+        mockMvc.perform(get("/api/v1/kcal")
                                 .param("userId", "1")
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -37,7 +37,7 @@ public class UserKcalRestControllerTest {
 
     @Test
     public void getUserKcalByUserId_shouldReturnJsonWithException() throws Exception {
-        mockMvc.perform(get("/api/v1/kcal/user")
+        mockMvc.perform(get("/api/v1/kcal")
                                 .param("userId", "2")
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -53,7 +53,7 @@ public class UserKcalRestControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(addUserKcalDTO);
 
-        mockMvc.perform(post("/api/v1/kcal/user")
+        mockMvc.perform(post("/api/v1/kcal")
                                 .param("userId", "2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -67,7 +67,7 @@ public class UserKcalRestControllerTest {
         AddUpdateUserKcalDTO addUserKcalDTO = new AddUpdateUserKcalDTO(0, 1, 1, 1, false, false);
         String json = mapper.writeValueAsString(addUserKcalDTO);
 
-        mockMvc.perform(post("/api/v1/kcal/user")
+        mockMvc.perform(post("/api/v1/kcal")
                                 .param("userId", "2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -81,7 +81,7 @@ public class UserKcalRestControllerTest {
         addUserKcalDTO = new AddUpdateUserKcalDTO(10000, 1, 1, 1, false, false);
         json = mapper.writeValueAsString(addUserKcalDTO);
 
-        mockMvc.perform(post("/api/v1/kcal/user")
+        mockMvc.perform(post("/api/v1/kcal")
                                 .param("userId", "2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -95,7 +95,7 @@ public class UserKcalRestControllerTest {
         addUserKcalDTO = new AddUpdateUserKcalDTO(17, -1, 1, 1, false, false);
         json = mapper.writeValueAsString(addUserKcalDTO);
 
-        mockMvc.perform(post("/api/v1/kcal/user")
+        mockMvc.perform(post("/api/v1/kcal")
                                 .param("userId", "2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -109,7 +109,7 @@ public class UserKcalRestControllerTest {
         addUserKcalDTO = new AddUpdateUserKcalDTO(17, 1000, 1, 1, false, false);
         json = mapper.writeValueAsString(addUserKcalDTO);
 
-        mockMvc.perform(post("/api/v1/kcal/user")
+        mockMvc.perform(post("/api/v1/kcal")
                                 .param("userId", "2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -123,7 +123,7 @@ public class UserKcalRestControllerTest {
         addUserKcalDTO = new AddUpdateUserKcalDTO(17, 1, -1, 1, false, false);
         json = mapper.writeValueAsString(addUserKcalDTO);
 
-        mockMvc.perform(post("/api/v1/kcal/user")
+        mockMvc.perform(post("/api/v1/kcal")
                                 .param("userId", "2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -137,7 +137,7 @@ public class UserKcalRestControllerTest {
         addUserKcalDTO = new AddUpdateUserKcalDTO(17, 1, 1000, 1, false, false);
         json = mapper.writeValueAsString(addUserKcalDTO);
 
-        mockMvc.perform(post("/api/v1/kcal/user")
+        mockMvc.perform(post("/api/v1/kcal")
                                 .param("userId", "2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -151,7 +151,7 @@ public class UserKcalRestControllerTest {
         addUserKcalDTO = new AddUpdateUserKcalDTO(17, 1, 1, -1, false, false);
         json = mapper.writeValueAsString(addUserKcalDTO);
 
-        mockMvc.perform(post("/api/v1/kcal/user")
+        mockMvc.perform(post("/api/v1/kcal")
                                 .param("userId", "2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -165,7 +165,7 @@ public class UserKcalRestControllerTest {
         addUserKcalDTO = new AddUpdateUserKcalDTO(17, 1, 1, 1000, false, false);
         json = mapper.writeValueAsString(addUserKcalDTO);
 
-        mockMvc.perform(post("/api/v1/kcal/user")
+        mockMvc.perform(post("/api/v1/kcal")
                                 .param("userId", "2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -182,7 +182,7 @@ public class UserKcalRestControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(updateUserKcalDTO);
 
-        mockMvc.perform(put("/api/v1/kcal/user")
+        mockMvc.perform(put("/api/v1/kcal")
                                 .param("userId", "1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -196,7 +196,7 @@ public class UserKcalRestControllerTest {
         AddUpdateUserKcalDTO updateUserKcalDTO = new AddUpdateUserKcalDTO(0, 1, 1, 1, false, false);
         String json = mapper.writeValueAsString(updateUserKcalDTO);
 
-        mockMvc.perform(put("/api/v1/kcal/user")
+        mockMvc.perform(put("/api/v1/kcal")
                                 .param("userId", "1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -210,7 +210,7 @@ public class UserKcalRestControllerTest {
         updateUserKcalDTO = new AddUpdateUserKcalDTO(10000, 1, 1, 1, false, false);
         json = mapper.writeValueAsString(updateUserKcalDTO);
 
-        mockMvc.perform(put("/api/v1/kcal/user")
+        mockMvc.perform(put("/api/v1/kcal")
                                 .param("userId", "1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -224,7 +224,7 @@ public class UserKcalRestControllerTest {
         updateUserKcalDTO = new AddUpdateUserKcalDTO(17, -1, 1, 1, false, false);
         json = mapper.writeValueAsString(updateUserKcalDTO);
 
-        mockMvc.perform(put("/api/v1/kcal/user")
+        mockMvc.perform(put("/api/v1/kcal")
                                 .param("userId", "1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -238,7 +238,7 @@ public class UserKcalRestControllerTest {
         updateUserKcalDTO = new AddUpdateUserKcalDTO(17, 1000, 1, 1, false, false);
         json = mapper.writeValueAsString(updateUserKcalDTO);
 
-        mockMvc.perform(put("/api/v1/kcal/user")
+        mockMvc.perform(put("/api/v1/kcal")
                                 .param("userId", "1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -252,7 +252,7 @@ public class UserKcalRestControllerTest {
         updateUserKcalDTO = new AddUpdateUserKcalDTO(17, 1, -1, 1, false, false);
         json = mapper.writeValueAsString(updateUserKcalDTO);
 
-        mockMvc.perform(put("/api/v1/kcal/user")
+        mockMvc.perform(put("/api/v1/kcal")
                                 .param("userId", "1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -266,7 +266,7 @@ public class UserKcalRestControllerTest {
         updateUserKcalDTO = new AddUpdateUserKcalDTO(17, 1, 1000, 1, false, false);
         json = mapper.writeValueAsString(updateUserKcalDTO);
 
-        mockMvc.perform(put("/api/v1/kcal/user")
+        mockMvc.perform(put("/api/v1/kcal")
                                 .param("userId", "1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -280,7 +280,7 @@ public class UserKcalRestControllerTest {
         updateUserKcalDTO = new AddUpdateUserKcalDTO(17, 1, 1, -1, false, false);
         json = mapper.writeValueAsString(updateUserKcalDTO);
 
-        mockMvc.perform(put("/api/v1/kcal/user")
+        mockMvc.perform(put("/api/v1/kcal")
                                 .param("userId", "1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -294,7 +294,7 @@ public class UserKcalRestControllerTest {
         updateUserKcalDTO = new AddUpdateUserKcalDTO(17, 1, 1, 1000, false, false);
         json = mapper.writeValueAsString(updateUserKcalDTO);
 
-        mockMvc.perform(put("/api/v1/kcal/user")
+        mockMvc.perform(put("/api/v1/kcal")
                                 .param("userId", "1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))

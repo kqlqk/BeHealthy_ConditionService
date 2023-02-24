@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUpdateUserConditionDTO {
+public class AddUpdateUserConditionDTO {
     @NotNull(message = "Gender cannot be null")
     private Gender gender;
 
@@ -60,7 +60,7 @@ public class CreateUpdateUserConditionDTO {
     @Max(value = 50, message = "Fat fold between shoulder and elbow should be between 2 and 50")
     private int fatFoldBetweenShoulderAndElbow;
 
-    public CreateUpdateUserConditionDTO(Gender gender, int age, int height, int weight, Intensity intensity, Goal goal, double fatPercent) {
+    public AddUpdateUserConditionDTO(Gender gender, int age, int height, int weight, Intensity intensity, Goal goal, double fatPercent) {
         this.gender = gender;
         this.age = age;
         this.height = height;
@@ -71,16 +71,16 @@ public class CreateUpdateUserConditionDTO {
         this.fatPercentExists = true;
     }
 
-    public CreateUpdateUserConditionDTO(Gender gender,
-                                        int age,
-                                        int height,
-                                        int weight,
-                                        Intensity intensity,
-                                        Goal goal,
-                                        int fatFoldBetweenChestAndIlium,
-                                        int fatFoldBetweenNavelAndLowerBelly,
-                                        int fatFoldBetweenNippleAndArmpit,
-                                        int fatFoldBetweenNippleAndUpperChest) {
+    public AddUpdateUserConditionDTO(Gender gender,
+                                     int age,
+                                     int height,
+                                     int weight,
+                                     Intensity intensity,
+                                     Goal goal,
+                                     int fatFoldBetweenChestAndIlium,
+                                     int fatFoldBetweenNavelAndLowerBelly,
+                                     int fatFoldBetweenNippleAndArmpit,
+                                     int fatFoldBetweenNippleAndUpperChest) {
         this.gender = gender;
         this.age = age;
         this.height = height;
@@ -94,15 +94,15 @@ public class CreateUpdateUserConditionDTO {
         this.fatFoldBetweenNippleAndUpperChest = fatFoldBetweenNippleAndUpperChest;
     }
 
-    public CreateUpdateUserConditionDTO(Gender gender,
-                                        int age,
-                                        int height,
-                                        int weight,
-                                        Intensity intensity,
-                                        Goal goal,
-                                        int fatFoldBetweenShoulderAndElbow,
-                                        int fatFoldBetweenChestAndIlium,
-                                        int fatFoldBetweenNavelAndLowerBelly) {
+    public AddUpdateUserConditionDTO(Gender gender,
+                                     int age,
+                                     int height,
+                                     int weight,
+                                     Intensity intensity,
+                                     Goal goal,
+                                     int fatFoldBetweenShoulderAndElbow,
+                                     int fatFoldBetweenChestAndIlium,
+                                     int fatFoldBetweenNavelAndLowerBelly) {
         this.gender = gender;
         this.age = age;
         this.height = height;

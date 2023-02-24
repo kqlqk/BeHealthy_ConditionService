@@ -1,6 +1,7 @@
 package me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
-import me.kqlqk.behealthy.condition_service.dto.user_condition.CreateUpdateUserConditionDTO;
+import me.kqlqk.behealthy.condition_service.dto.user_condition.AddUpdateUserConditionDTO;
+import me.kqlqk.behealthy.condition_service.dto.user_condition.GetUserConditionDTO;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionException;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
 import me.kqlqk.behealthy.condition_service.service.UserConditionService;
@@ -25,13 +26,13 @@ public class UserConditionRestController {
     }
 
     @GetMapping("/condition")
-    public UserCondition getUserConditionByUserId(@RequestParam long userId) {
-        return userConditionService.getByUserId(userId);
+    public GetUserConditionDTO getUserConditionByUserId(@RequestParam long userId) {
+        return GetUserConditionDTO.convert(userConditionService.getByUserId(userId));
     }
 
     @PostMapping("/condition")
-    public ResponseEntity<?> createUserCondition(@RequestParam long userId, @RequestBody CreateUpdateUserConditionDTO createConditionDTO) {
-        Set<ConstraintViolation<CreateUpdateUserConditionDTO>> constraintViolations = validator.validateProperty(createConditionDTO, "gender");
+    public ResponseEntity<?> createUserCondition(@RequestParam long userId, @RequestBody AddUpdateUserConditionDTO createConditionDTO) {
+        Set<ConstraintViolation<AddUpdateUserConditionDTO>> constraintViolations = validator.validateProperty(createConditionDTO, "gender");
         if (!constraintViolations.isEmpty()) {
             throw new UserConditionException(constraintViolations.iterator().next().getMessage());
         }
@@ -140,8 +141,8 @@ public class UserConditionRestController {
     }
 
     @PutMapping("/condition")
-    public ResponseEntity<?> updateCondition(@RequestParam long userId, @RequestBody CreateUpdateUserConditionDTO updateConditionDTO) {
-        Set<ConstraintViolation<CreateUpdateUserConditionDTO>> constraintViolations = validator.validateProperty(updateConditionDTO, "gender");
+    public ResponseEntity<?> updateCondition(@RequestParam long userId, @RequestBody AddUpdateUserConditionDTO updateConditionDTO) {
+        Set<ConstraintViolation<AddUpdateUserConditionDTO>> constraintViolations = validator.validateProperty(updateConditionDTO, "gender");
         if (!constraintViolations.isEmpty()) {
             throw new UserConditionException(constraintViolations.iterator().next().getMessage());
         }

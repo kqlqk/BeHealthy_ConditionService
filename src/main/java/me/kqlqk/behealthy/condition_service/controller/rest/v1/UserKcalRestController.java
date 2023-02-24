@@ -18,12 +18,12 @@ public class UserKcalRestController {
         this.userKcalService = userKcalService;
     }
 
-    @GetMapping("/kcal/user")
+    @GetMapping("/kcal")
     public GetUserKcalDTO getUserKcalByUserId(@RequestParam long userId) {
         return GetUserKcalDTO.convert(userKcalService.getByUserId(userId));
     }
 
-    @PostMapping("/kcal/user")
+    @PostMapping("/kcal")
     public ResponseEntity<?> createUserKcal(@RequestParam long userId, @RequestBody @Valid AddUpdateUserKcalDTO addUserKcalDTO) {
         UserKcal userKcal = new UserKcal();
         userKcal.setUserId(userId);
@@ -39,7 +39,7 @@ public class UserKcalRestController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/kcal/user")
+    @PutMapping("/kcal")
     public ResponseEntity<?> updateUserKcal(@RequestParam long userId, @RequestBody @Valid AddUpdateUserKcalDTO updateUserKcalDTO) {
         UserKcal userKcal = userKcalService.getByUserId(userId);
         userKcal.setKcal(updateUserKcalDTO.getKcal());

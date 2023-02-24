@@ -13,7 +13,6 @@ public class GetUserKcalDTO {
     private int protein;
     private int fat;
     private int carb;
-    private long userId;
     private boolean inPriority;
     private boolean onlyKcal;
 
@@ -22,7 +21,6 @@ public class GetUserKcalDTO {
                                   userKcal.getProtein(),
                                   userKcal.getFat(),
                                   userKcal.getCarb(),
-                                  userKcal.getUserId(),
                                   userKcal.isInPriority(),
                                   userKcal.isOnlyKcal());
     }

@@ -2,7 +2,7 @@ package integration.me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.kqlqk.behealthy.condition_service.dto.user_condition.CreateUpdateUserConditionDTO;
+import me.kqlqk.behealthy.condition_service.dto.user_condition.AddUpdateUserConditionDTO;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
 import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
@@ -30,10 +30,10 @@ public class UserConditionRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists())
-                .andExpect(jsonPath("$.dailyKcal").exists())
-                .andExpect(jsonPath("$.dailyKcal.protein").exists())
-                .andExpect(jsonPath("$.dailyKcal.fat").exists())
-                .andExpect(jsonPath("$.dailyKcal.carb").exists())
+                .andExpect(jsonPath("$.dailyKcalDTO").exists())
+                .andExpect(jsonPath("$.dailyKcalDTO.protein").exists())
+                .andExpect(jsonPath("$.dailyKcalDTO.fat").exists())
+                .andExpect(jsonPath("$.dailyKcalDTO.carb").exists())
                 .andExpect(jsonPath("$.gender").exists())
                 .andExpect(jsonPath("$.age").exists())
                 .andExpect(jsonPath("$.height").exists())
@@ -57,10 +57,10 @@ public class UserConditionRestControllerTest {
 
     @Test
     public void createUserConditionByUserId_shouldCreateUserCondition() throws Exception {
-        CreateUpdateUserConditionDTO createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+        AddUpdateUserConditionDTO addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        String json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -73,9 +73,9 @@ public class UserConditionRestControllerTest {
     @Test
     public void createUserConditionByUserId_shouldReturnJsonWithException() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        CreateUpdateUserConditionDTO createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(null, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
-        String json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        AddUpdateUserConditionDTO addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(null, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+        String json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -88,9 +88,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Gender cannot be null")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 10, 170, 80, Intensity.MIN, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 10, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -103,9 +103,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Age should be between 15 and 60")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 70, 170, 80, Intensity.MIN, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 70, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -118,9 +118,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Age should be between 15 and 60")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 140, 80, Intensity.MIN, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 140, 80, Intensity.MIN, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -133,9 +133,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Height should be between 150 and 200")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 30, Intensity.MIN, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 30, Intensity.MIN, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -148,9 +148,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Weight should be between 40 and 140")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 150, Intensity.MIN, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 150, Intensity.MIN, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -163,9 +163,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Weight should be between 40 and 140")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, null, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, null, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -178,9 +178,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Intensity cannot be null")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, null, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, null, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -193,9 +193,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Goal cannot be null")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 2);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 2);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -208,9 +208,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("FatPercent should be between 3 and 40")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 50);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 50);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -223,9 +223,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("FatPercent should be between 3 and 40")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -238,9 +238,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between chest and ilium should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 60, 10, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 60, 10, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -253,9 +253,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between chest and ilium should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 3, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 3, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -268,9 +268,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between navel and lower belly should be between 5 and 70")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 71, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 71, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -283,9 +283,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between navel and lower belly should be between 5 and 70")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 1, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 1, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -298,9 +298,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between nipple and armpit should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 51, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 51, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -313,9 +313,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between nipple and armpit should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 1);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 1);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -328,9 +328,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between nipple and upper chest should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 51);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 51);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -343,9 +343,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between nipple and upper chest should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -358,9 +358,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between shoulder and elbow should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 51, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 51, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -375,10 +375,10 @@ public class UserConditionRestControllerTest {
 
     @Test
     public void updateUserConditionByUserId_shouldUpdateUserCondition() throws Exception {
-        CreateUpdateUserConditionDTO createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+        AddUpdateUserConditionDTO addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        String json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -391,9 +391,9 @@ public class UserConditionRestControllerTest {
     @Test
     public void updateUserConditionByUserId_shouldReturnJsonWithException() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        CreateUpdateUserConditionDTO createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(null, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
-        String json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        AddUpdateUserConditionDTO addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(null, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+        String json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -406,9 +406,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Gender cannot be null")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 10, 170, 80, Intensity.MIN, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 10, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -421,9 +421,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Age should be between 15 and 60")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 70, 170, 80, Intensity.MIN, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 70, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -436,9 +436,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Age should be between 15 and 60")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 140, 80, Intensity.MIN, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 140, 80, Intensity.MIN, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -451,9 +451,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Height should be between 150 and 200")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 30, Intensity.MIN, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 30, Intensity.MIN, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -466,9 +466,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Weight should be between 40 and 140")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 150, Intensity.MIN, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 150, Intensity.MIN, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -481,9 +481,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Weight should be between 40 and 140")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, null, Goal.LOSE, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, null, Goal.LOSE, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -496,9 +496,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Intensity cannot be null")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, null, 15);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, null, 15);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -511,9 +511,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Goal cannot be null")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 2);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 2);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -526,9 +526,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("FatPercent should be between 3 and 40")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 50);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 50);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -541,9 +541,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("FatPercent should be between 3 and 40")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -556,9 +556,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between chest and ilium should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 60, 10, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 60, 10, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -571,9 +571,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between chest and ilium should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 3, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 3, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -586,9 +586,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between navel and lower belly should be between 5 and 70")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 71, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 71, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -601,9 +601,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between navel and lower belly should be between 5 and 70")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 1, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 1, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -616,9 +616,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between nipple and armpit should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 51, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 51, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -631,9 +631,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between nipple and armpit should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 1);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 1);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -646,9 +646,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between nipple and upper chest should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 51);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 51);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -661,9 +661,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between nipple and upper chest should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -676,9 +676,9 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat fold between shoulder and elbow should be between 2 and 50")));
 
 
-        createUpdateUserConditionDTO =
-                new CreateUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 51, 10, 10);
-        json = mapper.writeValueAsString(createUpdateUserConditionDTO);
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 51, 10, 10);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
                                 .contentType(MediaType.APPLICATION_JSON)

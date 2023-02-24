@@ -22,7 +22,7 @@ public class DailyAteFoodRestController {
     }
 
     @GetMapping("/food")
-    public List<GetDailyAteFoodDTO> getDailyAteFood(@RequestParam("userId") long userId) {
+    public List<GetDailyAteFoodDTO> getDailyAteFood(@RequestParam long userId) {
         return GetDailyAteFoodDTO.convertList(dailyAteFoodService.getByUserId(userId));
     }
 
