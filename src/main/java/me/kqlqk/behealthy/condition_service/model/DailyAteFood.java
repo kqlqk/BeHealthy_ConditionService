@@ -22,15 +22,15 @@ public class DailyAteFood {
     @Column(name = "product_weight", nullable = false, precision = 1, scale = 5)
     private double weight;
 
-    @Column(name = "product_kcals", nullable = false, precision = 1, scale = 4)
+    @Column(name = "product_kcals", nullable = false)
     private int kcal;
 
-    @Column(name = "product_proteins", nullable = false, precision = 1, scale = 4)
+    @Column(name = "product_proteins", nullable = false)
     private int protein;
 
-    @Column(name = "product_fats", nullable = false, precision = 1, scale = 4)
+    @Column(name = "product_fats", nullable = false)
     private int fat;
 
-    @Column(name = "product_carbs", nullable = false, precision = 1, scale = 4)
+    @Column(name = "product_carbs", nullable = false)
     private int carb;
 }

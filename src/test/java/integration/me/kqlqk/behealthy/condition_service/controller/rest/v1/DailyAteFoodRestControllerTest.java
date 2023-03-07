@@ -83,7 +83,7 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("Product name should be between 2 and 50 characters")));
+                .andExpect(jsonPath("$.info", is("Name should be between 2 and 50 characters")));
 
 
         addDailyAteFoodDTO = new AddDailyAteFoodDTO(null, 333.2, 10, 20, 30);
@@ -142,7 +142,7 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Protein should be > -1")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 1000, 20, 30);
+        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 100, 20, 30);
         json = mapper.writeValueAsString(addDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
@@ -153,7 +153,7 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("Protein should be < 1000")));
+                .andExpect(jsonPath("$.info", is("Protein should be < 100")));
 
 
         addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 10, -1, 30);
@@ -170,7 +170,7 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat should be > -1")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 10, 1000, 30);
+        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 10, 100, 30);
         json = mapper.writeValueAsString(addDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
@@ -181,7 +181,7 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("Fat should be < 1000")));
+                .andExpect(jsonPath("$.info", is("Fat should be < 100")));
 
 
         addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 10, 20, -1);
@@ -198,7 +198,7 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Carb should be > -1")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 10, 20, 1000);
+        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 10, 20, 100);
         json = mapper.writeValueAsString(addDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
@@ -209,7 +209,7 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("Carb should be < 1000")));
+                .andExpect(jsonPath("$.info", is("Carb should be < 100")));
     }
 
     @Test
