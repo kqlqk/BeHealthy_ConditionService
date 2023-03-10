@@ -1,6 +1,6 @@
 package me.kqlqk.behealthy.condition_service.model.enums;
 
-public enum Intensity {
+public enum Activity {
     MIN(1.25),
     AVG(1.45),
     ACTIVE(1.6),
@@ -8,7 +8,7 @@ public enum Intensity {
 
     private final double activity;
 
-    Intensity(double activity) {
+    Activity(double activity) {
         this.activity = activity;
     }
 

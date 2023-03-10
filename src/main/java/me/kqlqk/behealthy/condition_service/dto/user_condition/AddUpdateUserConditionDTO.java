@@ -3,9 +3,9 @@ package me.kqlqk.behealthy.condition_service.dto.user_condition;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import me.kqlqk.behealthy.condition_service.model.enums.Activity;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
-import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 
 import javax.validation.constraints.*;
 
@@ -28,8 +28,8 @@ public class AddUpdateUserConditionDTO {
     @Max(value = 140, message = "Weight should be between 40 and 140")
     private int weight;
 
-    @NotNull(message = "Intensity cannot be null")
-    private Intensity intensity;
+    @NotNull(message = "Activity cannot be null")
+    private Activity activity;
 
     @NotNull(message = "Goal cannot be null")
     private Goal goal;
@@ -60,12 +60,12 @@ public class AddUpdateUserConditionDTO {
     @Max(value = 50, message = "Fat fold between shoulder and elbow should be between 2 and 50")
     private int fatFoldBetweenShoulderAndElbow;
 
-    public AddUpdateUserConditionDTO(Gender gender, int age, int height, int weight, Intensity intensity, Goal goal, double fatPercent) {
+    public AddUpdateUserConditionDTO(Gender gender, int age, int height, int weight, Activity activity, Goal goal, double fatPercent) {
         this.gender = gender;
         this.age = age;
         this.height = height;
         this.weight = weight;
-        this.intensity = intensity;
+        this.activity = activity;
         this.goal = goal;
         this.fatPercent = fatPercent;
         this.fatPercentExists = true;
@@ -75,7 +75,7 @@ public class AddUpdateUserConditionDTO {
                                      int age,
                                      int height,
                                      int weight,
-                                     Intensity intensity,
+                                     Activity activity,
                                      Goal goal,
                                      int fatFoldBetweenChestAndIlium,
                                      int fatFoldBetweenNavelAndLowerBelly,
@@ -85,7 +85,7 @@ public class AddUpdateUserConditionDTO {
         this.age = age;
         this.height = height;
         this.weight = weight;
-        this.intensity = intensity;
+        this.activity = activity;
         this.goal = goal;
         this.fatPercentExists = false;
         this.fatFoldBetweenChestAndIlium = fatFoldBetweenChestAndIlium;
@@ -98,7 +98,7 @@ public class AddUpdateUserConditionDTO {
                                      int age,
                                      int height,
                                      int weight,
-                                     Intensity intensity,
+                                     Activity activity,
                                      Goal goal,
                                      int fatFoldBetweenShoulderAndElbow,
                                      int fatFoldBetweenChestAndIlium,
@@ -107,7 +107,7 @@ public class AddUpdateUserConditionDTO {
         this.age = age;
         this.height = height;
         this.weight = weight;
-        this.intensity = intensity;
+        this.activity = activity;
         this.goal = goal;
         this.fatPercentExists = false;
         this.fatFoldBetweenChestAndIlium = fatFoldBetweenChestAndIlium;

@@ -4,9 +4,9 @@ import annotations.ServiceTest;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionAlreadyExistsException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserConditionNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
+import me.kqlqk.behealthy.condition_service.model.enums.Activity;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
-import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 import me.kqlqk.behealthy.condition_service.repository.UserConditionRepository;
 import me.kqlqk.behealthy.condition_service.service.impl.UserConditionServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class UserConditionServiceImplTest {
         int oldUserConditionSize = userConditionRepository.findAll().size();
 
         UserCondition userCondition =
-                new UserCondition(3, null, Gender.MALE, 20, 180, 80, Intensity.MAX, Goal.MAINTAIN, 15);
+                new UserCondition(3, null, Gender.MALE, 20, 180, 80, Activity.MAX, Goal.MAINTAIN, 15);
         userConditionService.save(userCondition);
 
         int newUserConditionSize = userConditionRepository.findAll().size();
@@ -40,7 +40,7 @@ public class UserConditionServiceImplTest {
     @Test
     public void save_shouldThrowException() {
         UserCondition userCondition =
-                new UserCondition(1, null, Gender.MALE, 20, 180, 80, Intensity.MAX, Goal.MAINTAIN, 15);
+                new UserCondition(1, null, Gender.MALE, 20, 180, 80, Activity.MAX, Goal.MAINTAIN, 15);
 
         assertThrows(UserConditionAlreadyExistsException.class, () -> userConditionService.save(userCondition));
     }

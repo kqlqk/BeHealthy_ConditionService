@@ -52,7 +52,7 @@ public class UserConditionRestController {
             throw new UserConditionException(constraintViolations.iterator().next().getMessage());
         }
 
-        constraintViolations = validator.validateProperty(createConditionDTO, "intensity");
+        constraintViolations = validator.validateProperty(createConditionDTO, "activity");
         if (!constraintViolations.isEmpty()) {
             throw new UserConditionException(constraintViolations.iterator().next().getMessage());
         }
@@ -131,7 +131,7 @@ public class UserConditionRestController {
                                                         createConditionDTO.getAge(),
                                                         createConditionDTO.getHeight(),
                                                         createConditionDTO.getWeight(),
-                                                        createConditionDTO.getIntensity(),
+                                                        createConditionDTO.getActivity(),
                                                         createConditionDTO.getGoal(),
                                                         createConditionDTO.getFatPercent());
 
@@ -162,7 +162,7 @@ public class UserConditionRestController {
             throw new UserConditionException(constraintViolations.iterator().next().getMessage());
         }
 
-        constraintViolations = validator.validateProperty(updateConditionDTO, "intensity");
+        constraintViolations = validator.validateProperty(updateConditionDTO, "activity");
         if (!constraintViolations.isEmpty()) {
             throw new UserConditionException(constraintViolations.iterator().next().getMessage());
         }
@@ -240,7 +240,7 @@ public class UserConditionRestController {
         userCondition.setAge(updateConditionDTO.getAge());
         userCondition.setHeight(updateConditionDTO.getHeight());
         userCondition.setWeight(updateConditionDTO.getWeight());
-        userCondition.setIntensity(updateConditionDTO.getIntensity());
+        userCondition.setActivity(updateConditionDTO.getActivity());
         userCondition.setGoal(updateConditionDTO.getGoal());
         userCondition.setFatPercent(updateConditionDTO.getFatPercent());
 

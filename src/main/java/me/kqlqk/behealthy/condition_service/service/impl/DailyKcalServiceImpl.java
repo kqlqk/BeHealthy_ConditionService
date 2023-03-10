@@ -2,8 +2,8 @@ package me.kqlqk.behealthy.condition_service.service.impl;
 
 import lombok.NonNull;
 import me.kqlqk.behealthy.condition_service.model.DailyKcal;
+import me.kqlqk.behealthy.condition_service.model.enums.Activity;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
-import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 import me.kqlqk.behealthy.condition_service.service.DailyKcalService;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +13,8 @@ public class DailyKcalServiceImpl implements DailyKcalService {
     private static final int COEFFICIENT_KCALS_FOR_GAIN = 500;
 
     @Override
-    public DailyKcal generateDailyKcals(int weight, double fatPercent, @NonNull Intensity intensity, @NonNull Goal goal) {
-        int dailyKcals = (int) (formulaKatchMcArdle(weight, fatPercent) * intensity.getCoefficient());
+    public DailyKcal generateDailyKcals(int weight, double fatPercent, @NonNull Activity activity, @NonNull Goal goal) {
+        int dailyKcals = (int) (formulaKatchMcArdle(weight, fatPercent) * activity.getCoefficient());
 
         DailyKcal dailyKcalModel = new DailyKcal();
         int proteins = 0;
@@ -32,7 +32,7 @@ public class DailyKcalServiceImpl implements DailyKcalService {
                 break;
 
             case MAINTAIN:
-                if (intensity.getCoefficient() > 1.55) {
+                if (activity.getCoefficient() > 1.55) {
                     proteins = (int) (1.9 * leanBodyMass(weight, fatPercent));
                     double onMaintainKcalsWithoutProtein = dailyKcals - proteins * 4;
                     fats = (int) (onMaintainKcalsWithoutProtein * 40 / 100) / 9;

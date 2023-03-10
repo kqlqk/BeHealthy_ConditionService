@@ -82,7 +82,7 @@ public class UserConditionServiceImpl implements UserConditionService {
 
         DailyKcal dailyKcal = dailyKcalService.generateDailyKcals(userCondition.getWeight(),
                                                                   userCondition.getFatPercent(),
-                                                                  userCondition.getIntensity(),
+                                                                  userCondition.getActivity(),
                                                                   userCondition.getGoal());
         userCondition.setDailyKcal(dailyKcal);
 
@@ -98,7 +98,7 @@ public class UserConditionServiceImpl implements UserConditionService {
         DailyKcal dailyKcal = userCondition.getDailyKcal();
         DailyKcal updatedDailyKcal = dailyKcalService.generateDailyKcals(userCondition.getWeight(),
                                                                          userCondition.getFatPercent(),
-                                                                         userCondition.getIntensity(),
+                                                                         userCondition.getActivity(),
                                                                          userCondition.getGoal());
         dailyKcal.setProtein(updatedDailyKcal.getProtein());
         dailyKcal.setFat(updatedDailyKcal.getFat());

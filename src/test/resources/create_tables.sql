@@ -37,7 +37,7 @@ create table user_condition
     age           smallint      not null,
     height        smallint      not null,
     weight        smallint      not null,
-    intensity     varchar(30)   not null,
+    activity      varchar(30)   not null,
     goal          varchar(12)   not null,
     fat_percent   decimal(3, 1) not null,
 

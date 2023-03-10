@@ -2,9 +2,9 @@ package me.kqlqk.behealthy.condition_service.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import me.kqlqk.behealthy.condition_service.model.enums.Activity;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
-import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 
 import javax.persistence.*;
 
@@ -39,8 +39,8 @@ public class UserCondition {
     private int weight;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "intensity", nullable = false, length = 10)
-    private Intensity intensity;
+    @Column(name = "activity", nullable = false, length = 10)
+    private Activity activity;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "goal", nullable = false, length = 10)
@@ -56,7 +56,7 @@ public class UserCondition {
                          int age,
                          int height,
                          int weight,
-                         Intensity intensity,
+                         Activity activity,
                          Goal goal,
                          double fatPercent) {
         this.userId = userId;
@@ -65,7 +65,7 @@ public class UserCondition {
         this.age = age;
         this.height = height;
         this.weight = weight;
-        this.intensity = intensity;
+        this.activity = activity;
         this.goal = goal;
         this.fatPercent = fatPercent;
     }

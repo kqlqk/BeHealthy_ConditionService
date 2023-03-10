@@ -1,8 +1,8 @@
 package unit.me.kqlqk.behealthy.condition_sercice.service;
 
 import me.kqlqk.behealthy.condition_service.model.DailyKcal;
+import me.kqlqk.behealthy.condition_service.model.enums.Activity;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
-import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 import me.kqlqk.behealthy.condition_service.service.impl.DailyKcalServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,7 @@ public class DailyKcalServiceImplTest {
 
     @Test
     public void generateDailyKcals_shouldGenerateAllPossibleOptions() {
-        DailyKcal maleLose20Fat = dailyKcalsService.generateDailyKcals(90, 20, Intensity.MIN, Goal.LOSE);
+        DailyKcal maleLose20Fat = dailyKcalsService.generateDailyKcals(90, 20, Activity.MIN, Goal.LOSE);
 
         assertThat(maleLose20Fat.getProtein()).isGreaterThan(150);
         assertThat(maleLose20Fat.getProtein()).isLessThan(200);
@@ -26,7 +26,7 @@ public class DailyKcalServiceImplTest {
         assertThat(maleLose20Fat.getCarb()).isLessThan(200);
 
 
-        DailyKcal maleMaintain17Fat = dailyKcalsService.generateDailyKcals(76, 17, Intensity.AVG, Goal.MAINTAIN);
+        DailyKcal maleMaintain17Fat = dailyKcalsService.generateDailyKcals(76, 17, Activity.AVG, Goal.MAINTAIN);
 
         assertThat(maleMaintain17Fat.getProtein()).isGreaterThan(125);
         assertThat(maleMaintain17Fat.getProtein()).isLessThan(200);
@@ -36,7 +36,7 @@ public class DailyKcalServiceImplTest {
         assertThat(maleMaintain17Fat.getCarb()).isLessThan(400);
 
 
-        DailyKcal maleGain13Fat = dailyKcalsService.generateDailyKcals(70, 13, Intensity.AVG, Goal.GAIN);
+        DailyKcal maleGain13Fat = dailyKcalsService.generateDailyKcals(70, 13, Activity.AVG, Goal.GAIN);
 
         assertThat(maleGain13Fat.getProtein()).isGreaterThan(125);
         assertThat(maleGain13Fat.getProtein()).isLessThan(180);

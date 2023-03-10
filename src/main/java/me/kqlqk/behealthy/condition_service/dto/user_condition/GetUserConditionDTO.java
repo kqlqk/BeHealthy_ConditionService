@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.kqlqk.behealthy.condition_service.model.UserCondition;
+import me.kqlqk.behealthy.condition_service.model.enums.Activity;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
-import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +17,7 @@ public class GetUserConditionDTO {
     private int age;
     private int height;
     private int weight;
-    private Intensity intensity;
+    private Activity activity;
     private Goal goal;
     private double fatPercent;
 
@@ -27,7 +27,7 @@ public class GetUserConditionDTO {
                                        userCondition.getAge(),
                                        userCondition.getHeight(),
                                        userCondition.getWeight(),
-                                       userCondition.getIntensity(),
+                                       userCondition.getActivity(),
                                        userCondition.getGoal(),
                                        userCondition.getFatPercent());
     }

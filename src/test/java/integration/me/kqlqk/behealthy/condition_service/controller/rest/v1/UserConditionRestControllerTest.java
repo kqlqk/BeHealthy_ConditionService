@@ -3,9 +3,9 @@ package integration.me.kqlqk.behealthy.condition_service.controller.rest.v1;
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.kqlqk.behealthy.condition_service.dto.user_condition.AddUpdateUserConditionDTO;
+import me.kqlqk.behealthy.condition_service.model.enums.Activity;
 import me.kqlqk.behealthy.condition_service.model.enums.Gender;
 import me.kqlqk.behealthy.condition_service.model.enums.Goal;
-import me.kqlqk.behealthy.condition_service.model.enums.Intensity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -38,7 +38,7 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$.age").exists())
                 .andExpect(jsonPath("$.height").exists())
                 .andExpect(jsonPath("$.weight").exists())
-                .andExpect(jsonPath("$.intensity").exists())
+                .andExpect(jsonPath("$.activity").exists())
                 .andExpect(jsonPath("$.goal").exists())
                 .andExpect(jsonPath("$.fatPercent").exists());
     }
@@ -58,7 +58,7 @@ public class UserConditionRestControllerTest {
     @Test
     public void createUserConditionByUserId_shouldCreateUserCondition() throws Exception {
         AddUpdateUserConditionDTO addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 15);
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
@@ -74,7 +74,7 @@ public class UserConditionRestControllerTest {
     public void createUserConditionByUserId_shouldReturnJsonWithException() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         AddUpdateUserConditionDTO addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(null, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(null, 30, 170, 80, Activity.MIN, Goal.LOSE, 15);
         String json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -89,7 +89,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 10, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 10, 170, 80, Activity.MIN, Goal.LOSE, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -104,7 +104,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 70, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 70, 170, 80, Activity.MIN, Goal.LOSE, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -119,7 +119,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 140, 80, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 140, 80, Activity.MIN, Goal.LOSE, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -134,7 +134,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 30, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 30, Activity.MIN, Goal.LOSE, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -149,7 +149,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 150, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 150, Activity.MIN, Goal.LOSE, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -175,11 +175,11 @@ public class UserConditionRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("Intensity cannot be null")));
+                .andExpect(jsonPath("$.info", is("Activity cannot be null")));
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, null, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, null, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -194,7 +194,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 2);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 2);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -209,7 +209,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 50);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 50);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -224,7 +224,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 1, 10, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -239,7 +239,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 60, 10, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 60, 10, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -254,7 +254,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 3, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 3, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -269,7 +269,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 71, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 71, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -284,7 +284,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 1, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 10, 1, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -299,7 +299,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 51, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 10, 51, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -314,7 +314,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 1);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 10, 10, 1);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -329,7 +329,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 51);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 10, 10, 51);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -344,7 +344,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 1, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -359,7 +359,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 51, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 51, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(post("/api/v1/condition")
@@ -376,7 +376,7 @@ public class UserConditionRestControllerTest {
     @Test
     public void updateUserConditionByUserId_shouldUpdateUserCondition() throws Exception {
         AddUpdateUserConditionDTO addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 15);
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
@@ -392,7 +392,7 @@ public class UserConditionRestControllerTest {
     public void updateUserConditionByUserId_shouldReturnJsonWithException() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         AddUpdateUserConditionDTO addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(null, 30, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(null, 30, 170, 80, Activity.MIN, Goal.LOSE, 15);
         String json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -407,7 +407,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 10, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 10, 170, 80, Activity.MIN, Goal.LOSE, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -422,7 +422,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 70, 170, 80, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 70, 170, 80, Activity.MIN, Goal.LOSE, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -437,7 +437,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 140, 80, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 140, 80, Activity.MIN, Goal.LOSE, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -452,7 +452,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 30, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 30, Activity.MIN, Goal.LOSE, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -467,7 +467,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 150, Intensity.MIN, Goal.LOSE, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 150, Activity.MIN, Goal.LOSE, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -493,11 +493,11 @@ public class UserConditionRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("Intensity cannot be null")));
+                .andExpect(jsonPath("$.info", is("Activity cannot be null")));
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, null, 15);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, null, 15);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -512,7 +512,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 2);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 2);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -527,7 +527,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 50);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 50);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -542,7 +542,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 1, 10, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -557,7 +557,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 60, 10, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 60, 10, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -572,7 +572,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 3, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 3, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -587,7 +587,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 71, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 71, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -602,7 +602,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 1, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 10, 1, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -617,7 +617,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 51, 10);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 10, 51, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -632,7 +632,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 1);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 10, 10, 1);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -647,7 +647,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 10, 10, 10, 51);
+                new AddUpdateUserConditionDTO(Gender.MALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 10, 10, 10, 51);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -662,7 +662,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 1, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 1, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
@@ -677,7 +677,7 @@ public class UserConditionRestControllerTest {
 
 
         addUpdateUserConditionDTO =
-                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Intensity.MIN, Goal.LOSE, 51, 10, 10);
+                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 51, 10, 10);
         json = mapper.writeValueAsString(addUpdateUserConditionDTO);
 
         mockMvc.perform(put("/api/v1/condition")
