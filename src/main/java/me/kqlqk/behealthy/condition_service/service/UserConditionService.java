@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 public interface UserConditionService {
     UserCondition getByUserId(long userId);
 
-    boolean existsByUserId(long userIdl);
-
     double generateFatPercentForMale(int age,
                                      int fatFoldBetweenChestAndIlium,
                                      int fatFoldBetweenNavelAndLowerBelly,

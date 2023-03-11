@@ -31,16 +31,8 @@ public class UserConditionServiceImpl implements UserConditionService {
 
     @Override
     public UserCondition getByUserId(long userId) {
-        if (!existsByUserId(userId)) {
-            throw new UserConditionNotFoundException("User condition with userId = " + userId + " not found");
-        }
-
-        return userConditionRepository.findByUserId(userId);
-    }
-
-    @Override
-    public boolean existsByUserId(long id) {
-        return userConditionRepository.existsByUserId(id);
+        return userConditionRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserConditionNotFoundException("User condition with userId = " + userId + " not found"));
     }
 
     @Override
@@ -76,7 +68,7 @@ public class UserConditionServiceImpl implements UserConditionService {
 
     @Override
     public void save(@NonNull UserCondition userCondition) {
-        if (existsByUserId(userCondition.getUserId())) {
+        if (userConditionRepository.existsByUserId(userCondition.getUserId())) {
             throw new UserConditionAlreadyExistsException("User condition with userId = " + userCondition.getUserId() + " already exists");
         }
 
@@ -91,7 +83,7 @@ public class UserConditionServiceImpl implements UserConditionService {
 
     @Override
     public void update(@NonNull UserCondition userCondition) {
-        if (!existsByUserId(userCondition.getUserId())) {
+        if (!userConditionRepository.existsByUserId(userCondition.getUserId())) {
             throw new UserConditionNotFoundException("User condition with userId = " + userCondition.getUserId() + " not found");
         }
 

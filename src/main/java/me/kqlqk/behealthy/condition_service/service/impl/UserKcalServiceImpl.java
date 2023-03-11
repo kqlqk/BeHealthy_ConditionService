@@ -19,11 +19,8 @@ public class UserKcalServiceImpl implements UserKcalService {
 
     @Override
     public UserKcal getByUserId(long userId) {
-        if (!userKcalRepository.existsByUserId(userId)) {
-            throw new UserKcalNotFoundException("UserKcal with userId = " + userId + " not found");
-        }
-
-        return userKcalRepository.findByUserId(userId);
+        return userKcalRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserKcalNotFoundException("UserKcal with userId = " + userId + " not found"));
     }
 
     @Override

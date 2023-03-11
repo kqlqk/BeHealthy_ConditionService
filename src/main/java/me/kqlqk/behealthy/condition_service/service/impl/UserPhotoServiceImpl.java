@@ -48,20 +48,20 @@ public class UserPhotoServiceImpl implements UserPhotoService {
 
     @Override
     public UserPhoto getByUserIdAndDate(long userId, Date date) {
-        if (!userPhotoRepository.existsByUserIdAndPhotoDate(userId, date)) {
-            throw new UserPhotoNotFoundException("UserPhoto with userId = " + userId + " and date = " + dateFormat.format(date) + " not found");
-        }
-
-        return userPhotoRepository.getByUserIdAndPhotoDate(userId, date);
+        return userPhotoRepository.getByUserIdAndPhotoDate(userId, date)
+                .orElseThrow(() -> new UserPhotoNotFoundException("UserPhoto with userId = " + userId + " and date = " + dateFormat.format(date) + " not found"));
     }
 
     @Override
     public List<UserPhoto> getByUserId(long userId) {
-        if (!userPhotoRepository.existsByUserId(userId)) {
+        List<UserPhoto> res = userPhotoRepository.getByUserId(userId)
+                .orElseThrow(() -> new UserPhotoNotFoundException("UserPhotos with userId = " + userId + " not found"));
+
+        if (res.isEmpty()) {
             throw new UserPhotoNotFoundException("UserPhotos with userId = " + userId + " not found");
         }
 
-        return userPhotoRepository.getByUserId(userId);
+        return res;
     }
 
     @Override
@@ -99,8 +99,8 @@ public class UserPhotoServiceImpl implements UserPhotoService {
     @Override
     public void save(UserPhoto userPhoto, String encodedPhoto) {
         if (userPhotoRepository.existsByUserIdAndPhotoDate(userPhoto.getUserId(), userPhoto.getPhotoDate())) {
-            throw new UserPhotoAlreadyExistsException("UserPhoto with userId = " + userPhoto.getUserId() +
-                                                              " and photoDate = " + dateFormat.format(userPhoto.getPhotoDate()) + " already exists");
+            throw new UserPhotoAlreadyExistsException(
+                    "UserPhoto with userId = " + userPhoto.getUserId() + " and photoDate = " + dateFormat.format(userPhoto.getPhotoDate()) + " already exists");
         }
 
         String path = saveFileAndReturnPath(userPhoto.getUserId(), userPhoto.getPhotoDate(), encodedPhoto);

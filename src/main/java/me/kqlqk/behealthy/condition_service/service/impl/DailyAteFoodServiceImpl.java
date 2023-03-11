@@ -22,11 +22,14 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
 
     @Override
     public List<DailyAteFood> getByUserId(long userId) {
-        if (!dailyAteFoodRepository.existsByUserId(userId)) {
+        List<DailyAteFood> res = dailyAteFoodRepository.findByUserIdOrderByIdAsc(userId)
+                .orElseThrow(() -> new DailyAteFoodNotFoundException("DailyAteFood with userId = " + userId + " not found"));
+
+        if (res.isEmpty()) {
             throw new DailyAteFoodNotFoundException("DailyAteFood with userId = " + userId + " not found");
         }
 
-        return dailyAteFoodRepository.findByUserIdOrderByIdAsc(userId);
+        return res;
     }
 
     @Override

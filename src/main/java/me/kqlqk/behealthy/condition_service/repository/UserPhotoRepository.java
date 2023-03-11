@@ -6,14 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserPhotoRepository extends JpaRepository<UserPhoto, Long> {
     boolean existsByUserIdAndPhotoDate(long userId, Date photoDate);
 
-    boolean existsByUserId(long userId);
+    Optional<List<UserPhoto>> getByUserId(long userId);
 
-    List<UserPhoto> getByUserId(long userId);
-
-    UserPhoto getByUserIdAndPhotoDate(long userId, Date date);
+    Optional<UserPhoto> getByUserIdAndPhotoDate(long userId, Date date);
 }
