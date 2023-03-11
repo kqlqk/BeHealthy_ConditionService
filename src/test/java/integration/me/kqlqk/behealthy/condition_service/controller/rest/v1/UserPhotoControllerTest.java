@@ -5,15 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import integration.me.kqlqk.behealthy.condition_service.service.UserPhotoServiceImplTest;
 import me.kqlqk.behealthy.condition_service.dto.user_photo.AddUserPhotoDTO;
 import me.kqlqk.behealthy.condition_service.model.UserPhoto;
-import me.kqlqk.behealthy.condition_service.repository.UserPhotoRepository;
 import me.kqlqk.behealthy.condition_service.service.impl.UserPhotoServiceImpl;
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -30,10 +31,12 @@ public class UserPhotoControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserPhotoRepository userPhotoRepository;
-
-    @Autowired
     private UserPhotoServiceImpl userPhotoService;
+
+    @AfterEach
+    public void close() throws IOException {
+        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
+    }
 
     @Test
     public void getEncodedPhotoByDate_shouldReturnEncodedPhoto() throws Exception {
@@ -52,8 +55,6 @@ public class UserPhotoControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.encodedPhoto").exists());
-
-        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
     }
 
     @Test
@@ -67,6 +68,24 @@ public class UserPhotoControllerTest {
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("UserPhoto with userId = 1 and date = 01-01-23 not found")));
+
+        mockMvc.perform(get("/api/v1/photo")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("date", "01-01-23"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
+
+        mockMvc.perform(get("/api/v1/photo")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'date' for method parameter type String is not present")));
     }
 
     @Test
@@ -88,8 +107,6 @@ public class UserPhotoControllerTest {
                 .andExpect(jsonPath("$[0].photoPath").exists())
                 .andExpect(jsonPath("$[0].photoDate").exists())
                 .andExpect(jsonPath("$[0].encodedPhoto").exists());
-
-        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
     }
 
     @Test
@@ -102,6 +119,14 @@ public class UserPhotoControllerTest {
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("UserPhotos with userId = 1 not found")));
+
+        mockMvc.perform(get("/api/v1/photo")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
     }
 
     @Test
@@ -117,8 +142,6 @@ public class UserPhotoControllerTest {
                                 .content(json))
                 .andDo(print())
                 .andExpect(status().isOk());
-
-        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
     }
 
     @Test
@@ -157,7 +180,15 @@ public class UserPhotoControllerTest {
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("UserPhoto with userId = 1 and photoDate = 01-01-23 already exists")));
 
-        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
+
+        mockMvc.perform(post("/api/v1/photo")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
     }
 
 }

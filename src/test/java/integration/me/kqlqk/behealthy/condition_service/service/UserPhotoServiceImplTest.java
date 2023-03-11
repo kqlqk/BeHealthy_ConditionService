@@ -8,6 +8,7 @@ import me.kqlqk.behealthy.condition_service.model.UserPhoto;
 import me.kqlqk.behealthy.condition_service.repository.UserPhotoRepository;
 import me.kqlqk.behealthy.condition_service.service.impl.UserPhotoServiceImpl;
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -76,6 +77,11 @@ public class UserPhotoServiceImplTest {
             "2Jt+5bTxctWNV9ul0tVisuqOBYJI5Cfpw7HkcDmyRuqZ4ewCYfY3sattjqKJXlyS3eL39425mipiZR02YjnSxHspR19zL3DMyZwQzcYl0PUqQZX+SJNOGtzpvOVBsEDLzbpxA" +
             "hM/bHjYgg0d9qA8fPnz48OHDhw8fPnz48Br+B+jnlYCuONWjAAAAAElFTkSuQmCC";
 
+    @AfterEach
+    public void close() throws IOException {
+        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
+    }
+
     @Test
     public void getEncodedPhoto_shouldReturnEncodedPhoto() throws IOException {
         UserPhoto userPhoto = new UserPhoto();
@@ -88,8 +94,6 @@ public class UserPhotoServiceImplTest {
         String encodedPhoto = userPhotoService.getEncodedPhoto(1, "01-01-23");
 
         assertThat(encodedPhoto).matches("^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$");
-
-        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
     }
 
     @Test
@@ -111,8 +115,6 @@ public class UserPhotoServiceImplTest {
 
         int newUserPhotoSize = userPhotoRepository.findAll().size();
 
-        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
-
         assertThat(newUserPhotoSize).isEqualTo(oldUserPhotoSize + 1);
     }
 
@@ -127,8 +129,6 @@ public class UserPhotoServiceImplTest {
 
         UserPhoto userPhotoToSave = userPhotoService.getByUserIdAndDate(1, "01-01-23");
         assertThrows(UserPhotoAlreadyExistsException.class, () -> userPhotoService.save(userPhotoToSave, encodedPhoto));
-
-        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
     }
 
 }

@@ -53,6 +53,14 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("User condition with userId = 0 not found")));
+
+        mockMvc.perform(get("/api/v1/condition")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
     }
 
     @Test
@@ -371,6 +379,19 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("Fat fold between shoulder and elbow should be between 2 and 50")));
+
+
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 20);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
+        mockMvc.perform(post("/api/v1/condition")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
     }
 
     @Test
@@ -689,5 +710,18 @@ public class UserConditionRestControllerTest {
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("Fat fold between shoulder and elbow should be between 2 and 50")));
+
+
+        addUpdateUserConditionDTO =
+                new AddUpdateUserConditionDTO(Gender.FEMALE, 30, 170, 80, Activity.MIN, Goal.LOSE, 20);
+        json = mapper.writeValueAsString(addUpdateUserConditionDTO);
+        mockMvc.perform(put("/api/v1/condition")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
     }
 }

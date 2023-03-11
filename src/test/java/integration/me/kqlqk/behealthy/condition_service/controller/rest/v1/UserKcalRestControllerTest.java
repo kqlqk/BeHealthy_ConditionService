@@ -45,6 +45,14 @@ public class UserKcalRestControllerTest {
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("UserKcal with userId = 2 not found")));
+
+        mockMvc.perform(get("/api/v1/kcal")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
     }
 
     @Test
@@ -174,6 +182,19 @@ public class UserKcalRestControllerTest {
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("Carb should be between 0 and 999")));
+
+
+        addUserKcalDTO = new AddUpdateUserKcalDTO(17, 1, 1, 1, false, false);
+        json = mapper.writeValueAsString(addUserKcalDTO);
+
+        mockMvc.perform(post("/api/v1/kcal")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
     }
 
     @Test
@@ -303,5 +324,18 @@ public class UserKcalRestControllerTest {
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("Carb should be between 0 and 999")));
+
+
+        updateUserKcalDTO = new AddUpdateUserKcalDTO(17, 1, 1, 1, false, false);
+        json = mapper.writeValueAsString(updateUserKcalDTO);
+
+        mockMvc.perform(put("/api/v1/kcal")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
     }
 }
