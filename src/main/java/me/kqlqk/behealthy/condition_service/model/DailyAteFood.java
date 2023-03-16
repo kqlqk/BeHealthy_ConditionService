@@ -13,7 +13,7 @@ public class DailyAteFood {
     @Column(name = "id", unique = true, nullable = false, insertable = false, updatable = false)
     private long id;
 
-    @Column(name = "user_id", unique = true, nullable = false)
+    @Column(name = "user_id", nullable = false)
     private long userId;
 
     @Column(name = "product_name", nullable = false)
@@ -33,4 +33,7 @@ public class DailyAteFood {
 
     @Column(name = "product_carbs", nullable = false)
     private int carb;
+
+    @Column(name = "today", nullable = false)
+    private boolean today;
 }

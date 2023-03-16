@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddDailyAteFoodDTO {
+public class AddUpdateDailyAteFoodDTO {
     @Pattern(regexp = ".{2,50}", message = "Name should be between 2 and 50 characters")
     @NotEmpty(message = "Name cannot be null")
     private String name;
@@ -29,4 +29,6 @@ public class AddDailyAteFoodDTO {
     @Min(value = 0, message = "Carb should be > -1")
     @Max(value = 99, message = "Carb should be < 100")
     private int carb;
+
+    private boolean today;
 }

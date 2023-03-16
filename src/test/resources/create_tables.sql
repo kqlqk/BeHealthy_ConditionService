@@ -13,7 +13,10 @@ create table daily_ate_food
     product_kcals    int           not null,
     product_proteins int           not null,
     product_fats     int           not null,
-    product_carbs    int           not null,
+    product_carbs    int           not null, today
+    boolean
+    not
+    null,
 
     primary key (id)
 );

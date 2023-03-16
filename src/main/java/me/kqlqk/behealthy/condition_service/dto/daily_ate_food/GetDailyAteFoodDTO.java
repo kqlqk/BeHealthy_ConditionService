@@ -19,6 +19,7 @@ public class GetDailyAteFoodDTO {
     private int protein;
     private int fat;
     private int carb;
+    private boolean today;
 
     public static GetDailyAteFoodDTO convert(DailyAteFood dailyAteFood) {
         return new GetDailyAteFoodDTO(dailyAteFood.getId(),
@@ -27,7 +28,8 @@ public class GetDailyAteFoodDTO {
                                       dailyAteFood.getKcal(),
                                       dailyAteFood.getProtein(),
                                       dailyAteFood.getFat(),
-                                      dailyAteFood.getCarb());
+                                      dailyAteFood.getCarb(),
+                                      dailyAteFood.isToday());
     }
 
     public static List<GetDailyAteFoodDTO> convertList(List<DailyAteFood> dailyAteFoods) {
