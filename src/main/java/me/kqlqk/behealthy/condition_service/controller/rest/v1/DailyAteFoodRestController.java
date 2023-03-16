@@ -1,7 +1,8 @@
 package me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
-import me.kqlqk.behealthy.condition_service.dto.daily_ate_food.AddDailyAteFoodDTO;
+import me.kqlqk.behealthy.condition_service.dto.daily_ate_food.AddUpdateDailyAteFoodDTO;
 import me.kqlqk.behealthy.condition_service.dto.daily_ate_food.GetDailyAteFoodDTO;
+import me.kqlqk.behealthy.condition_service.exception.exceptions.DailyAteFoodNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyAteFood;
 import me.kqlqk.behealthy.condition_service.service.DailyAteFoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +28,39 @@ public class DailyAteFoodRestController {
     }
 
     @PostMapping("/food")
-    public ResponseEntity<?> saveDailyAteFood(@RequestParam long userId, @RequestBody @Valid AddDailyAteFoodDTO addDailyAteFoodDTO) {
+    public ResponseEntity<?> saveDailyAteFood(@RequestParam long userId, @RequestBody @Valid AddUpdateDailyAteFoodDTO addUpdateDailyAteFoodDTO) {
         DailyAteFood dailyAteFood = new DailyAteFood();
         dailyAteFood.setUserId(userId);
-        dailyAteFood.setName(addDailyAteFoodDTO.getName());
-        dailyAteFood.setWeight(addDailyAteFoodDTO.getWeight());
-        dailyAteFood.setProtein(addDailyAteFoodDTO.getProtein());
-        dailyAteFood.setFat(addDailyAteFoodDTO.getFat());
-        dailyAteFood.setCarb(addDailyAteFoodDTO.getCarb());
+        dailyAteFood.setName(addUpdateDailyAteFoodDTO.getName());
+        dailyAteFood.setWeight(addUpdateDailyAteFoodDTO.getWeight());
+        dailyAteFood.setProtein(addUpdateDailyAteFoodDTO.getProtein());
+        dailyAteFood.setFat(addUpdateDailyAteFoodDTO.getFat());
+        dailyAteFood.setCarb(addUpdateDailyAteFoodDTO.getCarb());
+        dailyAteFood.setToday(addUpdateDailyAteFoodDTO.isToday());
 
         dailyAteFoodService.save(dailyAteFood);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/food")
+    public ResponseEntity<?> updateDailyAteFood(@RequestParam long productId, @RequestParam long userId, @RequestBody @Valid AddUpdateDailyAteFoodDTO addUpdateDailyAteFoodDTO) {
+        List<DailyAteFood> dailyAteFoodsForUser = dailyAteFoodService.getByUserId(userId);
+
+        DailyAteFood dailyAteFood = dailyAteFoodsForUser
+                .stream()
+                .filter(product -> product.getId() == productId)
+                .findAny()
+                .orElseThrow(() -> new DailyAteFoodNotFoundException("DailyAteFood with id = " + productId + " not found for user with userId = " + userId));
+
+        dailyAteFood.setName(addUpdateDailyAteFoodDTO.getName());
+        dailyAteFood.setWeight(addUpdateDailyAteFoodDTO.getWeight());
+        dailyAteFood.setProtein(addUpdateDailyAteFoodDTO.getProtein());
+        dailyAteFood.setFat(addUpdateDailyAteFoodDTO.getFat());
+        dailyAteFood.setCarb(addUpdateDailyAteFoodDTO.getCarb());
+        dailyAteFood.setToday(addUpdateDailyAteFoodDTO.isToday());
+
+        dailyAteFoodService.update(dailyAteFood);
 
         return ResponseEntity.ok().build();
     }

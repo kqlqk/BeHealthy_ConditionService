@@ -2,7 +2,7 @@ package integration.me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import annotations.ControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.kqlqk.behealthy.condition_service.dto.daily_ate_food.AddDailyAteFoodDTO;
+import me.kqlqk.behealthy.condition_service.dto.daily_ate_food.AddUpdateDailyAteFoodDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -34,7 +34,8 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$[0].kcal").exists())
                 .andExpect(jsonPath("$[0].protein").exists())
                 .andExpect(jsonPath("$[0].fat").exists())
-                .andExpect(jsonPath("$[0].carb").exists());
+                .andExpect(jsonPath("$[0].carb").exists())
+                .andExpect(jsonPath("$[0].today").exists());
     }
 
     @Test
@@ -59,15 +60,16 @@ public class DailyAteFoodRestControllerTest {
 
     @Test
     public void saveDailyAteFood_shouldSaveDailyAteFoodToDb() throws Exception {
-        AddDailyAteFoodDTO addDailyAteFoodDTO = new AddDailyAteFoodDTO();
-        addDailyAteFoodDTO.setName("name");
-        addDailyAteFoodDTO.setWeight(333.2);
-        addDailyAteFoodDTO.setProtein(10);
-        addDailyAteFoodDTO.setFat(20);
-        addDailyAteFoodDTO.setCarb(30);
+        AddUpdateDailyAteFoodDTO addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO();
+        addUpdateDailyAteFoodDTO.setName("name");
+        addUpdateDailyAteFoodDTO.setWeight(333.2);
+        addUpdateDailyAteFoodDTO.setProtein(10);
+        addUpdateDailyAteFoodDTO.setFat(20);
+        addUpdateDailyAteFoodDTO.setCarb(30);
+        addUpdateDailyAteFoodDTO.setToday(true);
 
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        String json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -79,9 +81,9 @@ public class DailyAteFoodRestControllerTest {
 
     @Test
     public void saveDailyAteFood_shouldReturnJsonException() throws Exception {
-        AddDailyAteFoodDTO addDailyAteFoodDTO = new AddDailyAteFoodDTO("a", 333.2, 10, 20, 30);
+        AddUpdateDailyAteFoodDTO addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("a", 333.2, 10, 20, 30, true);
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        String json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -94,8 +96,8 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Name should be between 2 and 50 characters")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO(null, 333.2, 10, 20, 30);
-        json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO(null, 333.2, 10, 20, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -108,8 +110,8 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Name cannot be null")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 0, 10, 20, 30);
-        json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 0, 10, 20, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -122,8 +124,8 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Weight should be > 0")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 99999, 10, 20, 30);
-        json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 99999, 10, 20, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -136,8 +138,8 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Weight should be < 10000")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, -1, 20, 30);
-        json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, -1, 20, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -150,8 +152,8 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Protein should be > -1")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 100, 20, 30);
-        json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 100, 20, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -164,8 +166,8 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Protein should be < 100")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 10, -1, 30);
-        json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, -1, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -178,8 +180,8 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat should be > -1")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 10, 100, 30);
-        json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, 100, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -192,8 +194,8 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Fat should be < 100")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 10, 20, -1);
-        json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, 20, -1, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -206,8 +208,8 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Carb should be > -1")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 10, 20, 100);
-        json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, 20, 100, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -220,8 +222,8 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info", is("Carb should be < 100")));
 
 
-        addDailyAteFoodDTO = new AddDailyAteFoodDTO("name", 333.2, 10, 20, 10);
-        json = mapper.writeValueAsString(addDailyAteFoodDTO);
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, 20, 10, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
         mockMvc.perform(post("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
@@ -231,6 +233,207 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
     }
+
+    @Test
+    public void updateDailyAteFood_shouldUpdateDailyAteFoodToDb() throws Exception {
+        AddUpdateDailyAteFoodDTO addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO();
+        addUpdateDailyAteFoodDTO.setName("name");
+        addUpdateDailyAteFoodDTO.setWeight(333.2);
+        addUpdateDailyAteFoodDTO.setProtein(10);
+        addUpdateDailyAteFoodDTO.setFat(20);
+        addUpdateDailyAteFoodDTO.setCarb(30);
+        addUpdateDailyAteFoodDTO.setToday(true);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+
+        mockMvc.perform(post("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateDailyAteFood_shouldReturnJsonException() throws Exception {
+        AddUpdateDailyAteFoodDTO addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("a", 333.2, 10, 20, 30, true);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Name should be between 2 and 50 characters")));
+
+
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO(null, 333.2, 10, 20, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Name cannot be null")));
+
+
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 0, 10, 20, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Weight should be > 0")));
+
+
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 99999, 10, 20, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Weight should be < 10000")));
+
+
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, -1, 20, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Protein should be > -1")));
+
+
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 100, 20, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Protein should be < 100")));
+
+
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, -1, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Fat should be > -1")));
+
+
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, 100, 30, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Fat should be < 100")));
+
+
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, 20, -1, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Carb should be > -1")));
+
+
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, 20, 100, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Carb should be < 100")));
+
+
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, 20, 10, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("productId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
+
+        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, 20, 10, true);
+        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
+        mockMvc.perform(put("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .content(json))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'productId' for method parameter type long is not present")));
+    }
+
 
     @Test
     public void deleteDailyAteFoodFromUser_shouldDeleteDailyAteFoodFromDb() throws Exception {
