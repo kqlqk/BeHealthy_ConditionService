@@ -11,9 +11,11 @@ public interface DailyAteFoodService {
 
     void save(DailyAteFood dailyAteFood);
 
+    void update(DailyAteFood dailyAteFood);
+
     int getKcals(double weight, int protein, int fat, int carb);
 
     void delete(long id, long userId);
 
-    void autoDeletingEveryMidnight();
+    void autoChangeTodayEveryMidnight();
 }

@@ -34,6 +34,14 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
 
     @Override
     public void save(@NonNull DailyAteFood dailyAteFood) {
+        dailyAteFood.setId(0);
+        dailyAteFood.setKcal(getKcals(dailyAteFood.getWeight(), dailyAteFood.getProtein(), dailyAteFood.getFat(), dailyAteFood.getCarb()));
+
+        dailyAteFoodRepository.save(dailyAteFood);
+    }
+
+    @Override
+    public void update(@NonNull DailyAteFood dailyAteFood) {
         dailyAteFood.setKcal(getKcals(dailyAteFood.getWeight(), dailyAteFood.getProtein(), dailyAteFood.getFat(), dailyAteFood.getCarb()));
 
         dailyAteFoodRepository.save(dailyAteFood);
@@ -83,7 +91,10 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
 
     @Scheduled(cron = "0 0 0 * * *")
     @Override
-    public void autoDeletingEveryMidnight() {
-        dailyAteFoodRepository.deleteAll();
+    public void autoChangeTodayEveryMidnight() {
+        dailyAteFoodRepository.findAll().forEach(e -> {
+            e.setToday(false);
+            save(e);
+        });
     }
 }

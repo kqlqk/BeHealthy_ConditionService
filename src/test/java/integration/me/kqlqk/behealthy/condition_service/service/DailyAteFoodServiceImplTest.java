@@ -29,7 +29,7 @@ public class DailyAteFoodServiceImplTest {
         dailyAteFood.setFat(3);
         dailyAteFood.setCarb(20);
         dailyAteFood.setWeight(300);
-        dailyAteFoodService.save(dailyAteFood);
+        dailyAteFood.setToday(true);
 
         dailyAteFoodService.save(dailyAteFood);
 
@@ -41,6 +41,30 @@ public class DailyAteFoodServiceImplTest {
     @Test
     public void save_shouldThrowException() {
         assertThrows(NullPointerException.class, () -> dailyAteFoodService.save(null));
+    }
+
+    @Test
+    public void update_shouldUpdateDailyAteFoodInDb() {
+        int userId = 1;
+
+        DailyAteFood dailyAteFood = dailyAteFoodService.getByUserId(userId).get(0);
+        dailyAteFood.setName("NewFood");
+        dailyAteFood.setProtein(10);
+        dailyAteFood.setFat(3);
+        dailyAteFood.setCarb(20);
+        dailyAteFood.setWeight(300);
+        dailyAteFood.setToday(false);
+
+        dailyAteFoodService.update(dailyAteFood);
+
+        DailyAteFood dailyAteFoodFromDb = dailyAteFoodService.getByUserId(userId).get(0);
+        assertThat(dailyAteFoodFromDb.getName()).isEqualTo(dailyAteFood.getName());
+        assertThat(dailyAteFoodFromDb.getUserId()).isEqualTo(dailyAteFood.getUserId());
+    }
+
+    @Test
+    public void update_shouldThrowException() {
+        assertThrows(NullPointerException.class, () -> dailyAteFoodService.update(null));
     }
 
     @Test
