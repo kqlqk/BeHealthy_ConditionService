@@ -1,6 +1,7 @@
 package me.kqlqk.behealthy.condition_service.service.impl;
 
 import lombok.NonNull;
+import me.kqlqk.behealthy.condition_service.exception.exceptions.DailyAteFoodAlreadyExistsException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.DailyAteFoodNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyAteFood;
 import me.kqlqk.behealthy.condition_service.repository.DailyAteFoodRepository;
@@ -33,7 +34,18 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
     }
 
     @Override
+    public DailyAteFood getByNameAndUserId(String name, long userId) {
+        return dailyAteFoodRepository.findByNameAndUserId(name, userId)
+                .orElseThrow(() -> new DailyAteFoodNotFoundException("DailyAteFood with name = " + name + " and userId = " + userId + " not found"));
+    }
+
+    @Override
     public void save(@NonNull DailyAteFood dailyAteFood) {
+        if (dailyAteFoodRepository.existsByNameAndUserId(dailyAteFood.getName(), dailyAteFood.getUserId())) {
+            throw new DailyAteFoodAlreadyExistsException("DailyAteFood with name = " + dailyAteFood.getName() +
+                                                                 " and userId = " + dailyAteFood.getUserId() + " already exists");
+        }
+
         dailyAteFood.setId(0);
         dailyAteFood.setKcal(getKcals(dailyAteFood.getWeight(), dailyAteFood.getProtein(), dailyAteFood.getFat(), dailyAteFood.getCarb()));
 
@@ -42,6 +54,7 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
 
     @Override
     public void update(@NonNull DailyAteFood dailyAteFood) {
+        dailyAteFood.setId(getByNameAndUserId(dailyAteFood.getName(), dailyAteFood.getUserId()).getId());
         dailyAteFood.setKcal(getKcals(dailyAteFood.getWeight(), dailyAteFood.getProtein(), dailyAteFood.getFat(), dailyAteFood.getCarb()));
 
         dailyAteFoodRepository.save(dailyAteFood);
@@ -77,16 +90,8 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
     }
 
     @Override
-    public void delete(long id, long userId) {
-        List<DailyAteFood> dailyAteFoodsForUser = getByUserId(userId);
-
-        DailyAteFood dailyAteFood = dailyAteFoodsForUser
-                .stream()
-                .filter(product -> product.getId() == id)
-                .findAny()
-                .orElseThrow(() -> new DailyAteFoodNotFoundException("DailyAteFood with id = " + id + " not found for user with userId = " + userId));
-
-        dailyAteFoodRepository.delete(dailyAteFood);
+    public void delete(String name, long userId) {
+        dailyAteFoodRepository.delete(getByNameAndUserId(name, userId));
     }
 
     @Scheduled(cron = "0 0 0 * * *")
@@ -94,7 +99,7 @@ public class DailyAteFoodServiceImpl implements DailyAteFoodService {
     public void autoChangeTodayEveryMidnight() {
         dailyAteFoodRepository.findAll().forEach(e -> {
             e.setToday(false);
-            save(e);
+            update(e);
         });
     }
 }

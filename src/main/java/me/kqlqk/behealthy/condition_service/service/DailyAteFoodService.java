@@ -9,13 +9,15 @@ import java.util.List;
 public interface DailyAteFoodService {
     List<DailyAteFood> getByUserId(long userId);
 
+    DailyAteFood getByNameAndUserId(String name, long userId);
+
     void save(DailyAteFood dailyAteFood);
 
     void update(DailyAteFood dailyAteFood);
 
     int getKcals(double weight, int protein, int fat, int carb);
 
-    void delete(long id, long userId);
+    void delete(String name, long userId);
 
     void autoChangeTodayEveryMidnight();
 }

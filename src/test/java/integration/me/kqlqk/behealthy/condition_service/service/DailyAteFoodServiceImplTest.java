@@ -48,11 +48,10 @@ public class DailyAteFoodServiceImplTest {
         int userId = 1;
 
         DailyAteFood dailyAteFood = dailyAteFoodService.getByUserId(userId).get(0);
-        dailyAteFood.setName("NewFood");
-        dailyAteFood.setProtein(10);
+        dailyAteFood.setProtein(3);
         dailyAteFood.setFat(3);
-        dailyAteFood.setCarb(20);
-        dailyAteFood.setWeight(300);
+        dailyAteFood.setCarb(3);
+        dailyAteFood.setWeight(3);
         dailyAteFood.setToday(false);
 
         dailyAteFoodService.update(dailyAteFood);
@@ -71,7 +70,7 @@ public class DailyAteFoodServiceImplTest {
     public void delete_shouldDeleteFoodFromDb() {
         int oldDailyAteFoodSize = dailyAteFoodService.getByUserId(1).size();
 
-        dailyAteFoodService.delete(1, 1);
+        dailyAteFoodService.delete("rice", 1);
 
         int newDailyAteFoodSize = dailyAteFoodService.getByUserId(1).size();
 
@@ -80,7 +79,7 @@ public class DailyAteFoodServiceImplTest {
 
     @Test
     public void delete_shouldThrowException() {
-        assertThrows(DailyAteFoodNotFoundException.class, () -> dailyAteFoodService.delete(0, 0));
-        assertThrows(DailyAteFoodNotFoundException.class, () -> dailyAteFoodService.delete(0, 1));
+        assertThrows(DailyAteFoodNotFoundException.class, () -> dailyAteFoodService.delete("rice", 0));
+        assertThrows(DailyAteFoodNotFoundException.class, () -> dailyAteFoodService.delete("--", 1));
     }
 }
