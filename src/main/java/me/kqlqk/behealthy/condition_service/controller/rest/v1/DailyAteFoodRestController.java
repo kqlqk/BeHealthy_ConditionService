@@ -2,7 +2,6 @@ package me.kqlqk.behealthy.condition_service.controller.rest.v1;
 
 import me.kqlqk.behealthy.condition_service.dto.daily_ate_food.AddUpdateDailyAteFoodDTO;
 import me.kqlqk.behealthy.condition_service.dto.daily_ate_food.GetDailyAteFoodDTO;
-import me.kqlqk.behealthy.condition_service.exception.exceptions.DailyAteFoodNotFoundException;
 import me.kqlqk.behealthy.condition_service.model.DailyAteFood;
 import me.kqlqk.behealthy.condition_service.service.DailyAteFoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,14 @@ public class DailyAteFoodRestController {
         this.dailyAteFoodService = dailyAteFoodService;
     }
 
-    @GetMapping("/food")
-    public List<GetDailyAteFoodDTO> getDailyAteFood(@RequestParam long userId) {
+    @GetMapping("/food/all")
+    public List<GetDailyAteFoodDTO> getAllDailyAteFood(@RequestParam long userId) {
         return GetDailyAteFoodDTO.convertList(dailyAteFoodService.getByUserId(userId));
+    }
+
+    @GetMapping("/food")
+    public GetDailyAteFoodDTO getDailyAteFood(@RequestParam String productName, @RequestParam long userId) {
+        return GetDailyAteFoodDTO.convert(dailyAteFoodService.getByNameAndUserId(productName, userId));
     }
 
     @PostMapping("/food")
@@ -44,16 +48,9 @@ public class DailyAteFoodRestController {
     }
 
     @PutMapping("/food")
-    public ResponseEntity<?> updateDailyAteFood(@RequestParam long productId, @RequestParam long userId, @RequestBody @Valid AddUpdateDailyAteFoodDTO addUpdateDailyAteFoodDTO) {
-        List<DailyAteFood> dailyAteFoodsForUser = dailyAteFoodService.getByUserId(userId);
+    public ResponseEntity<?> updateDailyAteFood(@RequestParam long userId, @RequestBody @Valid AddUpdateDailyAteFoodDTO addUpdateDailyAteFoodDTO) {
+        DailyAteFood dailyAteFood = dailyAteFoodService.getByNameAndUserId(addUpdateDailyAteFoodDTO.getName(), userId);
 
-        DailyAteFood dailyAteFood = dailyAteFoodsForUser
-                .stream()
-                .filter(product -> product.getId() == productId)
-                .findAny()
-                .orElseThrow(() -> new DailyAteFoodNotFoundException("DailyAteFood with id = " + productId + " not found for user with userId = " + userId));
-
-        dailyAteFood.setName(addUpdateDailyAteFoodDTO.getName());
         dailyAteFood.setWeight(addUpdateDailyAteFoodDTO.getWeight());
         dailyAteFood.setProtein(addUpdateDailyAteFoodDTO.getProtein());
         dailyAteFood.setFat(addUpdateDailyAteFoodDTO.getFat());
@@ -66,8 +63,8 @@ public class DailyAteFoodRestController {
     }
 
     @DeleteMapping("/food")
-    public ResponseEntity<?> deleteDailyAteFood(@RequestParam long productId, @RequestParam long userId) {
-        dailyAteFoodService.delete(productId, userId);
+    public ResponseEntity<?> deleteDailyAteFood(@RequestParam String productName, @RequestParam long userId) {
+        dailyAteFoodService.delete(productName, userId);
 
         return ResponseEntity.ok().build();
     }

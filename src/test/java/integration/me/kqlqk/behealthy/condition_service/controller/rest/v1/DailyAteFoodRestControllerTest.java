@@ -20,8 +20,8 @@ public class DailyAteFoodRestControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void getDailyAteFoodForUser_shouldReturnListWithAllDailyAteFoodForUser() throws Exception {
-        mockMvc.perform(get("/api/v1/food")
+    public void getDailyAllAteFoodForUser_shouldReturnListWithAllDailyAteFoodForUser() throws Exception {
+        mockMvc.perform(get("/api/v1/food/all")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .param("userId", "1"))
                 .andDo(print())
@@ -39,9 +39,49 @@ public class DailyAteFoodRestControllerTest {
     }
 
     @Test
+    public void getDailyAllAteFoodForUser_shouldReturnJsonWithException() throws Exception {
+        mockMvc.perform(get("/api/v1/food/all")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
+
+        mockMvc.perform(get("/api/v1/food/all")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "0"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("DailyAteFood with userId = 0 not found")));
+    }
+
+    @Test
+    public void getDailyAteFoodForUser_shouldReturnDailyAteFoodForUser() throws Exception {
+        mockMvc.perform(get("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1")
+                                .param("productName", "rice"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").exists())
+                .andExpect(jsonPath("$.weight").exists())
+                .andExpect(jsonPath("$.kcal").exists())
+                .andExpect(jsonPath("$.protein").exists())
+                .andExpect(jsonPath("$.fat").exists())
+                .andExpect(jsonPath("$.carb").exists())
+                .andExpect(jsonPath("$.today").exists());
+    }
+
+    @Test
     public void getDailyAteFoodForUser_shouldReturnJsonWithException() throws Exception {
         mockMvc.perform(get("/api/v1/food")
-                                .contentType(MediaType.APPLICATION_JSON))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("productName", "rice"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
@@ -50,12 +90,22 @@ public class DailyAteFoodRestControllerTest {
 
         mockMvc.perform(get("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .param("userId", "1"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'productName' for method parameter type String is not present")));
+
+        mockMvc.perform(get("/api/v1/food")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("productName", "rice")
                                 .param("userId", "0"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("DailyAteFood with userId = 0 not found")));
+                .andExpect(jsonPath("$.info", is("DailyAteFood with name = rice and userId = 0 not found")));
     }
 
     @Test
@@ -237,7 +287,7 @@ public class DailyAteFoodRestControllerTest {
     @Test
     public void updateDailyAteFood_shouldUpdateDailyAteFoodToDb() throws Exception {
         AddUpdateDailyAteFoodDTO addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO();
-        addUpdateDailyAteFoodDTO.setName("name");
+        addUpdateDailyAteFoodDTO.setName("rice");
         addUpdateDailyAteFoodDTO.setWeight(333.2);
         addUpdateDailyAteFoodDTO.setProtein(10);
         addUpdateDailyAteFoodDTO.setFat(20);
@@ -247,10 +297,9 @@ public class DailyAteFoodRestControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
 
-        mockMvc.perform(post("/api/v1/food")
+        mockMvc.perform(put("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .param("userId", "1")
-                                .param("productId", "1")
                                 .content(json))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -420,18 +469,6 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
-
-        addUpdateDailyAteFoodDTO = new AddUpdateDailyAteFoodDTO("name", 333.2, 10, 20, 10, true);
-        json = mapper.writeValueAsString(addUpdateDailyAteFoodDTO);
-        mockMvc.perform(put("/api/v1/food")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .param("userId", "1")
-                                .content(json))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$").exists())
-                .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("Required request parameter 'productId' for method parameter type long is not present")));
     }
 
 
@@ -439,7 +476,7 @@ public class DailyAteFoodRestControllerTest {
     public void deleteDailyAteFoodFromUser_shouldDeleteDailyAteFoodFromDb() throws Exception {
         mockMvc.perform(delete("/api/v1/food/")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .param("productId", "1")
+                                .param("productName", "rice")
                                 .param("userId", "1"))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -449,7 +486,7 @@ public class DailyAteFoodRestControllerTest {
     public void deleteDailyAteFoodFromUser_shouldReturnJsonException() throws Exception {
         mockMvc.perform(delete("/api/v1/food")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .param("productId", "1"))
+                                .param("productName", "1"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
@@ -463,6 +500,6 @@ public class DailyAteFoodRestControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.info").exists())
-                .andExpect(jsonPath("$.info", is("Required request parameter 'productId' for method parameter type long is not present")));
+                .andExpect(jsonPath("$.info", is("Required request parameter 'productName' for method parameter type String is not present")));
     }
 }
