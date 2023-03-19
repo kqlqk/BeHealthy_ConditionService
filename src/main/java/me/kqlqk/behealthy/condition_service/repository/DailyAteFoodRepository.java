@@ -10,4 +10,8 @@ import java.util.Optional;
 @Repository
 public interface DailyAteFoodRepository extends JpaRepository<DailyAteFood, Long> {
     Optional<List<DailyAteFood>> findByUserIdOrderByIdAsc(long userId);
+
+    Optional<DailyAteFood> findByNameAndUserId(String name, long userId);
+
+    boolean existsByNameAndUserId(String name, long userId);
 }
