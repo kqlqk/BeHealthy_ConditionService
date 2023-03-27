@@ -8,6 +8,7 @@ import me.kqlqk.behealthy.condition_service.repository.UserPhotoRepository;
 import me.kqlqk.behealthy.condition_service.service.UserPhotoService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -20,7 +21,8 @@ import java.util.List;
 
 @Service
 public class UserPhotoServiceImpl implements UserPhotoService {
-    private static String USER_PHOTO_DIRECTORY = "BeHealthy_ConditionService/src/main/resources/user_photo/";
+    @Value("${photo.dir}")
+    private static String USER_PHOTO_DIRECTORY;
     private static final String DELIMITER = "--";
     private static final String PHOTO_FORMAT = ".jpg";
 
@@ -126,7 +128,7 @@ public class UserPhotoServiceImpl implements UserPhotoService {
 
     private String saveFileAndReturnPath(long userId, Date photoDate, String encodedPhoto) {
         String name = userId + DELIMITER + dateFormat.format(photoDate);
-        String path = USER_PHOTO_DIRECTORY + name + PHOTO_FORMAT;
+        String path = USER_PHOTO_DIRECTORY + "/" + name + PHOTO_FORMAT;
 
         byte[] decodedBytes = Base64.getDecoder().decode(encodedPhoto);
         try {
@@ -139,9 +141,5 @@ public class UserPhotoServiceImpl implements UserPhotoService {
         }
 
         return path;
-    }
-
-    public void setUserPhotoDirectory(String directory) {
-        USER_PHOTO_DIRECTORY = directory;
     }
 }

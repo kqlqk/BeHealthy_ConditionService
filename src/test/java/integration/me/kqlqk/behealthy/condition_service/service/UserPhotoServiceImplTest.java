@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,8 +79,8 @@ public class UserPhotoServiceImplTest {
             "hM/bHjYgg0d9qA8fPnz48OHDhw8fPnz48Br+B+jnlYCuONWjAAAAAElFTkSuQmCC";
 
     @AfterEach
-    public void close() throws IOException {
-        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
+    public void close(@Value("${photo.dir}") String dir) throws IOException {
+        FileUtils.cleanDirectory(new File(dir));
     }
 
     @Test
@@ -88,7 +89,6 @@ public class UserPhotoServiceImplTest {
         userPhoto.setUserId(1);
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
         userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
-        userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
         userPhotoService.save(userPhoto, encodedPhoto);
 
         String encodedPhoto = userPhotoService.getEncodedPhoto(1, "01-01-23");
@@ -110,7 +110,6 @@ public class UserPhotoServiceImplTest {
         userPhoto.setUserId(1);
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
         userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
-        userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
         userPhotoService.save(userPhoto, encodedPhoto);
 
         int newUserPhotoSize = userPhotoRepository.findAll().size();
@@ -119,12 +118,11 @@ public class UserPhotoServiceImplTest {
     }
 
     @Test
-    public void savePhoto_shouldThrowException() throws IOException {
+    public void savePhoto_shouldThrowException() {
         UserPhoto userPhoto = new UserPhoto();
         userPhoto.setUserId(1);
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
         userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
-        userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
         userPhotoService.save(userPhoto, encodedPhoto);
 
         UserPhoto userPhotoToSave = userPhotoService.getByUserIdAndDate(1, "01-01-23");

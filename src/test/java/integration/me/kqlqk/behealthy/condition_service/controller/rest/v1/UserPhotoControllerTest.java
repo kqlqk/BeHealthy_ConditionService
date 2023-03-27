@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -34,8 +35,8 @@ public class UserPhotoControllerTest {
     private UserPhotoServiceImpl userPhotoService;
 
     @AfterEach
-    public void close() throws IOException {
-        FileUtils.cleanDirectory(new File("src/test/resources/tmp_files/"));
+    public void close(@Value("${photo.dir}") String dir) throws IOException {
+        FileUtils.cleanDirectory(new File(dir));
     }
 
     @Test
@@ -44,7 +45,6 @@ public class UserPhotoControllerTest {
         userPhoto.setUserId(1);
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
         userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
-        userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
         userPhotoService.save(userPhoto, UserPhotoServiceImplTest.encodedPhoto);
 
         mockMvc.perform(get("/api/v1/photo")
@@ -94,7 +94,6 @@ public class UserPhotoControllerTest {
         userPhoto.setUserId(1);
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
         userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
-        userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
         userPhotoService.save(userPhoto, UserPhotoServiceImplTest.encodedPhoto);
 
         mockMvc.perform(get("/api/v1/photo/all")
@@ -131,7 +130,6 @@ public class UserPhotoControllerTest {
 
     @Test
     public void saveUserPhoto_shouldSaveUserPhoto() throws Exception {
-        userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
         AddUserPhotoDTO addUserPhotoDTO = new AddUserPhotoDTO("01-01-23", UserPhotoServiceImplTest.encodedPhoto);
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(addUserPhotoDTO);
@@ -146,7 +144,6 @@ public class UserPhotoControllerTest {
 
     @Test
     public void saveUserPhoto_shouldReturnJsonWithException() throws Exception {
-        userPhotoService.setUserPhotoDirectory("src/test/resources/tmp_files/");
         AddUserPhotoDTO addUserPhotoDTO = new AddUserPhotoDTO("badFormat", UserPhotoServiceImplTest.encodedPhoto);
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(addUserPhotoDTO);
