@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class UserPhotoServiceImpl implements UserPhotoService {
     @Value("${photo.dir}")
-    private static String USER_PHOTO_DIRECTORY;
+    private String USER_PHOTO_DIRECTORY;
     private static final String DELIMITER = "--";
     private static final String PHOTO_FORMAT = ".jpg";
 
