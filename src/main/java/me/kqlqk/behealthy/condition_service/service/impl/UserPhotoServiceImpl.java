@@ -1,5 +1,6 @@
 package me.kqlqk.behealthy.condition_service.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserPhotoAlreadyExistsException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserPhotoException;
 import me.kqlqk.behealthy.condition_service.exception.exceptions.UserPhotoNotFoundException;
@@ -10,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 public class UserPhotoServiceImpl implements UserPhotoService {
     @Value("${photo.dir}")
@@ -125,6 +128,36 @@ public class UserPhotoServiceImpl implements UserPhotoService {
         return date;
     }
 
+    @Override
+    public void deleteByUserIdAndDate(long userId, String dateString) {
+        Date date;
+        try {
+            date = dateFormat.parse(dateString);
+        }
+        catch (ParseException e) {
+            throw new UserPhotoException(e);
+        }
+
+        deleteByUserIdAndDate(userId, date);
+    }
+
+    @Override
+    public void deleteByUserIdAndDate(long userId, Date date) {
+        UserPhoto userPhoto = getByUserIdAndDate(userId, date);
+
+        File file = new File(userPhoto.getPhotoPath());
+        if (!file.delete()) {
+            log.warn("Photo wasn't deleted, UserPhoto = " + userPhoto);
+        }
+
+        userPhotoRepository.delete(userPhoto);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByUserId(long userId) {
+        userPhotoRepository.deleteByUserId(userId);
+    }
 
     private String saveFileAndReturnPath(long userId, Date photoDate, String encodedPhoto) {
         String name = userId + DELIMITER + dateFormat.format(photoDate);
@@ -142,4 +175,5 @@ public class UserPhotoServiceImpl implements UserPhotoService {
 
         return path;
     }
+
 }

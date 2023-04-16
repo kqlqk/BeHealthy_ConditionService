@@ -21,4 +21,10 @@ public interface UserPhotoService {
     void save(UserPhoto userPhoto, String encodedPhoto);
 
     Date convertStringToDate(String dateString);
+
+    void deleteByUserIdAndDate(long userId, String date);
+
+    void deleteByUserIdAndDate(long userId, Date date);
+
+    void deleteByUserId(long userId);
 }

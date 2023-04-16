@@ -84,7 +84,7 @@ public class UserPhotoServiceImplTest {
     }
 
     @Test
-    public void getEncodedPhoto_shouldReturnEncodedPhoto() throws IOException {
+    public void getEncodedPhoto_shouldReturnEncodedPhoto() {
         UserPhoto userPhoto = new UserPhoto();
         userPhoto.setUserId(1);
         userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
@@ -103,7 +103,7 @@ public class UserPhotoServiceImplTest {
     }
 
     @Test
-    public void save_shouldSaveDateOfPhotoToDbAndPhotoToLocalFiles() throws IOException {
+    public void save_shouldSaveDateOfPhotoToDbAndPhotoToLocalFiles() {
         int oldUserPhotoSize = userPhotoRepository.findAll().size();
 
         UserPhoto userPhoto = new UserPhoto();
@@ -129,6 +129,52 @@ public class UserPhotoServiceImplTest {
         assertThrows(UserPhotoAlreadyExistsException.class, () -> userPhotoService.save(userPhotoToSave, encodedPhoto));
     }
 
+    @Test
+    public void deleteByUserIdAndDate_shouldDeleteUserPhotoAndPath() {
+        UserPhoto userPhoto = new UserPhoto();
+        userPhoto.setUserId(1);
+        userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
+        userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
+        userPhotoService.save(userPhoto, encodedPhoto);
+
+        userPhoto = new UserPhoto();
+        userPhoto.setUserId(1);
+        userPhoto.setPhotoDate(new GregorianCalendar(2022, Calendar.JANUARY, 1).getTime());
+        userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-22");
+        userPhotoService.save(userPhoto, encodedPhoto);
+
+        int oldSize = userPhotoService.getByUserId(1).size();
+
+        userPhotoService.deleteByUserIdAndDate(1, "01-01-22");
+
+        int newSize = userPhotoService.getByUserId(1).size();
+
+        assertThat(newSize).isEqualTo(oldSize - 1);
+    }
+
+    @Test
+    public void deleteByUserIdAndDate_shouldThrowException() {
+        assertThrows(UserPhotoNotFoundException.class, () -> userPhotoService.deleteByUserIdAndDate(1, "01-01-22"));
+    }
+
+    @Test
+    public void deleteByUser_shouldDeleteUserPhotoAndPath() {
+        UserPhoto userPhoto = new UserPhoto();
+        userPhoto.setUserId(1);
+        userPhoto.setPhotoDate(new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime());
+        userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-23");
+        userPhotoService.save(userPhoto, encodedPhoto);
+
+        userPhoto = new UserPhoto();
+        userPhoto.setUserId(1);
+        userPhoto.setPhotoDate(new GregorianCalendar(2022, Calendar.JANUARY, 1).getTime());
+        userPhoto.setPhotoPath("src/test/resources/tmp_files/1--01-01-22");
+        userPhotoService.save(userPhoto, encodedPhoto);
+
+        userPhotoService.deleteByUserId(1);
+
+        assertThrows(UserPhotoNotFoundException.class, () -> userPhotoService.getByUserId(1));
+    }
 }
 
 

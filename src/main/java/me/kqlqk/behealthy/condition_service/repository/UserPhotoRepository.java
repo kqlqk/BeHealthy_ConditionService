@@ -15,4 +15,6 @@ public interface UserPhotoRepository extends JpaRepository<UserPhoto, Long> {
     Optional<List<UserPhoto>> getByUserId(long userId);
 
     Optional<UserPhoto> getByUserIdAndPhotoDate(long userId, Date date);
+
+    void deleteByUserId(long userId);
 }
