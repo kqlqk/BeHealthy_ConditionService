@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -21,14 +20,13 @@ public class DailyAteFoodRestController {
         this.dailyAteFoodService = dailyAteFoodService;
     }
 
-    @GetMapping("/food/all")
-    public List<GetDailyAteFoodDTO> getAllDailyAteFood(@RequestParam long userId) {
-        return GetDailyAteFoodDTO.convertList(dailyAteFoodService.getByUserId(userId));
-    }
-
     @GetMapping("/food")
-    public GetDailyAteFoodDTO getDailyAteFood(@RequestParam String productName, @RequestParam long userId) {
-        return GetDailyAteFoodDTO.convert(dailyAteFoodService.getByNameAndUserId(productName, userId));
+    public ResponseEntity<?> getAllDailyAteFood(@RequestParam long userId, @RequestParam(required = false) String productName) {
+        if (productName != null) {
+            return ResponseEntity.ok(GetDailyAteFoodDTO.convert(dailyAteFoodService.getByNameAndUserId(productName, userId)));
+        }
+
+        return ResponseEntity.ok(GetDailyAteFoodDTO.convertList(dailyAteFoodService.getByUserId(userId)));
     }
 
     @PostMapping("/food")
