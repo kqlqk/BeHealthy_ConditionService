@@ -55,4 +55,17 @@ public class UserPhotoController {
 
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/photo")
+    public ResponseEntity<?> deleteUserPhoto(@RequestParam long userId, @RequestParam(required = false) String date) {
+        if (date != null) {
+            userPhotoService.deleteByUserIdAndDate(userId, date);
+        }
+        else {
+            userPhotoService.deleteByUserId(userId);
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
 }

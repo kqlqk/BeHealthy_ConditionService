@@ -20,8 +20,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -187,5 +186,62 @@ public class UserPhotoControllerTest {
                 .andExpect(jsonPath("$.info").exists())
                 .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
     }
+
+    @Test
+    public void deleteUserPhoto_shouldDeleteUserPhoto() throws Exception {
+        AddUserPhotoDTO addUserPhotoDTO = new AddUserPhotoDTO("01-01-23", UserPhotoServiceImplTest.encodedPhoto);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(addUserPhotoDTO);
+        mockMvc.perform(post("/api/v1/photo")
+                                .param("userId", "1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
+                .andExpect(status().isOk());
+
+        addUserPhotoDTO = new AddUserPhotoDTO("01-01-22", UserPhotoServiceImplTest.encodedPhoto);
+        json = mapper.writeValueAsString(addUserPhotoDTO);
+        mockMvc.perform(post("/api/v1/photo")
+                                .param("userId", "1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
+                .andExpect(status().isOk());
+
+
+        mockMvc.perform(delete("/api/v1/photo")
+                                .param("userId", "1")
+                                .param("date", "01-01-23")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        mockMvc.perform(delete("/api/v1/photo")
+                                .param("userId", "1")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteUserPhoto_shouldReturnJsonWithException() throws Exception {
+        mockMvc.perform(delete("/api/v1/photo")
+                                .param("userId", "1")
+                                .param("date", "01-01-23")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("UserPhoto with userId = 1 and date = 01-01-23 not found")));
+
+        mockMvc.perform(delete("/api/v1/photo")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$.info").exists())
+                .andExpect(jsonPath("$.info", is("Required request parameter 'userId' for method parameter type long is not present")));
+
+    }
+
 
 }
