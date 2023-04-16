@@ -21,7 +21,7 @@ public class DailyAteFoodRestController {
     }
 
     @GetMapping("/food")
-    public ResponseEntity<?> getAllDailyAteFood(@RequestParam long userId, @RequestParam(required = false) String productName) {
+    public ResponseEntity<?> getDailyAteFood(@RequestParam long userId, @RequestParam(required = false) String productName) {
         if (productName != null) {
             return ResponseEntity.ok(GetDailyAteFoodDTO.convert(dailyAteFoodService.getByNameAndUserId(productName, userId)));
         }
